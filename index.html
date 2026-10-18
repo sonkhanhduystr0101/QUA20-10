@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Món Quà 20/10 Bất Ngờ - Sơn Khánh Duy</title>
+    <title>Món Quà 20/10 Siêu Cute Của  DI tặng bạn nò </title>
     <!-- Thư viện tạo mã QR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,14 +25,14 @@
             position: relative;
         }
 
-        /* Hiệu ứng hoa/trái tim rơi */
+        /* Hiệu ứng gấu bông, hoa và trái tim rơi */
         .falling-element {
             position: fixed;
-            font-size: 22px;
-            animation: floatUp 4.5s linear infinite;
-            bottom: -30px;
+            font-size: 24px;
+            animation: floatUp 5s linear infinite;
+            bottom: -40px;
             z-index: 1;
-            opacity: 0.8;
+            opacity: 0.85;
             pointer-events: none;
         }
 
@@ -41,159 +41,193 @@
             100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
         }
 
+        /* Khung chính giao diện Cute */
         .card-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 35px;
-            max-width: 680px; /* Tăng kích thước khung thiệp */
+            border: 4px solid #ff7675;
+            border-radius: 25px;
+            padding: 35px 25px;
+            max-width: 650px;
             width: 100%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 40px rgba(255, 118, 117, 0.3);
             text-align: center;
             position: relative;
             z-index: 10;
             transition: all 0.4s ease;
         }
 
-        h1 {
+        .cute-decor {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h1.main-title {
             color: #d63031;
             margin-bottom: 12px;
-            font-size: 1.8rem;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         p.subtitle {
             color: #636e72;
-            margin-bottom: 20px;
-            font-size: 1rem;
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+            font-weight: 500;
         }
 
-        select, input, button {
+        select, button {
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 1px solid #dfe6e9;
-            font-size: 1.05rem;
-            margin-bottom: 15px;
+            padding: 15px 18px;
+            border-radius: 15px;
+            border: 2px solid #ff7675;
+            font-size: 1.1rem;
+            margin-bottom: 18px;
             outline: none;
         }
 
         select {
-            background-color: #fff;
+            background-color: #fffdf9;
             color: #2d3436;
             cursor: pointer;
         }
 
-        button {
-            background: linear-gradient(45deg, #ff7675, #d63031);
+        button.btn-receive {
+            background: linear-gradient(45deg, #ff7675, #e84393);
             color: white;
             border: none;
             font-weight: bold;
+            font-size: 1.2rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(214, 48, 49, 0.3);
+            box-shadow: 0 5px 20px rgba(232, 67, 147, 0.4);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        button:hover {
-            transform: translateY(-2deg);
-            box-shadow: 0 6px 20px rgba(214, 48, 49, 0.4);
+        button.btn-receive:hover {
+            transform: translateY(-3deg) scale(1.02);
+            box-shadow: 0 8px 25px rgba(232, 67, 147, 0.5);
         }
 
-        /* Khung chứa mã QR */
-        #qrDisplay {
+        /* Khung chứa Mã QR Trang Trí Cute */
+        #qrSection {
             display: none;
-            margin: 20px 0;
-            padding: 20px;
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+
+        .qr-card-box {
             background: #fff0f3;
-            border-radius: 15px;
-            border: 1px solid #ffccd5;
+            border: 3px dashed #ff7675;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
         }
 
         #qrcode {
             display: flex;
             justify-content: center;
-            margin: 15px 0;
+            margin: 20px 0;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: inline-block;
         }
 
-        /* Giao diện lá thư mở rộng */
+        /* Khung Hiển Thị Bức Thư */
         .envelope-view {
             display: none;
             animation: fadeIn 0.6s ease-in-out forwards;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.92); }
+            from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
 
         .letter-paper {
             background: #fffdf9;
-            border: 2px dashed #e17055;
+            border: 3px dashed #e17055;
             padding: 30px;
-            border-radius: 16px;
+            border-radius: 18px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #2d3436;
             text-align: left;
             line-height: 1.8;
             margin: 20px 0;
-            font-size: 1.1rem; /* Tăng cỡ chữ lá thư */
+            font-size: 1.15rem;
             white-space: pre-line;
-            max-height: 480px; /* Tăng chiều cao tối đa lá thư */
+            max-height: 480px;
             overflow-y: auto;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+            box-shadow: inset 0 0 15px rgba(255, 118, 117, 0.08);
         }
 
         .btn-back {
             background: #636e72;
-            margin-top: 5px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Khung nhập / chọn tên -->
-    <div class="card-container" id="selectionCard">
-        <h1>🌸 Lời Chúc 20/10 🌸</h1>
-        <p class="subtitle">Vui lòng chọn hoặc nhập tên của bạn để tạo mã QR thư!</p>
+    <!-- GIAO DIỆN CHÍNH: CUTE 20/10 -->
+    <div class="card-container" id="mainCard">
+        <div class="cute-decor">🧸 🌸 🎀 🌺 🧸</div>
+        <h1 class="main-title">✨ CHÚC MỪNG 20/10 ✨</h1>
+        <p class="subtitle">Nhập hoặc chọn tên của ní để nhận phần quà bí mật nhé!</p>
         
         <select id="nameSelect">
-            <option value="">-- Chọn tên của bạn từ danh sách --</option>
+            <option value="">-- Chọn tên của ní từ danh sách --</option>
         </select>
 
-        <button onclick="generateQR()">Tạo Mã QR Thư 💌</button>
+        <button class="btn-receive" onclick="generateCuteQR()">Nhận Quà Phụ Nữ Việt Nam 🎁</button>
 
-        <!-- Khu vực hiển thị mã QR sau khi tạo -->
-        <div id="qrDisplay">
-            <h3 style="color: #d63031;" id="qrTitle">Mã QR Lá Thư</h3>
-            <p style="font-size: 0.9rem; color: #636e72; margin-top: 5px;">Quét mã QR bằng điện thoại hoặc bấm nút bên dưới để đọc thư</p>
-            <div id="qrcode"></div>
-            <button onclick="openLetterDirectly()">Mở Thư Ngay Bây Giờ 💖</button>
+        <!-- KHU VỰC HIỆN MÃ QR TRANG TRÍ CUTE -->
+        <div id="qrSection">
+            <div class="qr-card-box">
+                <div style="font-size: 1.8rem; margin-bottom: 5px;">🧸 💖 💌</div>
+                <h2 style="color: #d63031;" id="qrTitle">Mã QR Bí Mật</h2>
+                <p style="font-size: 0.95rem; color: #636e72; margin-top: 5px;">
+                    Hãy dùng điện thoại quét mã QR cute này để mở thư!
+                </p>
+                
+                <div id="qrcode"></div>
+
+                <button class="btn-receive" style="margin-top: 10px;" onclick="openLetterDirectly()">
+                    Đọc Thư Trực Tiếp Trên Web 📖
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Khung hiển thị nội dung thư (Đã bỏ avatar, tăng kích thước) -->
+    <!-- KHU VỰC HIỂN THỊ BỨC THƯ BÊN TRONG -->
     <div class="card-container envelope-view" id="letterCard">
-        <h1 id="letterHeader">Gửi...</h1>
+        <div style="font-size: 2rem;">💌 🌸 🧸</div>
+        <h1 id="letterHeader" style="color: #d63031; margin-top: 10px;">Gửi...</h1>
         <div class="letter-paper" id="letterText"></div>
-        <button class="btn-back" onclick="goBack()">Quay lại trang chủ</button>
+        <button class="btn-back" onclick="goBack()">Quay lại trang chính 🔄</button>
     </div>
 
     <script>
-        // Danh sách các lá thư
+        // Danh sách 19 lá thư
         const letterDatabase = {
             "Phạm Thị Ngọc Mai": {
-                title: "Chúc mừng 20/10 Ngọc Mai!",
+                title: "Chúc mừng 20/10 Ngọc Mai! 🌸",
                 text: "Chào Ngọc Mai,\n\nDạo này việc học đại học sao rồi Mai, lịch học với thi cử bớt dồn dập chưa? Bữa giờ lu bu quá tính ra tụi mình từ hồi tốt nghiệp cấp ba tới giờ cũng lâu lắm rồi chưa có dịp ngồi lại mần ly cà phê tám chuyện.\n\nNhân ngày 20/10, Duy chúc Mai lúc nào cũng tươi tắn, học hành qua môn dễ dàng, điểm số cao chót vót và săn được nhiều học bổng nha. Dù đứa nào cũng bận rộn với môi trường mới nhưng Duy lúc nào cũng nhớ tới tình bạn thời cấp ba của tụi mình. Hôm nào rảnh rỗi thu xếp được thì nhắn Duy cái, tụi mình đi cà phê gầy sòng nói chuyện tiếp.\n\nChúc Mai có một ngày 20/10 thiệt là vui vẻ!\nSơn Khánh Duy"
             },
             "Trịnh Thị Bảo Ngọc": {
-                title: "Happy 20/10 chị Bảo Ngọc!",
+                title: "Happy 20/10 chị Bảo Ngọc! 💖",
                 text: "Em chào chị Bảo Ngọc,\n\nLâu quá không gặp, dạo này chị khỏe hông? Đi làm đợt này công việc bớt lu bu chưa hay vẫn chạy deadline muốn xỉu vậy chị?\n\nNhân dịp 20/10, em chúc chị Ngọc ngày càng trẻ trung, xinh đẹp, công việc phơi phới, lương thưởng ngon lành và tiền vô tài khoản ào ào nha. Chúc cho mấy dự định sắp tới trong công việc của chị cái nào cũng thành công rực rỡ. Hôm nay chị nhớ tự thưởng cho mình bữa ăn thiệt ngon hoặc đi chill thư giãn nhé. Cuối tuần nào rảnh rỗi chị em mình gầy kèo gặp nhau một chuyến.\n\nSơn Khánh Duy"
             },
             "La Đặng Thảo My": {
-                title: "Chúc Thảo My 20/10 thiệt nhiều niềm vui!",
+                title: "Chúc Thảo My 20/10 thiệt nhiều niềm vui! 🌷",
                 text: "Chào Thảo My,\n\nNgoảnh đi ngoảnh lại mà lâu lắm rồi không gặp lại My. Dạo này đi làm công việc thế nào rồi, có bị tăng ca nhiều hông? Hôm nay tới 20/10 nên Duy nhắn tin hỏi thăm coi dạo này sống sao rồi.\n\nChúc Thảo My ngày 20/10 thiệt là nhiều niềm vui, công việc suôn sẻ, sếp thương đồng nghiệp quý và gặp toàn may mắn. Mong My luôn vững vàng, sự nghiệp thăng tiến và mần ăn trúng lớn nha. Dù bận rộn tới đâu cũng nhớ giữ gìn sức khỏe. Khi nào thong thả nhắn Duy, tụi mình lại đi cà phê như hồi trước.\n\nSơn Khánh Duy"
             },
             "Thạch Như Lý": {
-                title: "Happy Women's Day 20/10 Như Lý!",
+                title: "Happy Women's Day 20/10 Như Lý! 🌺",
                 text: "Chào Như Lý,\n\nDạo này việc học trên trường đại học với mấy kế hoạch mới tới đâu rồi Lý? Tuy dạo này ít gặp nhưng Duy vẫn thỉnh thoảng thấy Lý đăng hình đi học, chạy bài tập bận rộn suốt.\n\nNgày 20/10, Duy chúc Như Lý lúc nào cũng năng động, tươi rói, học hành ngon lành và gặt hái được nhiều thành tích tốt trên trường. Chúc cho mấy mục tiêu Lý đang theo đuổi sớm thu về kết quả ngon lành như mong đợi. Hy vọng sớm có dịp tụ tập lại để ngồi trò chuyện nhiều hơn. Tận hưởng một ngày 20/10 thiệt trọn vẹn nha!\n\nSơn Khánh Duy"
             },
             "Người Nhận 5": { title: "Chúc mừng 20/10!", text: "Chào bạn,\n\nNhân ngày 20/10, chúc bạn luôn vui vẻ, hạnh phúc và gặp nhiều may mắn trong cuộc sống!\n\nSơn Khánh Duy" },
@@ -213,7 +247,7 @@
             "Người Nhận 19": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" }
         };
 
-        // Đưa danh sách tên vào Menu Dropdown
+        // Đưa danh sách tên vào Dropdown
         const selectElem = document.getElementById('nameSelect');
         Object.keys(letterDatabase).forEach(name => {
             const option = document.createElement('option');
@@ -224,11 +258,11 @@
 
         let currentSelectedName = "";
 
-        // Hàm tạo mã QR khi chọn tên
-        function generateQR() {
+        // Hàm tạo mã QR Cute
+        function generateCuteQR() {
             const selectedName = selectElem.value;
             if (!selectedName) {
-                alert("Vui lòng chọn tên của bạn!");
+                alert("Vui lòng chọn hoặc nhập tên của bạn nhé!");
                 return;
             }
 
@@ -237,62 +271,14 @@
             const targetUrl = `${baseUrl}?name=${encodeURIComponent(selectedName)}`;
 
             const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = ""; // Xóa mã QR cũ
+            qrContainer.innerHTML = ""; 
 
             new QRCode(qrContainer, {
                 text: targetUrl,
-                width: 160,
-                height: 160
+                width: 170,
+                height: 170,
+                colorDark : "#d63031",
+                colorLight : "#ffffff"
             });
 
-            document.getElementById('qrTitle').innerText = `Mã QR Lá Thư Dành Cho ${selectedName}`;
-            document.getElementById('qrDisplay').style.display = 'block';
-        }
-
-        // Hàm mở thư trực tiếp
-        function openLetterDirectly() {
-            if (currentSelectedName) {
-                showLetter(currentSelectedName);
-            }
-        }
-
-        // Hàm hiển thị nội dung thư
-        function showLetter(name) {
-            const data = letterDatabase[name];
-            if (data) {
-                document.getElementById('letterHeader').innerText = data.title;
-                document.getElementById('letterText').innerText = data.text;
-
-                document.getElementById('selectionCard').style.display = 'none';
-                document.getElementById('letterCard').style.display = 'block';
-            }
-        }
-
-        // Tự động mở thư nếu được truy cập từ việc quét mã QR
-        const urlParams = new URLSearchParams(window.location.search);
-        const nameParam = urlParams.get('name');
-        if (nameParam && letterDatabase[nameParam]) {
-            showLetter(nameParam);
-        }
-
-        // Hàm quay lại
-        function goBack() {
-            window.location.href = window.location.href.split('?')[0];
-        }
-
-        // Hiệu ứng bong bóng / hoa rơi ngẫu nhiên
-        const icons = ['🌸', '💖', '🌺', '✨', '🌷'];
-        function createFalling() {
-            const el = document.createElement('div');
-            el.classList.add('falling-element');
-            el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.animationDuration = Math.random() * 2 + 3.5 + 's';
-            document.body.appendChild(el);
-
-            setTimeout(() => { el.remove(); }, 4500);
-        }
-        setInterval(createFalling, 350);
-    </script>
-</body>
-</html>
+            document.getElementById('qrTitle').innerText = `Mã QR Lá Thư C
