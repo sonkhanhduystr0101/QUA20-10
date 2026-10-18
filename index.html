@@ -443,4 +443,39 @@
 
             if (foundKey) {
                 document.getElementById('letterContent').innerText = messagesData[foundKey];
-                document.getElementById('
+                document.getElementById('letterModal').style.display = 'flex';
+            } else {
+                errorDiv.innerText = "⚠️ Tên này hông có trong danh sách nhận quà của Duy rồi! Ní kiểm tra lại xem gõ đúng tên Mai, Ngọc, My hay Lý chưa nha.";
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function closeLetterModal(e) {
+            e.stopPropagation();
+            document.getElementById('letterModal').style.display = 'none';
+            document.getElementById('envelopeWrapper').classList.remove('open');
+        }
+
+        // Bấm vào phong bì để mở thư & bắn pháo hoa
+        function toggleEnvelope() {
+            const wrapper = document.getElementById('envelopeWrapper');
+            wrapper.classList.toggle('open');
+
+            if (wrapper.classList.contains('open') && typeof confetti !== 'undefined') {
+                confetti({
+                    particleCount: 100,
+                    spread: 80,
+                    origin: { y: 0.5 },
+                    colors: ['#ff7675', '#d63031', '#fecfef', '#ffffff']
+                });
+            }
+        }
+
+        document.getElementById('userNameInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkNameAndOpen();
+            }
+        });
+    </script>
+</body>
+</html>
