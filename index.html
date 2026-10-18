@@ -14,16 +14,13 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
+    <!-- Custom CSS File -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 relative">
 
-    <!-- Canvas pháo hoa & hạt hoa bay -->
+    <!-- Interactive Particle Simulation Canvas -->
     <canvas id="particleCanvas"></canvas>
-
-    <!-- Khung hiệu ứng tên bay ngược từ dưới lên -->
-    <div id="floatingNameContainer"></div>
 
     <!-- Audio Control Floating Button -->
     <button id="musicToggleBtn" onclick="toggleAudio()" class="fixed top-5 right-5 z-50 bg-white/80 backdrop-blur-md p-3.5 rounded-full shadow-lg border border-pink-200 text-pink-500 hover:text-pink-600 transition-all hover:scale-110 flex items-center justify-center w-12 h-12">
@@ -107,7 +104,7 @@
                         <div class="letter-preview flex flex-col justify-between items-center">
                             <div class="text-pink-400 text-xs font-bold">20/10 Special</div>
                             <div class="text-center">
-                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Mai</p>
+                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Bạn</p>
                                 <p class="text-[10px] text-gray-400 mt-1">Chỉ dành riêng cho bạn 🌸</p>
                             </div>
                             <div class="text-pink-300 text-xs">💖💖💖</div>
@@ -172,10 +169,21 @@
 
                         <!-- Letter Body Text -->
                         <div class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                            <p id="letterPara1"></p>
-                            <p id="letterPara2"></p>
-                            <p id="letterPara3"></p>
-                            <p id="letterPara4" class="font-bold text-pink-500"></p>
+                            <p id="letterPara1">
+                                Nhân ngày 20/10, chúc <span class="userNameText text-pink-600 font-bold">bạn</span> luôn vui vẻ, hạnh phúc và luôn giữ được nụ cười thật xinh. 🌷
+                            </p>
+
+                            <p id="letterPara2">
+                                Mong rằng mỗi ngày của <span class="userNameText text-pink-600 font-bold">bạn</span> đều có thật nhiều niềm vui, những điều bất ngờ đáng yêu và thật nhiều yêu thương. 💗
+                            </p>
+
+                            <p id="letterPara3">
+                                Chúc <span class="userNameText text-pink-600 font-bold">bạn</span> luôn tự tin, luôn tỏa sáng theo cách riêng của mình và gặp thật nhiều điều tốt đẹp trong cuộc sống. ✨
+                            </p>
+
+                            <p id="letterPara4" class="font-bold text-pink-500">
+                                Chúc <span class="userNameText text-pink-600">bạn</span> một ngày 20/10 thật đặc biệt nhé! 🎁🌸
+                            </p>
                         </div>
 
                         <!-- Letter Footer -->
@@ -202,7 +210,7 @@
 
     </main>
 
-    <!-- Custom JavaScript -->
+    <!-- Custom JavaScript Logic -->
     <script src="script.js"></script>
 </body>
 </html>
