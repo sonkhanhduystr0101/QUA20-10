@@ -3,7 +3,7 @@ let audioContext = null;
 let isPlayingAudio = false;
 let melodyInterval = null;
 
-/* 1. THƯ RIÊNG CHO TỪNG TÊN (Viết chữ thường) */
+/* Kho thư riêng cho từng người */
 const customLetters = {
     "mai": {
         p1: "Nhân ngày 20/10, chúc Mai luôn rạng rỡ, xinh đẹp và tràn đầy năng lượng tích cực! 🌷",
@@ -25,7 +25,6 @@ const customLetters = {
     }
 };
 
-// Thư mặc định nếu nhập tên khác
 const defaultLetter = {
     p1: "Nhân ngày 20/10, chúc {name} luôn vui vẻ, hạnh phúc và luôn giữ được nụ cười thật xinh trên môi. 🌷",
     p2: "Mong rằng mỗi ngày của {name} đều có thật nhiều niềm vui, những điều bất ngờ đáng yêu và thật nhiều yêu thương. 💗",
@@ -33,17 +32,25 @@ const defaultLetter = {
     p4: "Chúc {name} một ngày 20/10 thật đặc biệt và trọn vẹn nhé! 🎁🌸"
 };
 
-/* 2. HIỆU ỨNG TÊN BAY NGƯỢC THƯA VÀ NHẸ */
+/* Danh sách màu nổi bật, đậm nét (đỏ, hồng đậm, tím, xanh dương đậm, cam rực) - Không lo trùng màu nền pastel */
+const vibrantColors = [
+    '#e6005c', '#c71585', '#d81b60', '#8e24aa', 
+    '#5e35b1', '#1e88e5', '#00897b', '#d84315'
+];
+
 let nameParticles = [];
 let nameAnimationId = null;
 
+/* HIỆU ỨNG MƯA TÊN: To, Đậm, Tốc độ dày đặc như mưa rơi/mưa bay */
 function startFloatingNameEffect(name) {
     const container = document.getElementById('floatingNameContainer');
     if (!container) return;
     
     container.innerHTML = '';
     nameParticles = [];
-    const particleCount = 12; // Mật độ thưa
+    
+    // Tăng số lượng lên 35 chữ để tạo cảm giác dày như mưa
+    const particleCount = 35; 
 
     for (let i = 0; i < particleCount; i++) {
         createFloatingNameItem(container, name, true);
@@ -57,16 +64,23 @@ function createFloatingNameItem(container, name, initial = false) {
     el.className = 'floating-name-item';
     el.textContent = name;
 
-    const posX = Math.random() * 90 + 5;
-    const posY = initial ? Math.random() * 100 : 105; 
-    const speed = Math.random() * 0.15 + 0.08;
-    const fontSize = Math.floor(Math.random() * 10) + 16;
-    const opacity = Math.random() * 0.5 + 0.3;
+    const posX = Math.random() * 92 + 3;
+    const posY = initial ? Math.random() * 110 : 105; 
+    
+    // Tốc độ bay nhanh hơn linh hoạt hơn
+    const speed = Math.random() * 0.35 + 0.18; 
+    
+    // Kích thước chữ TO HƠN hẳn (24px - 42px)
+    const fontSize = Math.floor(Math.random() * 18) + 24; 
+    
+    // Chọn ngẫu nhiên màu đậm tương phản
+    const color = vibrantColors[Math.floor(Math.random() * vibrantColors.length)];
 
     el.style.left = `${posX}%`;
     el.style.top = `${posY}%`;
     el.style.fontSize = `${fontSize}px`;
-    el.style.opacity = opacity;
+    el.style.color = color;
+    el.style.opacity = Math.random() * 0.3 + 0.7; // Độ rõ cao (0.7 - 1.0)
 
     container.appendChild(el);
 
@@ -79,12 +93,12 @@ function createFloatingNameItem(container, name, initial = false) {
 
 function animateFloatingNames() {
     nameParticles.forEach((p) => {
-        p.y -= p.speed;
+        p.y -= p.speed; // Mưa tên bay ngược từ dưới lên
         p.element.style.top = `${p.y}%`;
 
-        if (p.y < -10) {
+        if (p.y < -12) {
             p.y = 105;
-            p.element.style.left = `${Math.random() * 90 + 5}%`;
+            p.element.style.left = `${Math.random() * 92 + 3}%`;
         }
     });
 
@@ -98,7 +112,7 @@ function stopFloatingNameEffect() {
     nameParticles = [];
 }
 
-/* 3. PARTICLE CANVAS BACKGROUND */
+/* PARTICLE CANVAS BACKGROUND */
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -170,7 +184,7 @@ function animateParticles() {
 initParticles();
 animateParticles();
 
-/* 4. WEB AUDIO API MUSIC */
+/* WEB AUDIO API MUSIC */
 function initAudio() {
     if (!audioContext) {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -244,7 +258,7 @@ function toggleAudio() {
     }
 }
 
-/* 5. XỬ LÝ SỰ KIỆN VÀ MỞ THƯ */
+/* XỬ LÝ SỰ KIỆN VÀ MỞ THƯ */
 function handleNameSubmit(event) {
     event.preventDefault();
     const input = document.getElementById('recipientName');
