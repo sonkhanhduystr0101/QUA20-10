@@ -1,10 +1,50 @@
-window.onload = () => {
-    const c = setTimeout(() => {
-        document.body.classList.remove("not-loaded");
-        clearTimeout(c);
-    }, 1000);
-};
+// Tạo tự động icon bay & bong bóng mờ
+const cuteIcons = ['🧸', '🌸', '💖', '🌺', '🎀', '✨', '🌷', '💐', '🎁', '🎈', '💌'];
 
+function createFallingElements() {
+    setInterval(() => {
+        const element = document.createElement('div');
+        element.classList.add('falling-element');
+        element.innerText = cuteIcons[Math.floor(Math.random() * cuteIcons.length)];
+        element.style.left = Math.random() * 95 + 'vw';
+        element.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        element.style.fontSize = (Math.random() * 12 + 22) + 'px';
+        document.body.appendChild(element);
+
+        setTimeout(() => { element.remove(); }, 7500);
+    }, 280);
+}
+
+function createBubbles() {
+    for (let i = 0; i < 15; i++) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        const size = Math.random() * 35 + 15 + 'px';
+        bubble.style.width = size;
+        bubble.style.height = size;
+        bubble.style.left = Math.random() * 100 + 'vw';
+        bubble.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        bubble.style.animationDelay = Math.random() * 4 + 's';
+        document.body.appendChild(bubble);
+    }
+}
+
+// Gọi tạo hiệu ứng khi tải xong trang
+document.addEventListener('DOMContentLoaded', () => {
+    createFallingElements();
+    createBubbles();
+
+    const inputField = document.getElementById('userNameInput');
+    if (inputField) {
+        inputField.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkNameAndOpen();
+            }
+        });
+    }
+});
+
+// Dữ liệu lá thư chúc mừng 20/10
 const messagesData = {
     "mai": `Chào Phạm Thị Ngọc Mai,
 
@@ -99,14 +139,3 @@ function toggleEnvelope() {
         });
     }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const inputField = document.getElementById('userNameInput');
-    if (inputField) {
-        inputField.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkNameAndOpen();
-            }
-        });
-    }
-});
