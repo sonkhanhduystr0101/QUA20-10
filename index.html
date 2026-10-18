@@ -2,100 +2,207 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Happy Women's Day 20/10</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Món Quà 20/10 Dành Cho Bạn 🌸</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Mali:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="main.js" defer></script>
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen p-4 relative">
 
-    <div class="night"></div>
-    <div class="happy-woman-day">𝓗𝓪𝓹𝓹𝔂 𝔀𝓸𝓶𝓮𝓷'𝓼 𝓭𝓪𝔂 2️⃣0️⃣/1️⃣0️⃣</div>
+    <!-- Canvas pháo hoa & hạt hoa bay -->
+    <canvas id="particleCanvas"></canvas>
 
-    <!-- KHUNG NHẬP TÊN BAN ĐẦU -->
-    <div class="card-container">
-        <div class="cute-decor">🧸 🌸 💖 🌺</div>
-        <h1 class="main-title">✨ CHÚC MỪNG 20/10 ✨</h1>
-        <p class="subtitle">Nhập chính xác tên của ní để nhận phần quà bí mật từ Duy nhé!</p>
+    <!-- Khung hiệu ứng tên bay ngược từ dưới lên -->
+    <div id="floatingNameContainer"></div>
 
-        <div class="input-group">
-            <input type="text" id="userNameInput" placeholder="Nhập tên của ní vào đây nè..." autocomplete="off">
-            <button class="btn-submit" type="button" onclick="checkNameAndOpen()">Nhận Quà Phụ Nữ Việt Nam 🎁</button>
-        </div>
+    <!-- Audio Control Floating Button -->
+    <button id="musicToggleBtn" onclick="toggleAudio()" class="fixed top-5 right-5 z-50 bg-white/80 backdrop-blur-md p-3.5 rounded-full shadow-lg border border-pink-200 text-pink-500 hover:text-pink-600 transition-all hover:scale-110 flex items-center justify-center w-12 h-12">
+        <i id="musicIcon" class="fas fa-music text-lg"></i>
+    </button>
 
-        <div id="errorMessage" class="error-message"></div>
-    </div>
+    <!-- Main Container -->
+    <main class="w-full max-w-xl z-10 relative">
 
-    <!-- MODAL PHONG BÌ & THIỆP HOA ANH ĐÀO VÀ HỘP QUÀ -->
-    <div class="modal-overlay" id="letterModal">
-        <div class="envelope-wrapper" id="envelopeWrapper" onclick="toggleEnvelope()">
+        <!-- SCREEN 1: INPUT NAME SCREEN -->
+        <section id="screen1" class="glass-card rounded-3xl p-6 sm:p-10 text-center transition-all duration-700 opacity-100 transform scale-100">
+            <div class="inline-block p-3 bg-pink-100 text-pink-500 rounded-full mb-4 animate-bounce">
+                <span class="text-3xl">💐</span>
+            </div>
+            
+            <h1 class="text-2xl sm:text-3xl font-bold text-pink-600 mb-3 tracking-wide">
+                Một món quà nhỏ dành cho bạn
+            </h1>
+            
+            <p class="text-gray-600 mb-8 text-sm sm:text-base">
+                Nhập tên của bạn để nhận lời chúc 20/10 nhé 💗
+            </p>
 
-            <div class="dove dove-1">🕊️</div>
-            <div class="dove dove-2">🕊️</div>
-
-            <div class="envelope">
-                <div class="envelope-flap">
-                    <div class="seal-heart">💖</div>
+            <form onsubmit="handleNameSubmit(event)" class="space-y-5">
+                <div class="relative max-w-md mx-auto">
+                    <input 
+                        type="text" 
+                        id="recipientName" 
+                        placeholder="Nhập tên của bạn... (ví dụ: Mai)" 
+                        required
+                        maxlength="25"
+                        autocomplete="off"
+                        class="w-full px-6 py-4 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-center text-gray-700 text-lg placeholder-pink-300 shadow-inner bg-white/90 transition-all duration-300"
+                    />
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-pink-300 text-xl pointer-events-none">✨</span>
                 </div>
 
-                <div class="letter-paper" id="letterContentContainer">
-                    <button class="btn-close-modal" type="button" onclick="closeLetterModal(event)">✕</button>
-
-                    <div class="bear-top">🧸</div>
-
-                    <!-- SVG VIỀN HOA ANH ĐÀO VÀ HỘP QUÀ -->
-                    <div class="letter-sakura-border">
-                        <svg viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Cụm Hoa Anh Đào Góc Trên Trái -->
-                            <g transform="translate(15, 15) scale(0.9)">
-                                <path d="M0 0 Q 30 20, 60 10 Q 80 5, 100 25" stroke="#8d5b4c" stroke-width="3" fill="none"/>
-                                <g transform="translate(30, 15)">
-                                    <path d="M12 3 C8-2 3 1 5 7 C0 5-3 12 4 15 C-2 20 5 25 10 20 C13 27 21 23 18 17 C25 19 28 11 21 8 C25 2 18-2 12 3Z" fill="#ffb7c5"/>
-                                    <circle cx="11" cy="10" r="3" fill="#ffffff"/>
-                                    <circle cx="11" cy="10" r="1.5" fill="#e84393"/>
-                                </g>
-                                <g transform="translate(70, 8) scale(0.75)">
-                                    <path d="M12 3 C8-2 3 1 5 7 C0 5-3 12 4 15 C-2 20 5 25 10 20 C13 27 21 23 18 17 C25 19 28 11 21 8 C25 2 18-2 12 3Z" fill="#ff78a8"/>
-                                    <circle cx="11" cy="10" r="3" fill="#ffffff"/>
-                                </g>
-                            </g>
-
-                            <!-- Cụm Hộp Quà & Hoa Anh Đào Góc Dưới Phải -->
-                            <g transform="translate(290, 380)">
-                                <g transform="translate(20, 30)">
-                                    <rect x="0" y="20" width="55" height="45" rx="5" fill="#ff7675"/>
-                                    <rect x="-4" y="10" width="63" height="14" rx="3" fill="#d63031"/>
-                                    <rect x="22" y="20" width="11" height="45" fill="#feca57"/>
-                                    <rect x="22" y="10" width="11" height="14" fill="#ff9f43"/>
-                                    <path d="M15 0 C5 -10 0 10 24 10 C48 10 43 -10 33 0 C28 -5 20 -5 15 0Z" fill="#feca57"/>
-                                </g>
-                                <g transform="translate(-10, -10)">
-                                    <path d="M50 50 Q 20 30, 0 45" stroke="#8d5b4c" stroke-width="2.5" fill="none"/>
-                                    <g transform="translate(10, 25) scale(0.85)">
-                                        <path d="M12 3 C8-2 3 1 5 7 C0 5-3 12 4 15 C-2 20 5 25 10 20 C13 27 21 23 18 17 C25 19 28 11 21 8 C25 2 18-2 12 3Z" fill="#ff78a8"/>
-                                        <circle cx="11" cy="10" r="3" fill="#ffffff"/>
-                                    </g>
-                                    <g transform="translate(-15, 35) scale(0.65)">
-                                        <path d="M12 3 C8-2 3 1 5 7 C0 5-3 12 4 15 C-2 20 5 25 10 20 C13 27 21 23 18 17 C25 19 28 11 21 8 C25 2 18-2 12 3Z" fill="#ffb7c5"/>
-                                        <circle cx="11" cy="10" r="3" fill="#ffffff"/>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                    </div>
-
-                    <!-- Nội dung lời chúc -->
-                    <div id="letterContentText"></div>
+                <div>
+                    <button 
+                        type="submit" 
+                        class="btn-cute text-white font-bold px-8 py-4 rounded-2xl text-lg w-full max-w-md text-pink-900 flex items-center justify-center gap-2 mx-auto cursor-pointer">
+                        <span>Nhận lời chúc</span>
+                        <span class="text-xl">💌</span>
+                    </button>
                 </div>
+            </form>
 
-                <div class="envelope-front"></div>
+            <div class="mt-8 flex justify-center items-center gap-4 text-xs text-pink-400">
+                <span>🌸 Yêu thương</span>
+                <span>•</span>
+                <span>✨ Rạng rỡ</span>
+                <span>•</span>
+                <span>🌷 Hạnh phúc</span>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: ENVELOPE DISPLAY SCREEN (Hidden initially) -->
+        <section id="screen2" class="hidden text-center transition-all duration-700 opacity-0 transform scale-95">
+            
+            <!-- Greeting Header -->
+            <div class="mb-8">
+                <h2 id="personalGreeting" class="text-2xl sm:text-3xl font-bold text-pink-600 drop-shadow-sm mb-2"></h2>
+                <p class="text-pink-400 text-sm sm:text-base animate-pulse">
+                    Có một lá thư đặc biệt đang chờ bạn đó ✨
+                </p>
             </div>
 
-            <div class="click-hint">👇 Chạm vào phong bì để mở lá thư nha!</div>
-        </div>
-    </div>
+            <!-- Envelope Component -->
+            <div class="my-8 py-4">
+                <div class="envelope-wrapper animate-float" id="envelopeWrapper" onclick="openEnvelope()">
+                    <div class="envelope">
+                        <!-- Flap -->
+                        <div class="envelope-flap"></div>
+                        
+                        <!-- Wax Seal Decor -->
+                        <div class="wax-seal">
+                            <i class="fas fa-heart text-xl"></i>
+                        </div>
 
+                        <!-- Mini Letter Inside -->
+                        <div class="letter-preview flex flex-col justify-between items-center">
+                            <div class="text-pink-400 text-xs font-bold">20/10 Special</div>
+                            <div class="text-center">
+                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Mai</p>
+                                <p class="text-[10px] text-gray-400 mt-1">Chỉ dành riêng cho bạn 🌸</p>
+                            </div>
+                            <div class="text-pink-300 text-xs">💖💖💖</div>
+                        </div>
+
+                        <!-- Envelope Pocket Front -->
+                        <div class="envelope-pocket"></div>
+
+                        <!-- Decorative Floating Badges on Envelope -->
+                        <div class="absolute -top-3 -right-3 z-20 text-2xl animate-bounce" style="animation-duration: 2s;">🎁</div>
+                        <div class="absolute -bottom-2 -left-3 z-20 text-2xl">🌸</div>
+                        <div class="absolute top-1/2 -left-5 z-20 text-xl">✨</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Envelope Instruction Hint -->
+            <div class="space-y-2 mt-6">
+                <p class="text-pink-600 font-semibold text-lg" id="envelopeSubtext">
+                    Có một lá thư dành riêng cho bạn 💌
+                </p>
+                <div class="inline-flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-pink-200 text-pink-500 text-sm shadow-sm">
+                    <span class="inline-block animate-ping rounded-full h-2 w-2 bg-pink-400"></span>
+                    <span>Nhấn vào để mở nhé ✨</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: FULL LETTER MODAL (Hidden initially) -->
+        <div id="letterModal" class="fixed inset-0 z-40 bg-pink-900/40 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-700">
+            
+            <div class="relative w-full max-w-lg">
+                
+                <!-- Decorative Side Gifts -->
+                <div class="hidden sm:block absolute -left-16 bottom-10 text-5xl animate-bounce" style="animation-duration: 3s;">
+                    🎁
+                </div>
+                <div class="hidden sm:block absolute -right-16 top-10 text-5xl animate-bounce" style="animation-duration: 2.5s;">
+                    🎀
+                </div>
+
+                <!-- Letter Paper Container -->
+                <div id="letterContentCard" class="bg-[#fffdf9] rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-pink-200 relative overflow-hidden transform scale-90 transition-all duration-500">
+                    
+                    <!-- Floral Corner Decorations -->
+                    <div class="absolute top-2 left-2 text-2xl opacity-80">🌸</div>
+                    <div class="absolute top-2 right-2 text-2xl opacity-80">🎀</div>
+                    <div class="absolute bottom-2 left-2 text-2xl opacity-80">🎁</div>
+                    <div class="absolute bottom-2 right-2 text-2xl opacity-80">🌷</div>
+
+                    <!-- Dashed Border inner line -->
+                    <div class="border-2 border-dashed border-pink-200 rounded-2xl p-4 sm:p-6 bg-white/50 max-h-[75vh] overflow-y-auto custom-scroll">
+                        
+                        <!-- Header -->
+                        <div class="text-center mb-6">
+                            <span class="text-xs uppercase tracking-widest text-pink-400 font-bold">Happy Vietnamese Women's Day</span>
+                            <h3 class="text-2xl sm:text-3xl font-extrabold text-pink-600 mt-1 font-handwriting" id="letterHeader">
+                                Gửi Bạn 💐
+                            </h3>
+                            <div class="w-16 h-1 bg-pink-200 rounded-full mx-auto mt-2"></div>
+                        </div>
+
+                        <!-- Letter Body Text -->
+                        <div class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
+                            <p id="letterPara1"></p>
+                            <p id="letterPara2"></p>
+                            <p id="letterPara3"></p>
+                            <p id="letterPara4" class="font-bold text-pink-500"></p>
+                        </div>
+
+                        <!-- Letter Footer -->
+                        <div class="mt-8 text-center pt-4 border-t border-pink-100">
+                            <p class="text-pink-600 font-bold text-base sm:text-lg">
+                                💗 Happy Vietnamese Women's Day 20/10 💗
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-6 text-center">
+                        <button 
+                            onclick="resetForm()" 
+                            class="bg-pink-100 hover:bg-pink-200 text-pink-700 font-semibold px-6 py-2.5 rounded-full text-sm transition-all flex items-center justify-center gap-2 mx-auto border border-pink-300 shadow-sm active:scale-95">
+                            <i class="fas fa-rotate-left"></i>
+                            <span>Gửi tặng bạn khác 🔄</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
