@@ -7,7 +7,7 @@
 }
 
 :root {
-  --dark-color: #000;
+  --dark-color: linear-gradient(to bottom, #0f0c1b, #2b1055, #512b58);
 }
 
 body {
@@ -15,7 +15,7 @@ body {
   align-items: flex-end;
   justify-content: center;
   min-height: 100vh;
-  background-color: var(--dark-color);
+  background-image: var(--dark-color);
   overflow: hidden;
   perspective: 1000px;
   padding: 50px 0px;
@@ -28,16 +28,19 @@ body {
   transform: translateX(-50%);
   width: 100%;
   height: 100%;
-  filter: blur(0.1vmin);
+  background-image: var(--dark-color);
+  z-index: -1;
 }
 
 .happy-woman-day {
-  color: white;
+  color: #ffd1dc;
   font-size: 50px;
   position: fixed;
   top: 80px;
   z-index: 1000;
   text-align: center;
+  text-shadow: 0 0 15px rgba(255, 183, 197, 0.8), 0 0 30px rgba(255, 105, 180, 0.5);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .flowers {
@@ -121,6 +124,7 @@ body {
 .flower__leafs {
   position: relative;
   animation: blooming-flower 2s backwards;
+  filter: drop-shadow(0 0 12px rgba(255, 182, 193, 0.6));
 }
 .flower__leafs--1 {
   animation-delay: 1.1s;
@@ -139,7 +143,7 @@ body {
   transform: translate(-50%, -100%);
   width: 8vmin;
   height: 8vmin;
-  background-color: #6bf0ff;
+  background-color: rgba(255, 182, 193, 0.5);
   filter: blur(10vmin);
 }
 .flower__leaf {
@@ -149,11 +153,12 @@ body {
   width: 8vmin;
   height: 11vmin;
   border-radius: 51% 49% 47% 53%/44% 45% 55% 69%;
-  background-color: #a7ffee;
-  background-image: linear-gradient(to top, #54b8aa, #a7ffee);
+  background-color: rgba(255, 183, 197, 0.82); /* Hồng phấn trong suốt */
+  background-image: linear-gradient(to top, rgba(255, 143, 171, 0.75), rgba(255, 209, 220, 0.9));
   transform-origin: bottom center;
-  opacity: 0.9;
-  box-shadow: inset 0 0 2vmin rgba(255, 255, 255, 0.5);
+  opacity: 0.85;
+  backdrop-filter: blur(2px);
+  box-shadow: inset 0 0 2vmin rgba(255, 255, 255, 0.7), 0 0 15px rgba(255, 192, 203, 0.5);
 }
 .flower__leaf--1 {
   transform: translate(-10%, 1%) rotateY(40deg) rotateX(-50deg);
@@ -170,7 +175,7 @@ body {
   transform-origin: bottom left;
   border-radius: 4vmin 10vmin 4vmin 4vmin;
   transform: translate(0%, 18%) rotateX(70deg) rotate(-43deg);
-  background-image: linear-gradient(to top, #39c6d6, #a7ffee);
+  background-image: linear-gradient(to top, rgba(255, 105, 180, 0.7), rgba(255, 192, 203, 0.9));
   z-index: 1;
   opacity: 0.8;
 }
@@ -181,7 +186,8 @@ body {
   width: 9vmin;
   height: 4vmin;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: #fff0f5;
+  box-shadow: 0 0 10px rgba(255, 182, 193, 0.9);
 }
 .flower__white-circle::after {
   content: "";
@@ -192,12 +198,12 @@ body {
   width: 60%;
   height: 60%;
   border-radius: inherit;
-  background-image: repeating-linear-gradient(300deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(67.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(112.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(112.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(22.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(22.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(157.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(67.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(67.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), linear-gradient(90deg, rgb(255, 235, 18), rgb(255, 206, 0));
+  background-image: repeating-linear-gradient(300deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(67.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(112.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(112.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(22.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(22.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(157.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(67.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(67.5deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 12px), linear-gradient(90deg, rgb(255, 182, 193), rgb(255, 105, 180));
 }
 .flower__line {
   height: 55vmin;
   width: 1.5vmin;
-  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent, rgba(255, 255, 255, 0.2)), linear-gradient(to top, transparent 10%, #14757a, #39c6d6);
+  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent, rgba(255, 255, 255, 0.2)), linear-gradient(to top, transparent 10%, #3a5a40, #588157);
   box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
   animation: grow-flower-tree 4s backwards;
 }
@@ -211,7 +217,7 @@ body {
   height: var(--h);
   border-top-right-radius: var(--h);
   border-bottom-left-radius: var(--h);
-  background-image: linear-gradient(to top, rgba(20, 117, 122, 0.4), #39c6d6);
+  background-image: linear-gradient(to top, rgba(58, 90, 64, 0.5), #588157);
 }
 .flower__line__leaf--1 {
   transform: rotate(70deg) rotateY(30deg);
@@ -248,13 +254,13 @@ body {
   bottom: 0vmin;
   width: 1vmin;
   height: 1vmin;
-  background-color: rgb(255, 251, 0);
+  background-color: rgba(255, 143, 171, 0.85);
   border-radius: 50%;
-  filter: blur(0.2vmin);
+  filter: blur(0.3vmin);
   animation: light-ans 4s linear infinite backwards;
 }
 .flower__light:nth-child(odd) {
-  background-color: #23f0ff;
+  background-color: rgba(255, 192, 203, 0.9);
 }
 .flower__light--1 {
   left: -2vmin;
@@ -289,7 +295,7 @@ body {
   animation-delay: 3.5s;
 }
 .flower__grass {
-  --c: #159faa;
+  --c: #588157;
   --line-w: 1.5vmin;
   position: absolute;
   bottom: 12vmin;
@@ -453,7 +459,7 @@ body {
 .flower__g-long {
   --w: 2vmin;
   --h: 6vmin;
-  --c: #159faa;
+  --c: #588157;
   position: absolute;
   bottom: 10vmin;
   left: -3vmin;
@@ -499,9 +505,9 @@ body {
   width: 30vmin;
   height: 50vmin;
   border-top-left-radius: 100%;
-  border-left: 2vmin solid #079097;
-  background-image: linear-gradient(to bottom, transparent, var(--dark-color) 60%);
-  -webkit-mask-image: linear-gradient(to top, transparent 30%, #079097 60%);
+  border-left: 2vmin solid #3a5a40;
+  background-image: linear-gradient(to bottom, transparent, rgba(15, 12, 27, 0.8) 60%);
+  -webkit-mask-image: linear-gradient(to top, transparent 30%, #3a5a40 60%);
 }
 .flower__g-right--1 {
   animation: flower-g-right-ans 2.5s linear infinite;
@@ -552,7 +558,7 @@ body {
 .flower__g-front__line {
   width: 0.3vmin;
   height: 20vmin;
-  background-image: linear-gradient(to top, transparent, #079097, transparent 100%);
+  background-image: linear-gradient(to top, transparent, #3a5a40, transparent 100%);
   position: relative;
 }
 .flower__g-front__leaf-wrapper {
@@ -632,10 +638,10 @@ body {
   width: 10vmin;
   height: 10vmin;
   border-radius: 100% 0% 0% 100%/100% 100% 0% 0%;
-  box-shadow: inset 0 2px 1vmin hsla(184, 97%, 58%, 0.2);
-  background-image: linear-gradient(to bottom left, transparent, var(--dark-color)), linear-gradient(to bottom right, #159faa 50%, transparent 50%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom right, #159faa 50%, transparent 50%, transparent);
-  mask-image: linear-gradient(to bottom right, #159faa 50%, transparent 50%, transparent);
+  box-shadow: inset 0 2px 1vmin hsla(330, 97%, 78%, 0.2);
+  background-image: linear-gradient(to bottom left, transparent, rgba(15, 12, 27, 0.8)), linear-gradient(to bottom right, #588157 50%, transparent 50%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom right, #588157 50%, transparent 50%, transparent);
+  mask-image: linear-gradient(to bottom right, #588157 50%, transparent 50%, transparent);
 }
 .flower__g-fr {
   position: absolute;
@@ -657,8 +663,8 @@ body {
   width: 30vmin;
   height: 50vmin;
   border-top-left-radius: 100%;
-  border-left: 2vmin solid #079097;
-  -webkit-mask-image: linear-gradient(to top, transparent 25%, #079097 50%);
+  border-left: 2vmin solid #3a5a40;
+  -webkit-mask-image: linear-gradient(to top, transparent 25%, #3a5a40 50%);
   position: relative;
   z-index: 1;
 }
@@ -669,9 +675,9 @@ body {
   width: 10vmin;
   height: 10vmin;
   border-radius: 100% 0% 0% 100%/100% 100% 0% 0%;
-  box-shadow: inset 0 2px 1vmin hsla(184, 97%, 58%, 0.2);
-  background-image: linear-gradient(to bottom left, transparent, var(--dark-color) 98%), linear-gradient(to bottom right, #23f0ff 45%, transparent 50%, transparent);
-  -webkit-mask-image: linear-gradient(135deg, #159faa 40%, transparent 50%, transparent);
+  box-shadow: inset 0 2px 1vmin hsla(330, 97%, 78%, 0.2);
+  background-image: linear-gradient(to bottom left, transparent, rgba(15, 12, 27, 0.8) 98%), linear-gradient(to bottom right, #ffb6c1 45%, transparent 50%, transparent);
+  -webkit-mask-image: linear-gradient(135deg, #588157 40%, transparent 50%, transparent);
 }
 .flower__g-fr__leaf--1 {
   left: 20vmin;
@@ -762,7 +768,7 @@ body {
   transform: scale(0.8) rotate(-5deg);
 }
 .long-g--1 .leaf {
-  -webkit-mask-image: linear-gradient(to top, transparent 40%, #079097 80%) !important;
+  -webkit-mask-image: linear-gradient(to top, transparent 40%, #3a5a40 80%) !important;
 }
 .long-g--1 .leaf--1 {
   --w: 5vmin;
@@ -777,7 +783,7 @@ body {
   transform: scale(0.6) rotateX(60deg);
 }
 .long-g--2 .leaf, .long-g--3 .leaf {
-  -webkit-mask-image: linear-gradient(to top, transparent 50%, #079097 80%) !important;
+  -webkit-mask-image: linear-gradient(to top, transparent 50%, #3a5a40 80%) !important;
 }
 .long-g--2 .leaf--1, .long-g--3 .leaf--1 {
   left: -1vmin;
@@ -788,7 +794,7 @@ body {
   bottom: 0vmin;
 }
 .long-g--3 .leaf {
-  -webkit-mask-image: linear-gradient(to top, transparent 40%, #079097 80%) !important;
+  -webkit-mask-image: linear-gradient(to top, transparent 40%, #3a5a40 80%) !important;
 }
 .long-g--4 {
   left: 25vmin;
@@ -797,7 +803,7 @@ body {
   transform: scale(0.6) rotateX(60deg);
 }
 .long-g--4 .leaf {
-  -webkit-mask-image: linear-gradient(to top, transparent 50%, #079097 80%) !important;
+  -webkit-mask-image: linear-gradient(to top, transparent 50%, #3a5a40 80%) !important;
 }
 .long-g--5 {
   left: 42vmin;
@@ -822,14 +828,14 @@ body {
 .long-g .leaf {
   --w: 15vmin;
   --h: 40vmin;
-  --c: #1aaa15;
+  --c: #588157;
   position: absolute;
   bottom: 0;
   width: var(--w);
   height: var(--h);
   border-top-left-radius: 100%;
   border-left: 2vmin solid var(--c);
-  -webkit-mask-image: linear-gradient(to top, transparent 20%, var(--dark-color));
+  -webkit-mask-image: linear-gradient(to top, transparent 20%, rgba(15, 12, 27, 0.8));
   transform-origin: bottom center;
 }
 .long-g .leaf--0 {
