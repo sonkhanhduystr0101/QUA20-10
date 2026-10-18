@@ -48,13 +48,12 @@
             border: 4px solid #ff7675;
             border-radius: 25px;
             padding: 35px 25px;
-            max-width: 650px;
+            max-width: 600px;
             width: 100%;
             box-shadow: 0 20px 40px rgba(255, 118, 117, 0.3);
             text-align: center;
             position: relative;
             z-index: 10;
-            transition: all 0.4s ease;
         }
 
         .cute-decor {
@@ -65,7 +64,7 @@
         h1.main-title {
             color: #d63031;
             margin-bottom: 12px;
-            font-size: 2rem;
+            font-size: 1.8rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
@@ -76,11 +75,235 @@
             font-weight: 500;
         }
 
-        /* Ô nhập liệu hỗ trợ hoàn hảo cho cả Laptop và Bàn phím ảo Điện thoại */
+        /* Ô nhập liệu hỗ trợ hoàn hảo cho cả Máy tính & Điện thoại */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
         input[type="text"] {
             width: 100%;
             padding: 16px 20px;
             border-radius: 15px;
             border: 2px solid #ff7675;
-            font-size: 1.15rem;
-            margin-bottom
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+            text-align: center;
+            background-color: #fff5f5;
+            color: #2d3436;
+        }
+
+        input[type="text"]:focus {
+            border-color: #d63031;
+            box-shadow: 0 0 12px rgba(214, 48, 49, 0.3);
+            background-color: #ffffff;
+        }
+
+        button.btn-submit {
+            background: linear-gradient(135deg, #ff7675, #d63031);
+            color: white;
+            border: none;
+            padding: 16px 25px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 15px rgba(214, 48, 49, 0.3);
+        }
+
+        button.btn-submit:active {
+            transform: scale(0.97);
+        }
+
+        /* Lỗi nhập sai tên */
+        .error-message {
+            color: #d63031;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        /* Khu vực hiển thị Mã QR */
+        #qr-result {
+            display: none;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #ff7675;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        #qrcode img {
+            border: 6px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .qr-hint {
+            color: #00b894;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .preview-text {
+            background: #fff;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #2d3436;
+            white-space: pre-line;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Khung chính -->
+    <div class="card-container">
+        <div class="cute-decor">🧸 🌸 💖</div>
+        <h1 class="main-title">Món Quà 20/10 Bí Mật</h1>
+        <p class="subtitle">Nhập chính xác tên của bạn để nhận mã QR lời chúc riêng từ Sơn Khánh Duy nhé!</p>
+
+        <div class="input-group">
+            <input type="text" id="userNameInput" placeholder="Ví dụ: Phạm Thị Ngọc Mai..." autocomplete="off">
+            <button class="btn-submit" onclick="generateQR()">Tạo Mã QR Lời Chúc ✨</button>
+        </div>
+
+        <div id="errorMessage" class="error-message">
+            ⚠️ Ồ, tên này không có trong danh sách nhận quà của Duy rồi! Bạn kiểm tra lại dấu hoặc viết hoa nhé.
+        </div>
+
+        <!-- Kết quả QR -->
+        <div id="qr-result">
+            <div class="qr-hint">🎉 Quét mã QR bên dưới bằng Zalo/Camera để xem lời chúc!</div>
+            <div id="qrcode"></div>
+            <div class="preview-text" id="textPreview"></div>
+        </div>
+    </div>
+
+    <script>
+        // Hiệu ứng biểu tượng rơi lãng mạn
+        const icons = ['🧸', '🌸', '💖', '🌷', '✨', '🎁'];
+        function createFallingElements() {
+            setInterval(() => {
+                const element = document.createElement('div');
+                element.classList.add('falling-element');
+                element.innerText = icons[Math.floor(Math.random() * icons.length)];
+                element.style.left = Math.random() * 100 + 'vw';
+                element.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                document.body.appendChild(element);
+
+                setTimeout(() => { element.remove(); }, 6000);
+            }, 400);
+        }
+        createFallingElements();
+
+        // Danh sách lời chúc riêng được lập trình sẵn
+        const messagesData = {
+            "phạm thị ngọc mai": `Chào Phạm Thị Ngọc Mai,
+
+Dạo này việc học đại học sao rồi Mai, lịch học với thi cử bớt dồn dập chưa? Bữa giờ lu bu quá tính ra tụi mình từ hồi tốt nghiệp cấp ba tới giờ cũng lâu lắm rồi chưa có dịp ngồi lại mần ly cà phê tám chuyện.
+
+Nhân ngày 20/10, Sơn Khánh Duy chúc Mai lúc nào cũng tươi tắn, học hành qua môn dễ dàng, điểm số cao chót vót và săn được nhiều học bổng nha. Dù đứa nào cũng bận rộn với môi trường mới nhưng Duy lúc nào cũng nhớ tới tình bạn thời cấp ba của tụi mình. Hôm nào rảnh rỗi thu xếp được thì nhắn Duy cái, tụi mình đi cà phê gầy sòng nói chuyện tiếp.
+
+Chúc Mai có một ngày 20/10 thiệt là vui vẻ!
+
+Sơn Khánh Duy`,
+
+            "trịnh thị bảo ngọc": `Em chào chị Trịnh Thị Bảo Ngọc,
+
+Lâu quá không gặp, dạo này chị khỏe hông? Đi làm đợt này công việc bớt lu bu chưa hay vẫn chạy deadline muốn xỉu vậy chị?
+
+Nhân dịp 20/10, em chúc chị Ngọc ngày cảnh trẻ trung, xinh đẹp, công việc phơi phới, lương thưởng ngon lành và tiền vô tài khoản ào ào nha. Chúc cho mấy dự định sắp tới trong công việc của chị cái nào cũng thành công rực rỡ. Hôm nay chị nhớ tự thưởng cho mình bữa ăn thiệt ngon hoặc đi chill thư giãn nhé. Cuối tuần nào rảnh rỗi chị em mình gầy kèo gặp nhau một chuyến.
+
+Sơn Khánh Duy`,
+
+            "la đặng thảo my": `Chào La Đặng Thảo My,
+
+Ngoảnh đi ngoảnh lại mà lâu lắm rồi không gặp lại My. Dạo này đi làm công việc thế nào rồi, có bị tăng ca nhiều hông? Hôm nay tới 20/10 nên Duy nhắn tin hỏi thăm coi dạo này sống sao rồi.
+
+Chúc Thảo My ngày 20/10 thiệt là nhiều niềm vui, công việc suôn sẻ, sếp thương đồng nghiệp quý và gặp toàn may mắn. Mong My luôn vững vàng, sự nghiệp thăng tiến và mần ăn trúng lớn nha. Dù bận rộn tới đâu cũng nhớ giữ gìn sức khỏe. Khi nào thong thả nhắn Duy, tụi mình lại đi cà phê như hồi trước.
+
+Sơn Khánh Duy`,
+
+            "thạch như lý": `Chào Thạch Như Lý,
+
+Dạo này việc học trên trường đại học với mấy kế hoạch mới tới đâu rồi Lý? Tuy dạo này ít gặp nhưng Duy vẫn thỉnh thoảng thấy Lý đăng hình đi học, chạy bài tập bận rộn suốt.
+
+Ngày 20/10, Duy chúc Như Lý lúc nào cũng năng động, tươi rói, học hành ngon lành và gặt hái được nhiều thành tích tốt trên trường. Chúc cho mấy mục tiêu Lý đang theo đuổi sớm thu về kết quả ngon lành như mong đợi. Hy vọng sớm có dịp tụ tập lại để ngồi trò chuyện nhiều hơn. Tận hưởng một ngày 20/10 thiệt trọn vẹn nha!
+
+Sơn Khánh Duy`
+        };
+
+        // Hàm chuẩn hóa chuỗi để so sánh tên không lo lỗi gõ chữ
+        function normalizeString(str) {
+            return str.trim().toLowerCase().replace(/\s+/g, ' ');
+        }
+
+        // Xử lý tạo mã QR khi người dùng nhấn nút hoặc bấm Enter
+        function generateQR() {
+            const inputVal = document.getElementById('userNameInput').value;
+            const normalizedInput = normalizeString(inputVal);
+            const errorDiv = document.getElementById('errorMessage');
+            const resultDiv = document.getElementById('qr-result');
+            const qrContainer = document.getElementById('qrcode');
+            const textPreview = document.getElementById('textPreview');
+
+            // Ẩn các phần hiển thị cũ
+            errorDiv.style.display = 'none';
+            resultDiv.style.display = 'none';
+            qrContainer.innerHTML = '';
+
+            // Kiểm tra tên trong danh sách
+            let matchedKey = Object.keys(messagesData).find(key => key === normalizedInput);
+
+            if (matchedKey) {
+                const messageText = messagesData[matchedKey];
+                
+                // Tạo QR Code
+                new QRCode(qrContainer, {
+                    text: messageText,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#d63031",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+
+                textPreview.innerText = messageText;
+                resultDiv.style.display = 'block';
+            } else {
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        // Bắt sự kiện gõ phím Enter trên điện thoại/máy tính
+        document.getElementById('userNameInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                generateQR();
+            }
+        });
+    </script>
+</body>
+</html>
