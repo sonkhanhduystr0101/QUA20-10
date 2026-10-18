@@ -3,44 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Women's Day 20/10</title>
+    <!-- CSS File -->
     <link rel="stylesheet" href="style.css">
+    <!-- Thư viện pháo hoa confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <!-- JS File -->
+    <script src="main.js" defer></script>
 </head>
 <body class="not-loaded">
 
-    <!-- MÀN HÌNH 1: NHẬP TÊN -->
-    <div id="name-screen" class="name-screen">
-        <div class="name-box">
-            <h2>Gửi tặng người đặc biệt 🌸</h2>
-            <p>Nhập tên của bạn để mở món quà nhé:</p>
-            <input type="text" id="recipient-name" placeholder="VD: Phạm Thị Ngọc Mai..." autocomplete="off">
-            <button id="start-btn">Mở Quà 💌</button>
-        </div>
-    </div>
-
-    <!-- MÀN HÌNH 2: NỀN TỐI & HOA ANH ĐÀO -->
     <div class="night"></div>
     <div class="happy-woman-day">𝓗𝓪𝓹𝓹𝔂 𝔀𝓸𝓶𝓮𝓷'𝓼 𝓭𝓪𝔂 2️⃣0️⃣/1️⃣0️⃣</div>
-    
-    <!-- PHONG BÌ THƯ & LÁ THƯ TRƯỢT RA -->
-    <div id="envelope-container" class="envelope-container hidden">
-        <div class="envelope" id="envelope">
-            <div class="envelope-flap"></div>
-            <div class="envelope-pocket"></div>
-            <!-- Lá thư trượt ra -->
-            <div class="letter-sheet" id="letter-sheet">
-                <div class="bear-icon">🧸</div>
-                <div class="close-btn" id="close-letter">✕</div>
-                <h3 id="letter-title">Chào Phạm Thị Ngọc Mai,</h3>
-                <div class="letter-body" id="letter-content">
-                    <p>Dạo này việc học đại học sao rồi Mai, lịch học với thi cử bớt dồn dập chưa? Bữa giờ lu bù quá tính ra tụi mình từ hồi tốt nghiệp cấp ba tới giờ cũng lâu lắm rồi chưa có dịp ngồi lại mặn ly cà phê tám chuyện.</p>
-                    <p>Nhân ngày 20/10, chúc Mai luôn luôn xinh đẹp, rạng rỡ, gặp nhiều may mắn và luôn giữ được năng lượng tích cực nha! ✨🌸</p>
+
+    <!-- KHUNG NHẬP TÊN BAN ĐẦU -->
+    <div class="card-container">
+        <div class="cute-decor">🧸 🌸 💖 🌺</div>
+        <h1 class="main-title">✨ CHÚC MỪNG 20/10 ✨</h1>
+        <p class="subtitle">Nhập chính xác tên của ní để nhận phần quà bí mật từ Duy nhé!</p>
+
+        <div class="input-group">
+            <input type="text" id="userNameInput" placeholder="Nhập tên của ní vào đây nè..." autocomplete="off">
+            <button class="btn-submit" type="button" onclick="checkNameAndOpen()">Nhận Quà Phụ Nữ Việt Nam 🎁</button>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+    </div>
+
+    <!-- MODAL PHONG BÌ & THIỆP VỚI PAPER CUT ARTWORK -->
+    <div class="modal-overlay" id="letterModal">
+        <div class="envelope-wrapper" id="envelopeWrapper" onclick="toggleEnvelope()">
+
+            <!-- Chim Bồ Câu -->
+            <div class="dove dove-1">🕊️</div>
+            <div class="dove dove-2">🕊️</div>
+
+            <!-- Phong Bì Hồng -->
+            <div class="envelope">
+                <div class="envelope-flap">
+                    <div class="seal-heart">💖</div>
                 </div>
+
+                <!-- LÁ THƯ HỒNG KÈM PAPER CUT ARTWORK -->
+                <div class="letter-paper" id="letterContentContainer">
+                    <button class="btn-close-modal" type="button" onclick="closeLetterModal(event)">✕</button>
+
+                    <div class="bear-top">🧸</div>
+
+                    <!-- SVG PAPER-CUT ARTWORK -->
+                    <div class="paper-cut-artwork">
+                        <svg viewBox="0 0 180 390" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- DẢI LỤA HỒNG -->
+                            <path d="M180 0C115 45 90 125 180 205V0Z" fill="#ff78a8" opacity=".28" />
+                            <path d="M180 0C105 70 85 155 180 255V0Z" fill="#e84393" opacity=".48" />
+                            <path d="M180 0C98 92 82 190 180 300V0Z" fill="#d63072" opacity=".78" />
+                            <path d="M180 55C130 110 122 180 180 245V55Z" fill="#ff9fbd" opacity=".62" />
+
+                            <!-- BÓNG CÔ GÁI -->
+                            <path d="M180 28 C154 26 137 43 137 66 C137 84 147 96 157 103 C139 113 126 137 122 169 C119 197 127 231 136 260 C141 277 154 290 180 296Z" fill="#ffffff" />
+
+                            <!-- HOA ANH ĐÀO LỚP 1 -->
+                            <g transform="translate(18 15)">
+                                <path d="M20 5 C14-4 5 1 9 10 C0 6-5 16 4 20 C-3 27 7 34 14 27 C18 37 29 32 25 23 C35 26 39 15 29 11 C34 2 25-3 20 5Z" fill="#f9a8c4" />
+                                <circle cx="19" cy="18" r="5" fill="#ffffff" />
+                                <circle cx="19" cy="18" r="2.5" fill="#f08aae" />
+                            </g>
+
+                            <!-- HOA ANH ĐÀO LỚP 2 -->
+                            <g transform="translate(2 62) scale(.78)">
+                                <path d="M20 5 C14-4 5 1 9 10 C0 6-5 16 4 20 C-3 27 7 34 14 27 C18 37 29 32 25 23 C35 26 39 15 29 11 C34 2 25-3 20 5Z" fill="#ff78a8" />
+                                <circle cx="19" cy="18" r="5" fill="#ffffff" />
+                                <circle cx="19" cy="18" r="2.5" fill="#e84393" />
+                            </g>
+
+                            <!-- HOA ANH ĐÀO LỚP 3 -->
+                            <g transform="translate(28 120) scale(.58)">
+                                <path d="M20 5 C14-4 5 1 9 10 C0 6-5 16 4 20 C-3 27 7 34 14 27 C18 37 29 32 25 23 C35 26 39 15 29 11 C34 2 25-3 20 5Z" fill="#ffd1df" />
+                                <circle cx="19" cy="18" r="5" fill="#ffffff" />
+                                <circle cx="19" cy="18" r="2.5" fill="#ff7675" />
+                            </g>
+
+                            <!-- CỤM HOA DƯỚI -->
+                            <g transform="translate(8 300) scale(.72)">
+                                <path d="M20 5 C14-4 5 1 9 10 C0 6-5 16 4 20 C-3 27 7 34 14 27 C18 37 29 32 25 23 C35 26 39 15 29 11 C34 2 25-3 20 5Z" fill="#ff8fb5" />
+                                <circle cx="19" cy="18" r="5" fill="#ffffff" />
+                                <circle cx="19" cy="18" r="2.5" fill="#e84393" />
+                            </g>
+
+                            <!-- HOA NHỎ -->
+                            <g transform="translate(54 330) scale(.5)">
+                                <path d="M20 5 C14-4 5 1 9 10 C0 6-5 16 4 20 C-3 27 7 34 14 27 C18 37 29 32 25 23 C35 26 39 15 29 11 C34 2 25-3 20 5Z" fill="#ffd1df" />
+                                <circle cx="19" cy="18" r="5" fill="#ffffff" />
+                                <circle cx="19" cy="18" r="2.5" fill="#ff7675" />
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Nội dung lời chúc -->
+                    <div id="letterContentText"></div>
+                </div>
+
+                <div class="envelope-front"></div>
             </div>
+
+            <div class="click-hint">👇 Chạm vào phong bì để mở lá thư nha!</div>
         </div>
     </div>
 
+    <!-- HIỆU ỨNG HOA CỎ TỰ NHIÊN 3D -->
     <div class="flowers">
       <div class="flower flower--1">
         <div class="flower__leafs flower__leafs--1">
@@ -115,14 +186,14 @@
           <div class="flower__line__leaf flower__line__leaf--4"></div>
         </div>
       </div>
-  
+
       <div class="grow-ans" style="--d:1.2s">
         <div class="flower__g-long">
           <div class="flower__g-long__top"></div>
           <div class="flower__g-long__bottom"></div>
         </div>
       </div>
-  
+
       <div class="growing-grass">
         <div class="flower__grass flower__grass--1">
           <div class="flower__grass--top"></div>
@@ -138,7 +209,7 @@
           <div class="flower__grass__overlay"></div>
         </div>
       </div>
-  
+
       <div class="growing-grass">
         <div class="flower__grass flower__grass--2">
           <div class="flower__grass--top"></div>
@@ -156,52 +227,5 @@
       </div>
     </div>
 
-    <script>
-      const startBtn = document.getElementById('start-btn');
-      const nameScreen = document.getElementById('name-screen');
-      const recipientInput = document.getElementById('recipient-name');
-      const envelopeContainer = document.getElementById('envelope-container');
-      const envelope = document.getElementById('envelope');
-      const letterSheet = document.getElementById('letter-sheet');
-      const closeBtn = document.getElementById('close-letter');
-      const letterTitle = document.getElementById('letter-title');
-      const letterContent = document.getElementById('letter-content');
-
-      startBtn.addEventListener('click', () => {
-        const name = recipientInput.value.trim();
-        if (!name) {
-          alert('Vui lòng nhập tên của bạn nhé!');
-          return;
-        }
-
-        // Ẩn màn hình nhập tên, chạy hiệu ứng hoa nở
-        nameScreen.style.opacity = '0';
-        setTimeout(() => {
-          nameScreen.style.display = 'none';
-          document.body.classList.remove("not-loaded");
-        }, 500);
-
-        // Đổi tên người nhận linh hoạt
-        letterTitle.innerText = `Chào ${name},`;
-
-        // Sau khi hoa nở xong (3s), hiển thị phong bì thư
-        setTimeout(() => {
-          envelopeContainer.classList.remove('hidden');
-        }, 3000);
-      });
-
-      // Nhấn vào phong bì để lá thư trượt lên mở ra
-      envelope.addEventListener('click', (e) => {
-        if (e.target.id !== 'close-letter') {
-          envelope.classList.add('opened');
-        }
-      });
-
-      // Nút đóng thư thu gọn lại
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        envelope.classList.remove('opened');
-      });
-    </script>
 </body>
 </html>
