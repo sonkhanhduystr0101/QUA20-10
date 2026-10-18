@@ -3,7 +3,7 @@ let audioContext = null;
 let isPlayingAudio = false;
 let melodyInterval = null;
 
-/* Định dạng tên to nổi bật */
+/* Định dạng tên to nhẹ nhàng nổi bật */
 function formatName(name) {
     return `<span class="user-highlight-name">${name}</span>`;
 }
@@ -37,22 +37,25 @@ const defaultLetter = {
     p4: "Chúc {name} một ngày 20/10 thật đặc biệt và trọn vẹn nhé! 🎁🌸"
 };
 
-const vibrantColors = [
-    '#e6005c', '#c71585', '#d81b60', '#8e24aa', 
-    '#5e35b1', '#1e88e5', '#00897b', '#d84315', '#c2185b'
+/* Tone màu Champagne, Rose Gold, Berry, Soft Purple - Rất sang & cao cấp */
+const elegantColors = [
+    '#9f1239', '#be123c', '#881337', '#7e22ce', 
+    '#6b21a8', '#0369a1', '#0f766e', '#991b1b'
 ];
 
 let nameParticles = [];
 let nameAnimationId = null;
 
-/* MƯA TÊN SINH ĐỘNG: Bay ngẫu nhiên, lắc lư, dập dềnh */
+/* MƯA TÊN TINH TẾ: Nhỏ nhắn, lướt nhẹ từ dưới lên */
 function startFloatingNameEffect(name) {
     const container = document.getElementById('floatingNameContainer');
     if (!container) return;
     
     container.innerHTML = '';
     nameParticles = [];
-    const particleCount = 38; 
+    
+    // Mật độ vừa phải, thanh thoát
+    const particleCount = 28; 
 
     for (let i = 0; i < particleCount; i++) {
         createFloatingNameItem(container, name, true);
@@ -66,18 +69,22 @@ function createFloatingNameItem(container, name, initial = false) {
     el.className = 'floating-name-item';
     el.textContent = name;
 
-    const posX = Math.random() * 90 + 5;
+    const posX = Math.random() * 92 + 4;
     const posY = initial ? Math.random() * 110 : 105; 
-    const speed = Math.random() * 0.3 + 0.15; 
-    const fontSize = Math.floor(Math.random() * 20) + 22; 
-    const color = vibrantColors[Math.floor(Math.random() * vibrantColors.length)];
-    const angle = (Math.random() - 0.5) * 20; // Góc nghiêng ngẫu nhiên
+    
+    // Tốc độ lướt cực mịn và chậm
+    const speed = Math.random() * 0.18 + 0.08; 
+    
+    // Kích thước NHỎ XÍU SANG TRỌNG (12px - 18px)
+    const fontSize = Math.floor(Math.random() * 6) + 12; 
+    const color = elegantColors[Math.floor(Math.random() * elegantColors.length)];
+    const opacity = Math.random() * 0.4 + 0.45; // Độ trong suốt dịu nhẹ (0.45 - 0.85)
 
     el.style.left = `${posX}%`;
     el.style.top = `${posY}%`;
     el.style.fontSize = `${fontSize}px`;
     el.style.color = color;
-    el.style.transform = `rotate(${angle}deg)`;
+    el.style.opacity = opacity;
 
     container.appendChild(el);
 
@@ -87,8 +94,7 @@ function createFloatingNameItem(container, name, initial = false) {
         y: posY,
         speed: speed,
         wave: Math.random() * Math.PI * 2,
-        waveSpeed: Math.random() * 0.03 + 0.01,
-        angle: angle
+        waveSpeed: Math.random() * 0.02 + 0.008
     });
 }
 
@@ -96,14 +102,14 @@ function animateFloatingNames() {
     nameParticles.forEach((p) => {
         p.y -= p.speed;
         p.wave += p.waveSpeed;
-        const xOffset = Math.sin(p.wave) * 0.8; // Lắc lư ngang dập dềnh
+        const xOffset = Math.sin(p.wave) * 0.5;
         
         p.element.style.top = `${p.y}%`;
         p.element.style.left = `${p.x + xOffset}%`;
 
-        if (p.y < -12) {
+        if (p.y < -10) {
             p.y = 105;
-            p.x = Math.random() * 90 + 5;
+            p.x = Math.random() * 92 + 4;
         }
     });
 
@@ -117,11 +123,11 @@ function stopFloatingNameEffect() {
     nameParticles = [];
 }
 
-/* CANVAS BACKGROUND PARTICLES VỚI HIỆU ỨNG TƯƠNG TÁC CHUỘT SỐNG ĐỘNG */
+/* CANVAS BACKGROUND PARTICLES */
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
-const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷', '💖'];
+const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷'];
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -134,13 +140,13 @@ class Particle {
     constructor(x, y) {
         this.x = x || Math.random() * canvas.width;
         this.y = y || Math.random() * canvas.height;
-        this.size = Math.random() * 18 + 10;
-        this.speedX = Math.random() * 1.5 - 0.75;
-        this.speedY = Math.random() * -1.5 - 0.5;
+        this.size = Math.random() * 14 + 10;
+        this.speedX = Math.random() * 1.2 - 0.6;
+        this.speedY = Math.random() * -1.2 - 0.4;
         this.icon = particleIcons[Math.floor(Math.random() * particleIcons.length)];
-        this.opacity = Math.random() * 0.7 + 0.3;
+        this.opacity = Math.random() * 0.6 + 0.3;
         this.rotation = Math.random() * 360;
-        this.rotationSpeed = (Math.random() - 0.5) * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 1.5;
     }
 
     update() {
@@ -171,7 +177,7 @@ class Particle {
 
 function initParticles() {
     particles = [];
-    const count = Math.min(Math.floor(window.innerWidth / 18), 35);
+    const count = Math.min(Math.floor(window.innerWidth / 22), 28);
     for (let i = 0; i < count; i++) {
         particles.push(new Particle());
     }
@@ -188,16 +194,6 @@ function animateParticles() {
 
 initParticles();
 animateParticles();
-
-/* Bắn thêm hoa khi rê chuột/chạm tay */
-window.addEventListener('mousemove', (e) => {
-    if (Math.random() < 0.12) {
-        const p = new Particle(e.clientX, e.clientY);
-        p.speedY = Math.random() * -2 - 0.5;
-        particles.push(p);
-        if (particles.length > 50) particles.shift();
-    }
-});
 
 /* WEB AUDIO API MUSIC */
 function initAudio() {
@@ -221,7 +217,7 @@ function playTone(freq, duration, delay = 0) {
             osc.frequency.setValueAtTime(freq, audioContext.currentTime);
 
             gain.gain.setValueAtTime(0, audioContext.currentTime);
-            gain.gain.linearRampToValueAtTime(0.08, audioContext.currentTime + 0.1);
+            gain.gain.linearRampToValueAtTime(0.06, audioContext.currentTime + 0.1);
             gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
 
             osc.connect(gain);
@@ -325,16 +321,15 @@ function openEnvelope() {
 
     wrapper.classList.add('open');
 
-    // Pháo hoa bung lụa 2 đợt
     if (typeof confetti === 'function') {
         setTimeout(() => {
             confetti({
-                particleCount: 60,
-                spread: 70,
+                particleCount: 45,
+                spread: 60,
                 origin: { y: 0.6 },
                 colors: ['#ffb6c1', '#ffd1dc', '#fff0f5', '#e1f5fe', '#f3d5ea']
             });
-        }, 300);
+        }, 350);
     }
 
     setTimeout(() => {
@@ -349,8 +344,8 @@ function openEnvelope() {
 
         if (typeof confetti === 'function') {
             confetti({
-                particleCount: 100,
-                spread: 120,
+                particleCount: 70,
+                spread: 100,
                 origin: { y: 0.5 },
                 colors: ['#ff758c', '#ff7eb3', '#fecfef', '#ffffff', '#ffd1dc']
             });
