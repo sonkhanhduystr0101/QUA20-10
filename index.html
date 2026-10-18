@@ -14,7 +14,7 @@
         <div class="name-box">
             <h2>Gửi tặng người đặc biệt 🌸</h2>
             <p>Nhập tên của bạn để mở món quà nhé:</p>
-            <input type="text" id="recipient-name" placeholder="VD: Mai, Lan, Phương..." autocomplete="off">
+            <input type="text" id="recipient-name" placeholder="VD: Phạm Thị Ngọc Mai..." autocomplete="off">
             <button id="start-btn">Mở Quà 💌</button>
         </div>
     </div>
@@ -23,17 +23,20 @@
     <div class="night"></div>
     <div class="happy-woman-day">𝓗𝓪𝓹𝓹𝔂 𝔀𝓸𝓶𝓮𝓷'𝓼 𝓭𝓪𝔂 2️⃣0️⃣/1️⃣0️⃣</div>
     
-    <!-- LÁ THƯ TRẮNG CÓ GẤU BÔNG KÉO RA -->
-    <div id="letter-container" class="letter-container hidden">
-        <div class="bear-puller">🧸✨</div>
-        <div class="letter-card" id="letter-card">
-            <div class="letter-front">
-                <h3 id="letter-title">Gửi cậu ❤️</h3>
-                <p>Nhấn vào thư để mở lời chúc nhé 💌</p>
-            </div>
-            <div class="letter-back">
-                <h3>Lời Chúc 20/10</h3>
-                <p id="letter-content">Chúc bạn luôn xinh đẹp và hạnh phúc!</p>
+    <!-- PHONG BÌ THƯ & LÁ THƯ TRƯỢT RA -->
+    <div id="envelope-container" class="envelope-container hidden">
+        <div class="envelope" id="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-pocket"></div>
+            <!-- Lá thư trượt ra -->
+            <div class="letter-sheet" id="letter-sheet">
+                <div class="bear-icon">🧸</div>
+                <div class="close-btn" id="close-letter">✕</div>
+                <h3 id="letter-title">Chào Phạm Thị Ngọc Mai,</h3>
+                <div class="letter-body" id="letter-content">
+                    <p>Dạo này việc học đại học sao rồi Mai, lịch học với thi cử bớt dồn dập chưa? Bữa giờ lu bù quá tính ra tụi mình từ hồi tốt nghiệp cấp ba tới giờ cũng lâu lắm rồi chưa có dịp ngồi lại mặn ly cà phê tám chuyện.</p>
+                    <p>Nhân ngày 20/10, chúc Mai luôn luôn xinh đẹp, rạng rỡ, gặp nhiều may mắn và luôn giữ được năng lượng tích cực nha! ✨🌸</p>
+                </div>
             </div>
         </div>
     </div>
@@ -46,7 +49,6 @@
           <div class="flower__leaf flower__leaf--3"></div>
           <div class="flower__leaf flower__leaf--4"></div>
           <div class="flower__white-circle"></div>
-  
           <div class="flower__light flower__light--1"></div>
           <div class="flower__light flower__light--2"></div>
           <div class="flower__light flower__light--3"></div>
@@ -55,7 +57,6 @@
           <div class="flower__light flower__light--6"></div>
           <div class="flower__light flower__light--7"></div>
           <div class="flower__light flower__light--8"></div>
-  
         </div>
         <div class="flower__line">
           <div class="flower__line__leaf flower__line__leaf--1"></div>
@@ -74,7 +75,6 @@
           <div class="flower__leaf flower__leaf--3"></div>
           <div class="flower__leaf flower__leaf--4"></div>
           <div class="flower__white-circle"></div>
-  
           <div class="flower__light flower__light--1"></div>
           <div class="flower__light flower__light--2"></div>
           <div class="flower__light flower__light--3"></div>
@@ -83,7 +83,6 @@
           <div class="flower__light flower__light--6"></div>
           <div class="flower__light flower__light--7"></div>
           <div class="flower__light flower__light--8"></div>
-  
         </div>
         <div class="flower__line">
           <div class="flower__line__leaf flower__line__leaf--1"></div>
@@ -100,7 +99,6 @@
           <div class="flower__leaf flower__leaf--3"></div>
           <div class="flower__leaf flower__leaf--4"></div>
           <div class="flower__white-circle"></div>
-  
           <div class="flower__light flower__light--1"></div>
           <div class="flower__light flower__light--2"></div>
           <div class="flower__light flower__light--3"></div>
@@ -109,7 +107,6 @@
           <div class="flower__light flower__light--6"></div>
           <div class="flower__light flower__light--7"></div>
           <div class="flower__light flower__light--8"></div>
-  
         </div>
         <div class="flower__line">
           <div class="flower__line__leaf flower__line__leaf--1"></div>
@@ -163,8 +160,10 @@
       const startBtn = document.getElementById('start-btn');
       const nameScreen = document.getElementById('name-screen');
       const recipientInput = document.getElementById('recipient-name');
-      const letterContainer = document.getElementById('letter-container');
-      const letterCard = document.getElementById('letter-card');
+      const envelopeContainer = document.getElementById('envelope-container');
+      const envelope = document.getElementById('envelope');
+      const letterSheet = document.getElementById('letter-sheet');
+      const closeBtn = document.getElementById('close-letter');
       const letterTitle = document.getElementById('letter-title');
       const letterContent = document.getElementById('letter-content');
 
@@ -182,24 +181,26 @@
           document.body.classList.remove("not-loaded");
         }, 500);
 
-        // Tùy chỉnh nội dung theo tên
-        if (name.toLowerCase() === 'mai') {
-          letterTitle.innerText = `Gửi Mai đi ha ❤️`;
-          letterContent.innerText = `Chúc Mai ngày 20/10 thật nhiều niềm vui, luôn xinh đẹp, rạng rỡ và luôn giữ nụ cười tươi trên môi nhé! ✨`;
-        } else {
-          letterTitle.innerText = `Gửi ${name} ❤️`;
-          letterContent.innerText = `Chúc ${name} có một ngày 20/10 ngập tràn hạnh phúc, luôn tươi cười và thành công trên con đường mình chọn! 🌸`;
-        }
+        // Đổi tên người nhận linh hoạt
+        letterTitle.innerText = `Chào ${name},`;
 
-        // Sau khi hoa nở xong (3s), hiện thư và gấu kéo ra
+        // Sau khi hoa nở xong (3s), hiển thị phong bì thư
         setTimeout(() => {
-          letterContainer.classList.remove('hidden');
+          envelopeContainer.classList.remove('hidden');
         }, 3000);
       });
 
-      // Nhấn vào thư để mở lời chúc
-      letterCard.addEventListener('click', () => {
-        letterCard.classList.toggle('open');
+      // Nhấn vào phong bì để lá thư trượt lên mở ra
+      envelope.addEventListener('click', (e) => {
+        if (e.target.id !== 'close-letter') {
+          envelope.classList.add('opened');
+        }
+      });
+
+      // Nút đóng thư thu gọn lại
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        envelope.classList.remove('opened');
       });
     </script>
 </body>
