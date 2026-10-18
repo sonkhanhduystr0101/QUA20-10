@@ -9,7 +9,7 @@
 </head>
 <body class="not-loaded">
 
-    <!-- MÀN HÌNH 1: NHẬP TÊN (HIỆN ĐẦU TIÊN) -->
+    <!-- MÀN HÌNH 1: NHẬP TÊN -->
     <div id="name-screen" class="name-screen">
         <div class="name-box">
             <h2>Gửi tặng người đặc biệt 🌸</h2>
@@ -19,16 +19,17 @@
         </div>
     </div>
 
-    <!-- MÀN HÌNH 2: NỀN TỐI & HOA ANH ĐÀO GỐC -->
+    <!-- MÀN HÌNH 2: NỀN TỐI & HOA ANH ĐÀO -->
     <div class="night"></div>
     <div class="happy-woman-day">𝓗𝓪𝓹𝓹𝔂 𝔀𝓸𝓶𝓮𝓷'𝓼 𝓭𝓪𝔂 2️⃣0️⃣/1️⃣0️⃣</div>
     
-    <!-- LÁ THƯ TƯƠNG TÁC -->
+    <!-- LÁ THƯ TRẮNG CÓ GẤU BÔNG KÉO RA -->
     <div id="letter-container" class="letter-container hidden">
+        <div class="bear-puller">🧸✨</div>
         <div class="letter-card" id="letter-card">
             <div class="letter-front">
                 <h3 id="letter-title">Gửi cậu ❤️</h3>
-                <p>Nhấn vào đây để mở thư nhé 💌</p>
+                <p>Nhấn vào thư để mở lời chúc nhé 💌</p>
             </div>
             <div class="letter-back">
                 <h3>Lời Chúc 20/10</h3>
@@ -174,14 +175,14 @@
           return;
         }
 
-        // Ẩn màn hình nhập tên, chạy hiệu ứng cây hoa
+        // Ẩn màn hình nhập tên, chạy hiệu ứng hoa nở
         nameScreen.style.opacity = '0';
         setTimeout(() => {
           nameScreen.style.display = 'none';
           document.body.classList.remove("not-loaded");
         }, 500);
 
-        // Tùy chỉnh lời chúc theo tên
+        // Tùy chỉnh nội dung theo tên
         if (name.toLowerCase() === 'mai') {
           letterTitle.innerText = `Gửi Mai đi ha ❤️`;
           letterContent.innerText = `Chúc Mai ngày 20/10 thật nhiều niềm vui, luôn xinh đẹp, rạng rỡ và luôn giữ nụ cười tươi trên môi nhé! ✨`;
@@ -190,13 +191,13 @@
           letterContent.innerText = `Chúc ${name} có một ngày 20/10 ngập tràn hạnh phúc, luôn tươi cười và thành công trên con đường mình chọn! 🌸`;
         }
 
-        // Hiện lá thư sau khi cây nở xong (3 giây)
+        // Sau khi hoa nở xong (3s), hiện thư và gấu kéo ra
         setTimeout(() => {
           letterContainer.classList.remove('hidden');
         }, 3000);
       });
 
-      // Nhấn vào thư để lật ra lời chúc
+      // Nhấn vào thư để mở lời chúc
       letterCard.addEventListener('click', () => {
         letterCard.classList.toggle('open');
       });
