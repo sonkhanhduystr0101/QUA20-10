@@ -1,4 +1,3 @@
-// Tạo tự động icon bay & bong bóng mờ
 const cuteIcons = ['🧸', '🌸', '💖', '🌺', '🎀', '✨', '🌷', '💐', '🎁', '🎈', '💌'];
 
 function createFallingElements() {
@@ -29,7 +28,6 @@ function createBubbles() {
     }
 }
 
-// Gọi tạo hiệu ứng khi tải xong trang
 document.addEventListener('DOMContentLoaded', () => {
     createFallingElements();
     createBubbles();
@@ -44,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Dữ liệu lá thư chúc mừng 20/10
 const messagesData = {
     "mai": `Chào Phạm Thị Ngọc Mai,
 
