@@ -7,11 +7,11 @@
     font-family: 'Dancing Script', cursive;
 }
 
-/* Animated Pastel Background */
+/* Nền Pastel Chuyển Màu Mượt Mà */
 body {
     background: linear-gradient(-45deg, #ffd1dc, #f3e5f5, #e1f5fe, #fff0f5);
     background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    animation: gradientBG 12s ease infinite;
     overflow-x: hidden;
     min-height: 100vh;
 }
@@ -22,7 +22,7 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* Canvas background overlay */
+/* Canvas hiệu ứng hạt bay */
 #particleCanvas {
     position: fixed;
     top: 0;
@@ -33,26 +33,26 @@ body {
     z-index: 1;
 }
 
-/* Floating Animation for Envelope */
+/* Hiệu ứng phong thư dập dềnh */
 @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(1deg); }
+    0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+    50% { transform: translateY(-12px) rotate(1.5deg) scale(1.02); }
 }
 
 .animate-float {
-    animation: float 4s ease-in-out infinite;
+    animation: float 3.5s ease-in-out infinite;
 }
 
-/* Glassmorphism Card Style */
+/* Thẻ Glassmorphism */
 .glass-card {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1.5px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 15px 35px rgba(236, 140, 168, 0.2), 0 5px 15px rgba(0, 0, 0, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 20px 40px rgba(255, 182, 193, 0.35), 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Envelope CSS 3D */
+/* Phong thư 3D */
 .envelope-wrapper {
     position: relative;
     width: 300px;
@@ -60,6 +60,11 @@ body {
     margin: 0 auto;
     perspective: 1000px;
     cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.envelope-wrapper:hover {
+    transform: scale(1.04) translateY(-5px);
 }
 
 @media (min-width: 640px) {
@@ -73,13 +78,13 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: #fffdfa;
+    background-color: #fffaf0;
     border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(236, 140, 168, 0.25);
+    box-shadow: 0 18px 35px rgba(236, 140, 168, 0.35);
     transition: all 0.5s ease;
 }
 
-/* Envelope Flap */
+/* Nắp phong thư */
 .envelope-flap {
     position: absolute;
     top: 0;
@@ -87,14 +92,14 @@ body {
     width: 100%;
     height: 100%;
     clip-path: polygon(0 0, 50% 55%, 100% 0);
-    background: linear-gradient(135deg, #fbe4eb, #f3d5ea);
+    background: linear-gradient(135deg, #ffdeeb, #f3d5ea);
     transform-origin: top;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, z-index 0.2s;
     z-index: 5;
     border-radius: 20px 20px 0 0;
 }
 
-/* Pocket/Front body of envelope */
+/* Thân phong thư */
 .envelope-pocket {
     position: absolute;
     top: 0;
@@ -102,13 +107,13 @@ body {
     width: 100%;
     height: 100%;
     clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-    background: linear-gradient(to bottom, #ffffff, #fff5f8);
+    background: linear-gradient(to bottom, #ffffff, #fff2f7);
     z-index: 4;
     border-radius: 20px;
-    border-bottom: 2px solid #fbcfe8;
+    border-bottom: 3px solid #ffb6c1;
 }
 
-/* Letter Inside Envelope */
+/* Lá thư xem trước bên trong */
 .letter-preview {
     position: absolute;
     bottom: 12px;
@@ -118,41 +123,47 @@ body {
     background: #fff;
     border-radius: 14px;
     padding: 15px;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, opacity 0.5s;
     z-index: 3;
     overflow: hidden;
-    border: 1.5px dashed #fbcfe8;
+    border: 2px dashed #ffd1dc;
 }
 
-/* Opened Envelope State */
+/* Trạng thái mở thư */
 .envelope-wrapper.open .envelope-flap {
     transform: rotateX(180deg);
     z-index: 1;
 }
 
 .envelope-wrapper.open .letter-preview {
-    transform: translateY(-130px) scale(1.05);
+    transform: translateY(-130px) scale(1.08);
     z-index: 6;
 }
 
-/* Cute Wax Seal Stamp */
+/* Trấu niêm phong sáp */
 .wax-seal {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -20%);
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #f43f5e, #fb7185);
+    width: 54px;
+    height: 54px;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.35), inset 0 2px 4px rgba(255,255,255,0.7);
+    box-shadow: 0 4px 15px rgba(255, 117, 140, 0.5), inset 0 2px 4px rgba(255,255,255,0.8);
     z-index: 6;
     transition: opacity 0.4s ease, transform 0.4s ease;
+    animation: sealPulse 2s infinite ease-in-out;
+}
+
+@keyframes sealPulse {
+    0%, 100% { transform: translate(-50%, -20%) scale(1); }
+    50% { transform: translate(-50%, -20%) scale(1.08); }
 }
 
 .envelope-wrapper.open .wax-seal {
@@ -160,70 +171,57 @@ body {
     transform: translate(-50%, -20%) scale(0.3);
 }
 
-/* Glowing Button */
+/* Nút bấm siêu nảy */
 .btn-cute {
-    background: linear-gradient(135deg, #fda4af 0%, #fecdd3 50%, #f472b6 100%);
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(244, 114, 182, 0.35);
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #feada6 100%);
+    background-size: 200% 200%;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 25px rgba(255, 154, 158, 0.45);
 }
 
 .btn-cute:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(244, 114, 182, 0.5);
+    transform: translateY(-4px) scale(1.03);
+    background-position: right center;
+    box-shadow: 0 14px 30px rgba(255, 154, 158, 0.65);
 }
 
 .btn-cute:active {
-    transform: translateY(1px);
+    transform: translateY(2px) scale(0.98);
 }
 
-/* Custom Scrollbar for Letter Modal */
+/* Thanh cuộn thiệp */
 .custom-scroll::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
 }
 .custom-scroll::-webkit-scrollbar-track {
     background: #fff0f5;
     border-radius: 10px;
 }
 .custom-scroll::-webkit-scrollbar-thumb {
-    background: #fbcfe8;
+    background: #ffb6c1;
     border-radius: 10px;
 }
 
-/* Container chứa mưa tên */
-#floatingNameContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 35;
-    overflow: hidden;
-}
-
-/* CHỮ BAY BÌNH THƯỜNG: Phông Mali bo tròn xinh xắn, nét chuẩn dễ đọc */
-.floating-name-item {
-    position: absolute;
-    font-family: 'Mali', 'Comfortaa', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    user-select: none;
-    white-space: nowrap;
-    will-change: transform, top, left;
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-/* NỔI BẬT TÊN NGƯỜI NHẬN TRONG LỜI CHÚC */
-.user-highlight-name {
+/* Tên người nhận nhịp đập & phát sáng */
+.userNameText {
     display: inline-block;
-    font-size: 130%;
-    font-weight: 700;
-    font-family: 'Mali', sans-serif;
     color: #db2777;
-    padding: 0 4px;
-    vertical-align: middle;
+    font-weight: 700;
+    animation: nameGlow 2.5s infinite ease-in-out;
 }
 
+@keyframes nameGlow {
+    0%, 100% { transform: scale(1); text-shadow: 0 0 0 rgba(219, 39, 119, 0); }
+    50% { transform: scale(1.06); text-shadow: 0 0 10px rgba(244, 114, 182, 0.6); }
+}
+
+/* Khung lá thư chính */
 #letterContentCard {
-    box-shadow: 0 20px 40px -10px rgba(244, 114, 182, 0.25);
+    box-shadow: 0 25px 50px -12px rgba(255, 105, 180, 0.35), 0 0 20px rgba(255, 182, 193, 0.5);
+    animation: modalGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes modalGlow {
+    0% { border-color: #fbcfe8; }
+    100% { border-color: #f472b6; }
 }
