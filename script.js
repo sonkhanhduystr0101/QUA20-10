@@ -3,131 +3,18 @@ let audioContext = null;
 let isPlayingAudio = false;
 let melodyInterval = null;
 
-function formatName(name) {
-    return `<span class="user-highlight-name">${name}</span>`;
-}
-
-/* Kho thư riêng cho từng người */
-const customLetters = {
-    "mai": {
-        p1: `Nhân ngày 20/10, chúc ${formatName("Mai")} luôn rạng rỡ, xinh đẹp và tràn đầy năng lượng tích cực! 🌷`,
-        p2: `Mong rằng mọi dự định sắp tới của ${formatName("Mai")} đều thành công rực rỡ và luôn gặp nhiều may mắn. 💗`,
-        p3: `Hãy luôn tự tin, yêu thương bản thân và tỏa sáng theo cách riêng của mình nhé ${formatName("Mai")}. ✨`,
-        p4: `Chúc ${formatName("Mai")} một ngày 20/10 thật nhiều quà và hoa! 🎁🌸`
-    },
-    "lan": {
-        p1: `Gửi ${formatName("Lan")} thân yêu, chúc ${formatName("Lan")} một ngày 20/10 thật ấm áp và ngập tràn niềm vui! 🌸`,
-        p2: `Cảm ơn ${formatName("Lan")} vì luôn là một người bạn tuyệt vời, luôn lắng nghe và chia sẻ. 💗`,
-        p3: `Chúc ${formatName("Lan")} luôn giữ được sự dịu dàng, bình yên và luôn hạnh phúc với lựa chọn của mình. ✨`,
-        p4: `Chúc ${formatName("Lan")} có một ngày trọn vẹn niềm vui nhé! 🎁🌷`
-    },
-    "trang": {
-        p1: `Chúc ${formatName("Trang")} ngày 20/10 thật xinh đẹp, cá tính và luôn tràn ngập nụ cười! 🌷`,
-        p2: `Mong ${formatName("Trang")} luôn vững vàng, đạt được mọi mục tiêu và luôn có những người bạn tuyệt vời đồng hành. 💗`,
-        p3: `Hãy luôn tỏa sáng và sống một cuộc đời thật rực rỡ ${formatName("Trang")} nhé! ✨`,
-        p4: `Happy Vietnamese Women's Day to ${formatName("Trang")}! 🎁🌸`
-    }
-};
-
-const defaultLetter = {
-    p1: "Nhân ngày 20/10, chúc {name} luôn vui vẻ, hạnh phúc và luôn giữ được nụ cười thật xinh trên môi. 🌷",
-    p2: "Mong rằng mỗi ngày của {name} đều có thật nhiều niềm vui, những điều bất ngờ đáng yêu và thật nhiều yêu thương. 💗",
-    p3: "Chúc {name} luôn tự tin, luôn tỏa sáng theo cách riêng của mình và gặp thật nhiều điều tốt đẹp trong cuộc sống. ✨",
-    p4: "Chúc {name} một ngày 20/10 thật đặc biệt và trọn vẹn nhé! 🎁🌸"
-};
-
-/* Các gam màu hài hòa, dễ nhìn */
-const pleasantColors = [
-    '#e11d48', '#be123c', '#9333ea', '#7e22ce', 
-    '#2563eb', '#0284c7', '#0d9488', '#c026d3'
-];
-
-let nameParticles = [];
-let nameAnimationId = null;
-
-/* MƯA TÊN BAY LÊN KIỂU BÌNH THƯỜNG */
-function startFloatingNameEffect(name) {
-    const container = document.getElementById('floatingNameContainer');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    nameParticles = [];
-    const particleCount = 25; 
-
-    for (let i = 0; i < particleCount; i++) {
-        createFloatingNameItem(container, name, true);
-    }
-
-    animateFloatingNames();
-}
-
-function createFloatingNameItem(container, name, initial = false) {
-    const el = document.createElement('div');
-    el.className = 'floating-name-item';
-    el.textContent = name;
-
-    const posX = Math.random() * 92 + 4;
-    const posY = initial ? Math.random() * 110 : 105; 
-    const speed = Math.random() * 0.18 + 0.08; 
-    
-    // Kích thước vừa vặn bình thường (14px - 20px)
-    const fontSize = Math.floor(Math.random() * 7) + 14; 
-    const color = pleasantColors[Math.floor(Math.random() * pleasantColors.length)];
-    const opacity = Math.random() * 0.4 + 0.5;
-
-    el.style.left = `${posX}%`;
-    el.style.top = `${posY}%`;
-    el.style.fontSize = `${fontSize}px`;
-    el.style.color = color;
-    el.style.opacity = opacity;
-
-    container.appendChild(el);
-
-    nameParticles.push({
-        element: el,
-        x: posX,
-        y: posY,
-        speed: speed,
-        wave: Math.random() * Math.PI * 2,
-        waveSpeed: Math.random() * 0.02 + 0.008
-    });
-}
-
-function animateFloatingNames() {
-    nameParticles.forEach((p) => {
-        p.y -= p.speed;
-        p.wave += p.waveSpeed;
-        const xOffset = Math.sin(p.wave) * 0.5;
-        
-        p.element.style.top = `${p.y}%`;
-        p.element.style.left = `${p.x + xOffset}%`;
-
-        if (p.y < -10) {
-            p.y = 105;
-            p.x = Math.random() * 92 + 4;
-        }
-    });
-
-    nameAnimationId = requestAnimationFrame(animateFloatingNames);
-}
-
-function stopFloatingNameEffect() {
-    if (nameAnimationId) cancelAnimationFrame(nameAnimationId);
-    const container = document.getElementById('floatingNameContainer');
-    if (container) container.innerHTML = '';
-    nameParticles = [];
-}
-
-/* CANVAS BACKGROUND PARTICLES */
+// 1. Particle Simulation Canvas
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
+
 let particles = [];
-const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷'];
+const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷', '💖'];
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
+
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
@@ -135,13 +22,13 @@ class Particle {
     constructor(x, y) {
         this.x = x || Math.random() * canvas.width;
         this.y = y || Math.random() * canvas.height;
-        this.size = Math.random() * 14 + 10;
-        this.speedX = Math.random() * 1.2 - 0.6;
-        this.speedY = Math.random() * -1.2 - 0.4;
+        this.size = Math.random() * 18 + 10;
+        this.speedX = Math.random() * 1.5 - 0.75;
+        this.speedY = Math.random() * -1.5 - 0.5;
         this.icon = particleIcons[Math.floor(Math.random() * particleIcons.length)];
-        this.opacity = Math.random() * 0.6 + 0.3;
+        this.opacity = Math.random() * 0.7 + 0.3;
         this.rotation = Math.random() * 360;
-        this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+        this.rotationSpeed = (Math.random() - 0.5) * 2;
     }
 
     update() {
@@ -172,7 +59,7 @@ class Particle {
 
 function initParticles() {
     particles = [];
-    const count = Math.min(Math.floor(window.innerWidth / 22), 28);
+    const count = Math.min(Math.floor(window.innerWidth / 18), 35);
     for (let i = 0; i < count; i++) {
         particles.push(new Particle());
     }
@@ -190,7 +77,18 @@ function animateParticles() {
 initParticles();
 animateParticles();
 
-/* WEB AUDIO API MUSIC */
+// Tạo thêm hiệu ứng hoa nở theo con trỏ chuột
+window.addEventListener('mousemove', (e) => {
+    if (Math.random() < 0.15) {
+        const p = new Particle(e.clientX, e.clientY);
+        p.size = Math.random() * 14 + 10;
+        p.speedY = Math.random() * -2 - 0.5;
+        particles.push(p);
+        if (particles.length > 50) particles.shift();
+    }
+});
+
+// 2. Web Audio API Nhạc Nền + Âm Thanh Tương Tác
 function initAudio() {
     if (!audioContext) {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -199,6 +97,25 @@ function initAudio() {
     if (audioContext.state === 'suspended') {
         audioContext.resume();
     }
+}
+
+function playPopSound() {
+    if (!audioContext) return;
+    try {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioContext.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.1);
+        
+        gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gain.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.start();
+        osc.stop(audioContext.currentTime + 0.1);
+    } catch(e){}
 }
 
 function playTone(freq, duration, delay = 0) {
@@ -212,7 +129,7 @@ function playTone(freq, duration, delay = 0) {
             osc.frequency.setValueAtTime(freq, audioContext.currentTime);
 
             gain.gain.setValueAtTime(0, audioContext.currentTime);
-            gain.gain.linearRampToValueAtTime(0.06, audioContext.currentTime + 0.1);
+            gain.gain.linearRampToValueAtTime(0.07, audioContext.currentTime + 0.1);
             gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
 
             osc.connect(gain);
@@ -242,7 +159,9 @@ function startMelodyLoop() {
         if (!isPlayingAudio) return;
         const note = melodyNotes[index % melodyNotes.length];
         playTone(note, 2.5, 0);
-        if (index % 2 === 0) playTone(note * 1.25, 2.0, 0.2);
+        if (index % 2 === 0) {
+            playTone(note * 1.25, 2.0, 0.2);
+        }
         index++;
     }, 800);
 }
@@ -264,45 +183,39 @@ function toggleAudio() {
     }
 }
 
-/* XỬ LÝ SỰ KIỆN VÀ MỞ THƯ */
+// 3. Xử Lý Submit Tên người nhận
 function handleNameSubmit(event) {
     event.preventDefault();
     const input = document.getElementById('recipientName');
     const name = input.value.trim();
 
     if (!name) return;
+
     currentUserName = name;
 
     initAudio();
-    if (!isPlayingAudio) toggleAudio();
+    playPopSound();
+    if (!isPlayingAudio) {
+        toggleAudio();
+    }
 
     document.getElementById('personalGreeting').textContent = `${currentUserName} ơi, có một điều đặc biệt dành cho bạn... 💗`;
     document.getElementById('letterPreviewName').textContent = `Gửi ${currentUserName}`;
     document.getElementById('envelopeSubtext').textContent = `Có một lá thư dành riêng cho ${currentUserName} 💌`;
-    document.getElementById('letterHeader').innerHTML = `Gửi ${formatName(currentUserName)} 💐`;
+    document.getElementById('letterHeader').textContent = `Gửi ${currentUserName} 💐`;
 
-    const formattedName = formatName(currentUserName);
-    const key = currentUserName.toLowerCase();
-
-    const letterData = customLetters[key] || {
-        p1: defaultLetter.p1.replace(/{name}/g, formattedName),
-        p2: defaultLetter.p2.replace(/{name}/g, formattedName),
-        p3: defaultLetter.p3.replace(/{name}/g, formattedName),
-        p4: defaultLetter.p4.replace(/{name}/g, formattedName)
-    };
-
-    document.getElementById('letterPara1').innerHTML = letterData.p1;
-    document.getElementById('letterPara2').innerHTML = letterData.p2;
-    document.getElementById('letterPara3').innerHTML = letterData.p3;
-    document.getElementById('letterPara4').innerHTML = letterData.p4;
+    const nameElements = document.querySelectorAll('.userNameText');
+    nameElements.forEach(el => el.textContent = currentUserName);
 
     const screen1 = document.getElementById('screen1');
     const screen2 = document.getElementById('screen2');
 
     screen1.classList.add('opacity-0', 'scale-95');
+    
     setTimeout(() => {
         screen1.classList.add('hidden');
         screen2.classList.remove('hidden');
+        
         setTimeout(() => {
             screen2.classList.remove('opacity-0', 'scale-95');
             screen2.classList.add('opacity-100', 'scale-100');
@@ -310,23 +223,27 @@ function handleNameSubmit(event) {
     }, 600);
 }
 
+// 4. Mở Phong Thư Rực Rỡ với Pháo Hoa
 function openEnvelope() {
     const wrapper = document.getElementById('envelopeWrapper');
     if (wrapper.classList.contains('open')) return;
 
     wrapper.classList.add('open');
+    playPopSound();
 
+    // Bắn pháo hoa đợt 1
     if (typeof confetti === 'function') {
         setTimeout(() => {
             confetti({
-                particleCount: 45,
-                spread: 60,
+                particleCount: 60,
+                spread: 70,
                 origin: { y: 0.6 },
                 colors: ['#ffb6c1', '#ffd1dc', '#fff0f5', '#e1f5fe', '#f3d5ea']
             });
-        }, 350);
+        }, 300);
     }
 
+    // Bắn pháo hoa đợt 2 khi thư bung mở
     setTimeout(() => {
         const modal = document.getElementById('letterModal');
         const card = document.getElementById('letterContentCard');
@@ -335,12 +252,10 @@ function openEnvelope() {
         card.classList.remove('scale-90');
         card.classList.add('scale-100');
 
-        startFloatingNameEffect(currentUserName);
-
         if (typeof confetti === 'function') {
             confetti({
-                particleCount: 70,
-                spread: 100,
+                particleCount: 100,
+                spread: 120,
                 origin: { y: 0.5 },
                 colors: ['#ff758c', '#ff7eb3', '#fecfef', '#ffffff', '#ffd1dc']
             });
@@ -348,14 +263,14 @@ function openEnvelope() {
     }, 1100);
 }
 
+// 5. Reset Form
 function resetForm() {
+    playPopSound();
     const modal = document.getElementById('letterModal');
     const card = document.getElementById('letterContentCard');
     const screen1 = document.getElementById('screen1');
     const screen2 = document.getElementById('screen2');
     const wrapper = document.getElementById('envelopeWrapper');
-
-    stopFloatingNameEffect();
 
     card.classList.remove('scale-100');
     card.classList.add('scale-90');
@@ -363,12 +278,14 @@ function resetForm() {
 
     setTimeout(() => {
         wrapper.classList.remove('open');
+
         screen2.classList.remove('opacity-100', 'scale-100');
         screen2.classList.add('opacity-0', 'scale-95');
 
         setTimeout(() => {
             screen2.classList.add('hidden');
             document.getElementById('recipientName').value = '';
+            currentUserName = "";
             screen1.classList.remove('hidden');
 
             setTimeout(() => {
