@@ -3,25 +3,30 @@ let audioContext = null;
 let isPlayingAudio = false;
 let melodyInterval = null;
 
+/* Định dạng tên to nổi bật */
+function formatName(name) {
+    return `<span class="user-highlight-name">${name}</span>`;
+}
+
 /* Kho thư riêng cho từng người */
 const customLetters = {
     "mai": {
-        p1: "Nhân ngày 20/10, chúc Mai luôn rạng rỡ, xinh đẹp và tràn đầy năng lượng tích cực! 🌷",
-        p2: "Mong rằng mọi dự định sắp tới của Mai đều thành công rực rỡ và luôn gặp nhiều may mắn. 💗",
-        p3: "Hãy luôn tự tin, yêu thương bản thân và tỏa sáng theo cách riêng của mình nhé. ✨",
-        p4: "Chúc Mai một ngày 20/10 thật nhiều quà và hoa! 🎁🌸"
+        p1: `Nhân ngày 20/10, chúc ${formatName("Mai")} luôn rạng rỡ, xinh đẹp và tràn đầy năng lượng tích cực! 🌷`,
+        p2: `Mong rằng mọi dự định sắp tới của ${formatName("Mai")} đều thành công rực rỡ và luôn gặp nhiều may mắn. 💗`,
+        p3: `Hãy luôn tự tin, yêu thương bản thân và tỏa sáng theo cách riêng của mình nhé ${formatName("Mai")}. ✨`,
+        p4: `Chúc ${formatName("Mai")} một ngày 20/10 thật nhiều quà và hoa! 🎁🌸`
     },
     "lan": {
-        p1: "Gửi Lan thân yêu, chúc Lan một ngày 20/10 thật ấm áp và ngập tràn niềm vui! 🌸",
-        p2: "Cảm ơn Lan vì luôn là một người bạn tuyệt vời, luôn lắng nghe và chia sẻ. 💗",
-        p3: "Chúc Lan luôn giữ được sự dịu dàng, bình yên và luôn hạnh phúc với lựa chọn của mình. ✨",
-        p4: "Chúc Lan có một ngày trọn vẹn niềm vui nhé! 🎁🌷"
+        p1: `Gửi ${formatName("Lan")} thân yêu, chúc ${formatName("Lan")} một ngày 20/10 thật ấm áp và ngập tràn niềm vui! 🌸`,
+        p2: `Cảm ơn ${formatName("Lan")} vì luôn là một người bạn tuyệt vời, luôn lắng nghe và chia sẻ. 💗`,
+        p3: `Chúc ${formatName("Lan")} luôn giữ được sự dịu dàng, bình yên và luôn hạnh phúc với lựa chọn của mình. ✨`,
+        p4: `Chúc ${formatName("Lan")} có một ngày trọn vẹn niềm vui nhé! 🎁🌷`
     },
     "trang": {
-        p1: "Chúc Trang ngày 20/10 thật xinh đẹp, cá tính và luôn tràn ngập nụ cười! 🌷",
-        p2: "Mong Trang luôn vững vàng, đạt được mọi mục tiêu và luôn có những người bạn tuyệt vời đồng hành. 💗",
-        p3: "Hãy luôn tỏa sáng và sống một cuộc đời thật rực rỡ Trang nhé! ✨",
-        p4: "Happy Vietnamese Women's Day to Trang! 🎁🌸"
+        p1: `Chúc ${formatName("Trang")} ngày 20/10 thật xinh đẹp, cá tính và luôn tràn ngập nụ cười! 🌷`,
+        p2: `Mong ${formatName("Trang")} luôn vững vàng, đạt được mọi mục tiêu và luôn có những người bạn tuyệt vời đồng hành. 💗`,
+        p3: `Hãy luôn tỏa sáng và sống một cuộc đời thật rực rỡ ${formatName("Trang")} nhé! ✨`,
+        p4: `Happy Vietnamese Women's Day to ${formatName("Trang")}! 🎁🌸`
     }
 };
 
@@ -32,25 +37,22 @@ const defaultLetter = {
     p4: "Chúc {name} một ngày 20/10 thật đặc biệt và trọn vẹn nhé! 🎁🌸"
 };
 
-/* Danh sách màu nổi bật, đậm nét (đỏ, hồng đậm, tím, xanh dương đậm, cam rực) - Không lo trùng màu nền pastel */
 const vibrantColors = [
     '#e6005c', '#c71585', '#d81b60', '#8e24aa', 
-    '#5e35b1', '#1e88e5', '#00897b', '#d84315'
+    '#5e35b1', '#1e88e5', '#00897b', '#d84315', '#c2185b'
 ];
 
 let nameParticles = [];
 let nameAnimationId = null;
 
-/* HIỆU ỨNG MƯA TÊN: To, Đậm, Tốc độ dày đặc như mưa rơi/mưa bay */
+/* MƯA TÊN SINH ĐỘNG: Bay ngẫu nhiên, lắc lư, dập dềnh */
 function startFloatingNameEffect(name) {
     const container = document.getElementById('floatingNameContainer');
     if (!container) return;
     
     container.innerHTML = '';
     nameParticles = [];
-    
-    // Tăng số lượng lên 35 chữ để tạo cảm giác dày như mưa
-    const particleCount = 35; 
+    const particleCount = 38; 
 
     for (let i = 0; i < particleCount; i++) {
         createFloatingNameItem(container, name, true);
@@ -64,41 +66,44 @@ function createFloatingNameItem(container, name, initial = false) {
     el.className = 'floating-name-item';
     el.textContent = name;
 
-    const posX = Math.random() * 92 + 3;
+    const posX = Math.random() * 90 + 5;
     const posY = initial ? Math.random() * 110 : 105; 
-    
-    // Tốc độ bay nhanh hơn linh hoạt hơn
-    const speed = Math.random() * 0.35 + 0.18; 
-    
-    // Kích thước chữ TO HƠN hẳn (24px - 42px)
-    const fontSize = Math.floor(Math.random() * 18) + 24; 
-    
-    // Chọn ngẫu nhiên màu đậm tương phản
+    const speed = Math.random() * 0.3 + 0.15; 
+    const fontSize = Math.floor(Math.random() * 20) + 22; 
     const color = vibrantColors[Math.floor(Math.random() * vibrantColors.length)];
+    const angle = (Math.random() - 0.5) * 20; // Góc nghiêng ngẫu nhiên
 
     el.style.left = `${posX}%`;
     el.style.top = `${posY}%`;
     el.style.fontSize = `${fontSize}px`;
     el.style.color = color;
-    el.style.opacity = Math.random() * 0.3 + 0.7; // Độ rõ cao (0.7 - 1.0)
+    el.style.transform = `rotate(${angle}deg)`;
 
     container.appendChild(el);
 
     nameParticles.push({
         element: el,
+        x: posX,
         y: posY,
-        speed: speed
+        speed: speed,
+        wave: Math.random() * Math.PI * 2,
+        waveSpeed: Math.random() * 0.03 + 0.01,
+        angle: angle
     });
 }
 
 function animateFloatingNames() {
     nameParticles.forEach((p) => {
-        p.y -= p.speed; // Mưa tên bay ngược từ dưới lên
+        p.y -= p.speed;
+        p.wave += p.waveSpeed;
+        const xOffset = Math.sin(p.wave) * 0.8; // Lắc lư ngang dập dềnh
+        
         p.element.style.top = `${p.y}%`;
+        p.element.style.left = `${p.x + xOffset}%`;
 
         if (p.y < -12) {
             p.y = 105;
-            p.element.style.left = `${Math.random() * 92 + 3}%`;
+            p.x = Math.random() * 90 + 5;
         }
     });
 
@@ -112,11 +117,11 @@ function stopFloatingNameEffect() {
     nameParticles = [];
 }
 
-/* PARTICLE CANVAS BACKGROUND */
+/* CANVAS BACKGROUND PARTICLES VỚI HIỆU ỨNG TƯƠNG TÁC CHUỘT SỐNG ĐỘNG */
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
-const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷'];
+const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷', '💖'];
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -129,13 +134,13 @@ class Particle {
     constructor(x, y) {
         this.x = x || Math.random() * canvas.width;
         this.y = y || Math.random() * canvas.height;
-        this.size = Math.random() * 16 + 12;
+        this.size = Math.random() * 18 + 10;
         this.speedX = Math.random() * 1.5 - 0.75;
         this.speedY = Math.random() * -1.5 - 0.5;
         this.icon = particleIcons[Math.floor(Math.random() * particleIcons.length)];
         this.opacity = Math.random() * 0.7 + 0.3;
         this.rotation = Math.random() * 360;
-        this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+        this.rotationSpeed = (Math.random() - 0.5) * 2;
     }
 
     update() {
@@ -166,7 +171,7 @@ class Particle {
 
 function initParticles() {
     particles = [];
-    const count = Math.min(Math.floor(window.innerWidth / 20), 30);
+    const count = Math.min(Math.floor(window.innerWidth / 18), 35);
     for (let i = 0; i < count; i++) {
         particles.push(new Particle());
     }
@@ -183,6 +188,16 @@ function animateParticles() {
 
 initParticles();
 animateParticles();
+
+/* Bắn thêm hoa khi rê chuột/chạm tay */
+window.addEventListener('mousemove', (e) => {
+    if (Math.random() < 0.12) {
+        const p = new Particle(e.clientX, e.clientY);
+        p.speedY = Math.random() * -2 - 0.5;
+        particles.push(p);
+        if (particles.length > 50) particles.shift();
+    }
+});
 
 /* WEB AUDIO API MUSIC */
 function initAudio() {
@@ -273,14 +288,16 @@ function handleNameSubmit(event) {
     document.getElementById('personalGreeting').textContent = `${currentUserName} ơi, có một điều đặc biệt dành cho bạn... 💗`;
     document.getElementById('letterPreviewName').textContent = `Gửi ${currentUserName}`;
     document.getElementById('envelopeSubtext').textContent = `Có một lá thư dành riêng cho ${currentUserName} 💌`;
-    document.getElementById('letterHeader').textContent = `Gửi ${currentUserName} 💐`;
+    document.getElementById('letterHeader').innerHTML = `Gửi ${formatName(currentUserName)} 💐`;
 
+    const formattedName = formatName(currentUserName);
     const key = currentUserName.toLowerCase();
+
     const letterData = customLetters[key] || {
-        p1: defaultLetter.p1.replace(/{name}/g, currentUserName),
-        p2: defaultLetter.p2.replace(/{name}/g, currentUserName),
-        p3: defaultLetter.p3.replace(/{name}/g, currentUserName),
-        p4: defaultLetter.p4.replace(/{name}/g, currentUserName)
+        p1: defaultLetter.p1.replace(/{name}/g, formattedName),
+        p2: defaultLetter.p2.replace(/{name}/g, formattedName),
+        p3: defaultLetter.p3.replace(/{name}/g, formattedName),
+        p4: defaultLetter.p4.replace(/{name}/g, formattedName)
     };
 
     document.getElementById('letterPara1').innerHTML = letterData.p1;
@@ -308,15 +325,16 @@ function openEnvelope() {
 
     wrapper.classList.add('open');
 
+    // Pháo hoa bung lụa 2 đợt
     if (typeof confetti === 'function') {
         setTimeout(() => {
             confetti({
-                particleCount: 50,
-                spread: 60,
+                particleCount: 60,
+                spread: 70,
                 origin: { y: 0.6 },
                 colors: ['#ffb6c1', '#ffd1dc', '#fff0f5', '#e1f5fe', '#f3d5ea']
             });
-        }, 400);
+        }, 300);
     }
 
     setTimeout(() => {
@@ -331,13 +349,13 @@ function openEnvelope() {
 
         if (typeof confetti === 'function') {
             confetti({
-                particleCount: 80,
-                spread: 100,
+                particleCount: 100,
+                spread: 120,
                 origin: { y: 0.5 },
                 colors: ['#ff758c', '#ff7eb3', '#fecfef', '#ffffff', '#ffd1dc']
             });
         }
-    }, 1200);
+    }, 1100);
 }
 
 function resetForm() {
