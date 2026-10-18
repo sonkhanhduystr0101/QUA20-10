@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Món Quà 20/10 Siêu Cute Của Duy tặng nè</title>
-    <!-- Thư viện pháo hoa -->
+    <title>Món Quà 20/10 Siêu Cute Của Duy tặng nì</title>
+    <!-- Thư viện hiệu ứng pháo hoa -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -23,7 +23,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
             overflow-x: hidden;
             position: relative;
         }
@@ -69,7 +69,7 @@
             100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
         }
 
-        /* Khung chính nhập tên */
+        /* Khung nhập tên ban đầu */
         .card-container {
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(15px);
@@ -162,7 +162,7 @@
             line-height: 1.4;
         }
 
-        /* MODAL HIỂN THỊ PHONG BÌ BỰ GIỮA MÀN HÌNH */
+        /* --- MODAL HIỂN THỊ LÁ THƯ BỰ & GẤU BÔNG RÚT THƯ --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -183,25 +183,33 @@
             to { opacity: 1; }
         }
 
-        /* Khung Phong Bì & Gấu */
+        /* Khung Phong Bì Bự */
         .envelope-wrapper {
             position: relative;
-            width: 320px;
-            height: 220px;
+            width: 420px;
+            height: 280px;
             perspective: 1000px;
-            margin-top: 60px;
+            margin-top: 100px;
         }
 
-        /* Chú gấu nhô lên từ phía sau phong bì */
+        @media (max-width: 480px) {
+            .envelope-wrapper {
+                width: 330px;
+                height: 230px;
+                margin-top: 120px;
+            }
+        }
+
+        /* Chú gấu bông nhô lên rút thư */
         .bear-helper {
             position: absolute;
-            top: -70px;
+            top: -85px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 75px;
+            font-size: 90px;
             z-index: 1;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
             user-select: none;
         }
 
@@ -210,15 +218,15 @@
             width: 100%;
             height: 100%;
             background: #ff7675;
-            border-radius: 18px;
+            border-radius: 20px;
             position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.45);
             cursor: pointer;
             transition: transform 0.3s;
         }
 
         .envelope:hover {
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
 
         /* Nắp phong bì */
@@ -228,12 +236,20 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            border-top: 115px solid #d63031;
+            border-left: 210px solid transparent;
+            border-right: 210px solid transparent;
+            border-top: 150px solid #d63031;
             transform-origin: top;
             transition: transform 0.6s ease;
             z-index: 4;
+        }
+
+        @media (max-width: 480px) {
+            .envelope-flap {
+                border-left-width: 165px;
+                border-right-width: 165px;
+                border-top-width: 120px;
+            }
         }
 
         /* Mặt trước phong bì */
@@ -243,89 +259,105 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 160px solid #fab1a0;
-            border-right: 160px solid #fab1a0;
-            border-bottom: 110px solid #ff7675;
-            border-radius: 0 0 18px 18px;
+            border-left: 210px solid #fab1a0;
+            border-right: 210px solid #fab1a0;
+            border-bottom: 140px solid #ff7675;
+            border-radius: 0 0 20px 20px;
             z-index: 3;
         }
 
-        /* Tờ Thư Chui Ra */
-        .letter-paper {
-            position: absolute;
-            bottom: 10px;
-            left: 15px;
-            width: 290px;
-            height: 190px;
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 18px;
-            z-index: 2;
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow-y: auto;
-            text-align: left;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #2d3436;
-            white-space: pre-line;
+        @media (max-width: 480px) {
+            .envelope-front {
+                border-left-width: 165px;
+                border-right-width: 165px;
+                border-bottom-width: 115px;
+            }
         }
 
-        /* HƯỚNG DẪN BẤM */
+        /* TỜ THƯ MÀU TRẮNG TINH & BỰ RỚT RA */
+        .letter-paper {
+            position: absolute;
+            bottom: 12px;
+            left: 15px;
+            right: 15px;
+            height: 240px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 22px;
+            z-index: 2;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            overflow-y: auto;
+            text-align: left;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #2d3436;
+            white-space: pre-line;
+            border: 1px solid #ffeaa7;
+        }
+
+        /* Dòng chữ gợi ý bấm */
         .click-hint {
             position: absolute;
-            bottom: -50px;
+            bottom: -55px;
             width: 100%;
             text-align: center;
             color: #ffffff;
             font-weight: bold;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             animation: flash 1.5s infinite;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.6);
         }
 
         @keyframes flash {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            50% { opacity: 0.3; }
         }
 
-        /* KHI BẤM MỞ THƯ: Gấu nhô cao hơn + Nắp mở + Thư rút ra */
+        /* TRẠNG THÁI MỞ THƯ: GẤU NHÔ LÊN KÉO THƯ TRẮNG RA */
         .envelope-wrapper.open .envelope-flap {
             transform: rotateX(180deg);
             z-index: 1;
         }
 
         .envelope-wrapper.open .bear-helper {
-            top: -110px;
-            transform: translateX(-50%) scale(1.15);
+            top: -145px;
+            transform: translateX(-50%) scale(1.2);
         }
 
         .envelope-wrapper.open .letter-paper {
-            transform: translateY(-160px) scale(1.15);
-            height: 320px;
+            transform: translateY(-200px) scale(1.1);
+            height: 400px;
             z-index: 5;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+        }
+
+        @media (max-width: 480px) {
+            .envelope-wrapper.open .letter-paper {
+                transform: translateY(-170px) scale(1.05);
+                height: 350px;
+            }
         }
 
         .envelope-wrapper.open .click-hint {
             display: none;
         }
 
-        /* Nút đóng */
+        /* Nút đóng x */
         .btn-close-modal {
             position: absolute;
-            top: -110px;
+            top: -130px;
             right: -10px;
             background: #ffffff;
             color: #d63031;
             border: none;
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             z-index: 20;
         }
     </style>
@@ -346,27 +378,28 @@
         <div id="errorMessage" class="error-message"></div>
     </div>
 
-    <!-- LÁ THƯ BỰ & CHÚ GẤU MỞ THƯ -->
+    <!-- MÀN HÌNH MỞ LÁ THƯ BỰ & CHÚ GẤU CUTE -->
     <div class="modal-overlay" id="letterModal">
         <div class="envelope-wrapper" id="envelopeWrapper" onclick="toggleEnvelope()">
             <button class="btn-close-modal" type="button" onclick="closeLetterModal(event)">✕</button>
 
-            <!-- Chú gấu bông -->
+            <!-- Chú Gấu Bông -->
             <div class="bear-helper">🧸</div>
 
-            <!-- Phong Bì -->
+            <!-- Phong Bì Thư -->
             <div class="envelope">
                 <div class="envelope-flap"></div>
+                <!-- Lá thư trắng tinh bự bên trong -->
                 <div class="letter-paper" id="letterContent"></div>
                 <div class="envelope-front"></div>
             </div>
 
-            <div class="click-hint">👇 Chạm vào phong bì để chú Gấu mở thư nha!</div>
+            <div class="click-hint">👇 Nhấp vào phong bì để chú Gấu lấy lá thư ra nha!</div>
         </div>
     </div>
 
     <script>
-        // Hiệu ứng bong bóng & icon bay
+        // Hiệu ứng icon bay & bong bóng
         const icons = ['🧸', '🌸', '💖', '🌺', '🎀', '✨', '🌷', '💐', '🎁'];
         function createFallingElements() {
             setInterval(() => {
@@ -399,15 +432,41 @@
         createFallingElements();
         createBubbles();
 
-        // Danh sách 4 lá thư
+        // Nội dung 4 lá thư
         const messagesData = {
-            "mai": `Chào Phạm Thị Ngọc Mai,\n\nDạo này việc học đại học sao rồi Mai, lịch học với thi cử bớt dồn dập chưa? Bữa giờ lu bu quá tính ra tụi mình từ hồi tốt nghiệp cấp ba tới giờ cũng lâu lắm rồi chưa có dịp ngồi lại mần ly cà phê tám chuyện.\n\nNhân ngày 20/10, Sơn Khánh Duy chúc Mai lúc nào cũng tươi tắn, học hành qua môn dễ dàng, điểm số cao chót vót và săn được nhiều học bổng nha. Dù đứa nào cũng bận rộn với môi trường mới nhưng Duy lúc nào cũng nhớ tới tình bạn thời cấp ba của tụi mình. Hôm nào rảnh rỗi thu xếp được thì nhắn Duy cái, tụi mình đi cà phê gầy sòng nói chuyện tiếp.\n\nChúc Mai có một ngày 20/10 thiệt là vui vẻ!\n\nSơn Khánh Duy`,
+            "mai": `Chào Phạm Thị Ngọc Mai,
 
-            "ngoc": `Em chào chị Trịnh Thị Bảo Ngọc,\n\nLâu quá không gặp, dạo này chị khỏe hông? Đi làm đợt này công việc bớt lu bu chưa hay vẫn chạy deadline muốn xỉu vậy chị?\n\nNhân dịp 20/10, em chúc chị Ngọc ngày càng trẻ trung, xinh đẹp, công việc phơi phới, lương thưởng ngon lành và tiền vô tài khoản ào ào nha. Chúc cho mấy dự định sắp tới trong công việc của chị cái nào cũng thành công rực rỡ. Hôm nay chị nhớ tự thưởng cho mình bữa ăn thiệt ngon hoặc đi chill thư giãn nhé. Cuối tuần nào rảnh rỗi chị em mình gầy kèo gặp nhau một chuyến.\n\nSơn Khánh Duy`,
+Dạo này việc học đại học sao rồi Mai, lịch học với thi cử bớt dồn dập chưa? Bữa giờ lu bu quá tính ra tụi mình từ hồi tốt nghiệp cấp ba tới giờ cũng lâu lắm rồi chưa có dịp ngồi lại mần ly cà phê tám chuyện.
 
-            "my": `Chào La Đặng Thảo My,\n\nNgoảnh đi ngoảnh lại mà lâu lắm rồi không gặp lại My. Dạo này đi làm công việc thế nào rồi, có bị tăng ca nhiều hông? Hôm nay tới 20/10 nên Duy nhắn tin hỏi thăm coi dạo này sống sao rồi.\n\nChúc Thảo My ngày 20/10 thiệt là nhiều niềm vui, công việc suôn sẻ, sếp thương đồng nghiệp quý và gặp toàn may mắn. Mong My luôn vững vàng, sự nghiệp thăng tiến và mần ăn trúng lớn nha. Dù bận rộn tới đâu cũng nhớ giữ gìn sức khỏe. Khi nào thong thả nhắn Duy, tụi mình lại đi cà phê như hồi trước.\n\nSơn Khánh Duy`,
+Nhân ngày 20/10, Sơn Khánh Duy chúc Mai lúc nào cũng tươi tắn, học hành qua môn dễ dàng, điểm số cao chót vót và săn được nhiều học bổng nha. Dù đứa nào cũng bận rộn với môi trường mới nhưng Duy lúc nào cũng nhớ tới tình bạn thời cấp ba của tụi mình. Hôm nào rảnh rỗi thu xếp được thì nhắn Duy cái, tụi mình đi cà phê gầy sòng nói chuyện tiếp.
 
-            "ly": `Chào Thạch Như Lý,\n\nDạo này việc học trên trường đại học với mấy kế hoạch mới tới đâu rồi Lý? Tuy dạo này ít gặp nhưng Duy vẫn thỉnh thoảng thấy Lý đăng hình đi học, chạy bài tập bận rộn suốt.\n\nNgày 20/10, Duy chúc Như Lý lúc nào cũng năng động, tươi rói, học hành ngon lành và gặt hái được nhiều thành tích tốt trên trường. Chúc cho mấy mục tiêu Lý đang theo đuổi sớm thu về kết quả ngon lành như mong đợi. Hy vọng sớm có dịp tụ tập lại để ngồi trò chuyện nhiều hơn. Tận hưởng một ngày 20/10 thiệt trọn vẹn nha!\n\nSơn Khánh Duy`
+Chúc Mai có một ngày 20/10 thiệt là vui vẻ!
+
+Sơn Khánh Duy`,
+
+            "ngoc": `Em chào chị Trịnh Thị Bảo Ngọc,
+
+Lâu quá không gặp, dạo này chị khỏe hông? Đi làm đợt này công việc bớt lu bu chưa hay vẫn chạy deadline muốn xỉu vậy chị?
+
+Nhân dịp 20/10, em chúc chị Ngọc ngày càng trẻ trung, xinh đẹp, công việc phơi phới, lương thưởng ngon lành và tiền vô tài khoản ào ào nha. Chúc cho mấy dự định sắp tới trong công việc của chị cái nào cũng thành công rực rỡ. Hôm nay chị nhớ tự thưởng cho mình bữa ăn thiệt ngon hoặc đi chill thư giãn nhé. Cuối tuần nào rảnh rỗi chị em mình gầy kèo gặp nhau một chuyến.
+
+Sơn Khánh Duy`,
+
+            "my": `Chào La Đặng Thảo My,
+
+Ngoảnh đi ngoảnh lại mà lâu lắm rồi không gặp lại My. Dạo này đi làm công việc thế nào rồi, có bị tăng ca nhiều hông? Hôm nay tới 20/10 nên Duy nhắn tin hỏi thăm coi dạo này sống sao rồi.
+
+Chúc Thảo My ngày 20/10 thiệt là nhiều niềm vui, công việc suôn sẻ, sếp thương đồng nghiệp quý và gặp toàn may mắn. Mong My luôn vững vàng, sự nghiệp thăng tiến và mần ăn trúng lớn nha. Dù bận rộn tới đâu cũng nhớ giữ gìn sức khỏe. Khi nào thong thả nhắn Duy, tụi mình lại đi cà phê như hồi trước.
+
+Sơn Khánh Duy`,
+
+            "ly": `Chào Thạch Như Lý,
+
+Dạo này việc học trên trường đại học với mấy kế hoạch mới tới đâu rồi Lý? Tuy dạo này ít gặp nhưng Duy vẫn thỉnh thoảng thấy Lý đăng hình đi học, chạy bài tập bận rộn suốt.
+
+Ngày 20/10, Duy chúc Như Lý lúc nào cũng năng động, tươi rói, học hành ngon lành và gặt hái được nhiều thành tích tốt trên trường. Chúc cho mấy mục tiêu Lý đang theo đuổi sớm thu về kết quả ngon lành như mong đợi. Hy vọng sớm có dịp tụ tập lại để ngồi trò chuyện nhiều hơn. Tận hưởng một ngày 20/10 thiệt trọn vẹn nha!
+
+Sơn Khánh Duy`
         };
 
         function removeVietnameseTones(str) {
@@ -421,7 +480,6 @@
             return str.toLowerCase().trim();
         }
 
-        // Kiểm tra tên và mở Modal chứa Phong Bì Bự
         function checkNameAndOpen() {
             const inputVal = document.getElementById('userNameInput').value;
             const cleanInput = removeVietnameseTones(inputVal);
@@ -456,15 +514,14 @@
             document.getElementById('envelopeWrapper').classList.remove('open');
         }
 
-        // Bấm vào phong bì để mở thư & bắn pháo hoa
         function toggleEnvelope() {
             const wrapper = document.getElementById('envelopeWrapper');
             wrapper.classList.toggle('open');
 
             if (wrapper.classList.contains('open') && typeof confetti !== 'undefined') {
                 confetti({
-                    particleCount: 100,
-                    spread: 80,
+                    particleCount: 120,
+                    spread: 90,
                     origin: { y: 0.5 },
                     colors: ['#ff7675', '#d63031', '#fecfef', '#ffffff']
                 });
