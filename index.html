@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư Ngẫu Nhiên Uniq</title>
+    <!-- Thư viện tạo mã QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .qr-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .qr-card div {
+            margin: 0 auto;
+        }
+        .letter-box {
+            display: none;
+            padding: 30px;
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Phần hiển thị thư khi quét mã -->
+    <div id="letterContainer" class="letter-box">
+        <h2 id="letterTitle"></h2>
+        <p id="letterContent"></p>
+    </div>
+
+    <!-- Phần danh sách 19 mã QR để in/tải -->
+    <div id="adminPanel">
+        <h2>Danh Sách 19 Mã QR (Mỗi mã 1 thư)</h2>
+        <p>In hoặc gửi từng mã QR cho từng người. Đảm bảo 19 người nhận 19 mã khác nhau.</p>
+        <div id="qrGrid" class="grid"></div>
+    </div>
+</div>
+
+<script>
+    // 1. Khai báo 19 lá thư
+    const letters = [
+        "Thư 1: Chúc bạn một ngày tràn đầy năng lượng và may mắn!",
+        "Thư 2: Hãy luôn mỉm cười vì nụ cười của bạn rất đẹp.",
+        "Thư 3: Mọi khó khăn rồi sẽ qua, hãy tin vào chính mình.",
+        "Thư 4: Hôm nay là một ngày tuyệt vời để bắt đầu điều mới.",
+        "Thư 5: Cảm ơn bạn vì đã luôn nỗ lực hết mình.",
+        "Thư 6: Thành công đang ở rất gần, đừng bỏ cuộc nhé!",
+        "Thư 7: Bạn là một phần vô cùng đặc biệt của thế giới này.",
+        "Thư 8: Hãy dành chút thời gian nghỉ ngơi và chăm sóc bản thân.",
+        "Thư 9: Yêu thương bản thân là khởi đầu cho một đời hạnh phúc.",
+        "Thư 10: Hãy kiên trì, quả ngọt sẽ đến với bạn sớm thôi.",
+        "Thư 11: Hôm nay hãy thử làm một việc tốt nho nhỏ nhé.",
+        "Thư 12: Bạn giỏi hơn bạn nghĩ rất nhiều đấy!",
+        "Thư 13: Bất ngờ lớn đang chờ đón bạn ở phía trước.",
+        "Thư 14: Cuộc sống luôn có những món quà bất ngờ.",
+        "Thư 15: Giữ vững tinh thần tích cực và tiến về phía trước!",
+        "Thư 16: Một tách cà phê/trà ấm sẽ làm ngày hôm nay tốt hơn.",
+        "Thư 17: Hãy tự hào về những gì bạn đã làm được.",
+        "Thư 18: Lời chúc tốt đẹp nhất gửi tới bạn trong ngày hôm nay.",
+        "Thư 19: Bạn xứng đáng với những điều tuyệt vời nhất!"
+    ];
+
+    // Lấy ID thư từ tham số đường dẫn (URL)
+    const urlParams = new URLSearchParams(window.location.search);
+    const letterId = urlParams.get('id');
+
+    if (letterId !== null && letterId >= 0 && letterId < letters.length) {
+        // Nếu người dùng quét mã QR có id hợp lệ -> Hiện thư
+        document.getElementById('adminPanel').style.display = 'none';
+        const letterBox = document.getElementById('letterContainer');
+        letterBox.style.display = 'block';
+        document.getElementById('letterTitle').innerText = `Lá thư số ${parseInt(letterId) + 1}`;
+        document.getElementById('letterContent').innerText = letters[letterId];
+    } else {
+        // Nếu mở trang web bình thường -> Tạo 19 mã QR
+        const qrGrid = document.getElementById('qrGrid');
+        const baseUrl = window.location.href.split('?')[0];
+
+        letters.forEach((_, index) => {
+            const card = document.createElement('div');
+            card.className = 'qr-card';
+            
+            const qrDiv = document.createElement('div');
+            const targetUrl = `${baseUrl}?id=${index}`;
+            
+            new QRCode(qrDiv, {
+                text: targetUrl,
+                width: 120,
+                height: 120
+            });
+
+            const label = document.createElement('p');
+            label.innerText = `Mã QR #${index + 1}`;
+
+            card.appendChild(qrDiv);
+            card.appendChild(label);
+            qrGrid.appendChild(card);
+        });
+    }
+</script>
+
+</body>
+</html>
