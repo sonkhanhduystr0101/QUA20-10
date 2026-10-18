@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Món Quà 20/10 Bất Ngờ - Sơn Khánh Duy</title>
+    <!-- Thư viện tạo mã QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -40,11 +42,11 @@
         }
 
         .card-container {
-            background: rgba(255, 255, 255, 0.93);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 30px;
-            max-width: 520px;
+            padding: 35px;
+            max-width: 680px; /* Tăng kích thước khung thiệp */
             width: 100%;
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             text-align: center;
@@ -55,22 +57,22 @@
 
         h1 {
             color: #d63031;
-            margin-bottom: 10px;
-            font-size: 1.7rem;
+            margin-bottom: 12px;
+            font-size: 1.8rem;
         }
 
         p.subtitle {
             color: #636e72;
             margin-bottom: 20px;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         select, input, button {
             width: 100%;
-            padding: 12px 15px;
-            border-radius: 10px;
+            padding: 14px 18px;
+            border-radius: 12px;
             border: 1px solid #dfe6e9;
-            font-size: 1rem;
+            font-size: 1.05rem;
             margin-bottom: 15px;
             outline: none;
         }
@@ -96,7 +98,23 @@
             box-shadow: 0 6px 20px rgba(214, 48, 49, 0.4);
         }
 
-        /* Giao diện lá thư */
+        /* Khung chứa mã QR */
+        #qrDisplay {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff0f3;
+            border-radius: 15px;
+            border: 1px solid #ffccd5;
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        /* Giao diện lá thư mở rộng */
         .envelope-view {
             display: none;
             animation: fadeIn 0.6s ease-in-out forwards;
@@ -107,29 +125,19 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        .letter-img {
-            width: 110px;
-            height: 110px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid #ff7675;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
         .letter-paper {
             background: #fffdf9;
             border: 2px dashed #e17055;
-            padding: 22px;
-            border-radius: 14px;
+            padding: 30px;
+            border-radius: 16px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #2d3436;
             text-align: left;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 0.98rem;
+            line-height: 1.8;
+            margin: 20px 0;
+            font-size: 1.1rem; /* Tăng cỡ chữ lá thư */
             white-space: pre-line;
-            max-height: 350px;
+            max-height: 480px; /* Tăng chiều cao tối đa lá thư */
             overflow-y: auto;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
         }
@@ -138,129 +146,32 @@
             background: #636e72;
             margin-top: 5px;
         }
-
-        .search-box {
-            position: relative;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Khung chọn tên người nhận -->
+    <!-- Khung nhập / chọn tên -->
     <div class="card-container" id="selectionCard">
         <h1>🌸 Lời Chúc 20/10 🌸</h1>
-        <p class="subtitle">Vui lòng chọn tên của bạn để mở bức thư bí mật nhé!</p>
+        <p class="subtitle">Vui lòng chọn hoặc nhập tên của bạn để tạo mã QR thư!</p>
         
         <select id="nameSelect">
             <option value="">-- Chọn tên của bạn từ danh sách --</option>
         </select>
 
-        <button onclick="openLetter()">Mở Thư Ngay 💌</button>
+        <button onclick="generateQR()">Tạo Mã QR Thư 💌</button>
+
+        <!-- Khu vực hiển thị mã QR sau khi tạo -->
+        <div id="qrDisplay">
+            <h3 style="color: #d63031;" id="qrTitle">Mã QR Lá Thư</h3>
+            <p style="font-size: 0.9rem; color: #636e72; margin-top: 5px;">Quét mã QR bằng điện thoại hoặc bấm nút bên dưới để đọc thư</p>
+            <div id="qrcode"></div>
+            <button onclick="openLetterDirectly()">Mở Thư Ngay Bây Giờ 💖</button>
+        </div>
     </div>
 
-    <!-- Khung hiển thị nội dung thư -->
+    <!-- Khung hiển thị nội dung thư (Đã bỏ avatar, tăng kích thước) -->
     <div class="card-container envelope-view" id="letterCard">
-        <img id="userAvatar" src="" alt="Avatar" class="letter-img">
         <h1 id="letterHeader">Gửi...</h1>
         <div class="letter-paper" id="letterText"></div>
-        <button class="btn-back" onclick="goBack()">Quay lại danh sách</button>
-    </div>
-
-    <script>
-        // Danh sách 19 lá thư
-        const letterDatabase = {
-            "Phạm Thị Ngọc Mai": {
-                title: "Chúc mừng 20/10 Ngọc Mai!",
-                text: "Chào Ngọc Mai,\n\nDạo này việc học đại học sao rồi Mai, lịch học với thi cử bớt dồn dập chưa? Bữa giờ lu bu quá tính ra tụi mình từ hồi tốt nghiệp cấp ba tới giờ cũng lâu lắm rồi chưa có dịp ngồi lại mần ly cà phê tám chuyện.\n\nNhân ngày 20/10, Duy chúc Mai lúc nào cũng tươi tắn, học hành qua môn dễ dàng, điểm số cao chót vót và săn được nhiều học bổng nha. Dù đứa nào cũng bận rộn với môi trường mới nhưng Duy lúc nào cũng nhớ tới tình bạn thời cấp ba của tụi mình. Hôm nào rảnh rỗi thu xếp được thì nhắn Duy cái, tụi mình đi cà phê gầy sòng nói chuyện tiếp.\n\nChúc Mai có một ngày 20/10 thiệt là vui vẻ!\nSơn Khánh Duy",
-                img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300"
-            },
-            "Trịnh Thị Bảo Ngọc": {
-                title: "Happy 20/10 chị Bảo Ngọc!",
-                text: "Em chào chị Bảo Ngọc,\n\nLâu quá không gặp, dạo này chị khỏe hông? Đi làm đợt này công việc bớt lu bu chưa hay vẫn chạy deadline muốn xỉu vậy chị?\n\nNhân dịp 20/10, em chúc chị Ngọc ngày càng trẻ trung, xinh đẹp, công việc phơi phới, lương thưởng ngon lành và tiền vô tài khoản ào ào nha. Chúc cho mấy dự định sắp tới trong công việc của chị cái nào cũng thành công rực rỡ. Hôm nay chị nhớ tự thưởng cho mình bữa ăn thiệt ngon hoặc đi chill thư giãn nhé. Cuối tuần nào rảnh rỗi chị em mình gầy kèo gặp nhau một chuyến.\n\nSơn Khánh Duy",
-                img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300"
-            },
-            "La Đặng Thảo My": {
-                title: "Chúc Thảo My 20/10 thiệt nhiều niềm vui!",
-                text: "Chào Thảo My,\n\nNgoảnh đi ngoảnh lại mà lâu lắm rồi không gặp lại My. Dạo này đi làm công việc thế nào rồi, có bị tăng ca nhiều hông? Hôm nay tới 20/10 nên Duy nhắn tin hỏi thăm coi dạo này sống sao rồi.\n\nChúc Thảo My ngày 20/10 thiệt là nhiều niềm vui, công việc suôn sẻ, sếp thương đồng nghiệp quý và gặp toàn may mắn. Mong My luôn vững vàng, sự nghiệp thăng tiến và mần ăn trúng lớn nha. Dù bận rộn tới đâu cũng nhớ giữ gìn sức khỏe. Khi nào thong thả nhắn Duy, tụi mình lại đi cà phê như hồi trước.\n\nSơn Khánh Duy",
-                img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300"
-            },
-            "Thạch Như Lý": {
-                title: "Happy Women's Day 20/10 Như Lý!",
-                text: "Chào Như Lý,\n\nDạo này việc học trên trường đại học với mấy kế hoạch mới tới đâu rồi Lý? Tuy dạo này ít gặp nhưng Duy vẫn thỉnh thoảng thấy Lý đăng hình đi học, chạy bài tập bận rộn suốt.\n\nNgày 20/10, Duy chúc Như Lý lúc nào cũng năng động, tươi rói, học hành ngon lành và gặt hái được nhiều thành tích tốt trên trường. Chúc cho mấy mục tiêu Lý đang theo đuổi sớm thu về kết quả ngon lành như mong đợi. Hy vọng sớm có dịp tụ tập lại để ngồi trò chuyện nhiều hơn. Tận hưởng một ngày 20/10 thiệt trọn vẹn nha!\n\nSơn Khánh Duy",
-                img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300"
-            },
-            // --- 15 MẪU CÒN LẠI (Bạn thay đổi tên & nội dung theo ý muốn) ---
-            "Người Nhận 5": {
-                title: "Chúc mừng 20/10!",
-                text: "Chào bạn,\n\nNhân ngày 20/10, chúc bạn luôn vui vẻ, hạnh phúc và gặp nhiều may mắn trong cuộc sống!\n\nSơn Khánh Duy",
-                img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300"
-            },
-            "Người Nhận 6": {
-                title: "Chúc mừng 20/10!",
-                text: "Chào bạn,\n\nChúc bạn có một ngày 20/10 thật tuyệt vời và tràn ngập nụ cười!\n\nSơn Khánh Duy",
-                img: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=300"
-            },
-            "Người Nhận 7": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 8": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 9": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 10": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 11": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 12": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 13": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 14": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 15": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 16": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 17": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 18": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" },
-            "Người Nhận 19": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" }
-        };
-
-        // Đưa danh sách tên vào Menu Dropdown
-        const selectElem = document.getElementById('nameSelect');
-        Object.keys(letterDatabase).forEach(name => {
-            const option = document.createElement('option');
-            option.value = name;
-            option.textContent = name;
-            selectElem.appendChild(option);
-        });
-
-        // Hàm mở bức thư
-        function openLetter() {
-            const selectedName = selectElem.value;
-            if (!selectedName) {
-                alert("Vui lòng chọn tên của bạn!");
-                return;
-            }
-
-            const data = letterDatabase[selectedName];
-            
-            document.getElementById('letterHeader').innerText = data.title;
-            document.getElementById('letterText').innerText = data.text;
-            document.getElementById('userAvatar').src = data.img;
-
-            document.getElementById('selectionCard').style.display = 'none';
-            document.getElementById('letterCard').style.display = 'block';
-        }
-
-        // Hàm quay lại
-        function goBack() {
-            document.getElementById('selectionCard').style.display = 'block';
-            document.getElementById('letterCard').style.display = 'none';
-        }
-
-        // Hiệu ứng bong bóng / hoa rơi ngẫu nhiên
-        const icons = ['🌸', '💖', '🌺', '✨', '🌷'];
-        function createFalling() {
-            const el = document.createElement('div');
-            el.classList.add('falling-element');
-            el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.animationDuration = Math.random() * 2 + 3.5 + 's';
-            document.body.appendChild(el);
-
-            setTimeout(() => { el.remove(); }, 4500);
-        }
-        setInterval(createFalling, 350);
-    </script>
-</body>
-</html>
+        <button class="btn-back" onclick="goBack()">Quay lại
