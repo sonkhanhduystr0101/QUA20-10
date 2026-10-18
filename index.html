@@ -174,4 +174,125 @@
     <div class="card-container envelope-view" id="letterCard">
         <h1 id="letterHeader">Gửi...</h1>
         <div class="letter-paper" id="letterText"></div>
-        <button class="btn-back" onclick="goBack()">Quay lại
+        <button class="btn-back" onclick="goBack()">Quay lại trang chủ</button>
+    </div>
+
+    <script>
+        // Danh sách các lá thư
+        const letterDatabase = {
+            "Phạm Thị Ngọc Mai": {
+                title: "Chúc mừng 20/10 Ngọc Mai!",
+                text: "Chào Ngọc Mai,\n\nDạo này việc học đại học sao rồi Mai, lịch học với thi cử bớt dồn dập chưa? Bữa giờ lu bu quá tính ra tụi mình từ hồi tốt nghiệp cấp ba tới giờ cũng lâu lắm rồi chưa có dịp ngồi lại mần ly cà phê tám chuyện.\n\nNhân ngày 20/10, Duy chúc Mai lúc nào cũng tươi tắn, học hành qua môn dễ dàng, điểm số cao chót vót và săn được nhiều học bổng nha. Dù đứa nào cũng bận rộn với môi trường mới nhưng Duy lúc nào cũng nhớ tới tình bạn thời cấp ba của tụi mình. Hôm nào rảnh rỗi thu xếp được thì nhắn Duy cái, tụi mình đi cà phê gầy sòng nói chuyện tiếp.\n\nChúc Mai có một ngày 20/10 thiệt là vui vẻ!\nSơn Khánh Duy"
+            },
+            "Trịnh Thị Bảo Ngọc": {
+                title: "Happy 20/10 chị Bảo Ngọc!",
+                text: "Em chào chị Bảo Ngọc,\n\nLâu quá không gặp, dạo này chị khỏe hông? Đi làm đợt này công việc bớt lu bu chưa hay vẫn chạy deadline muốn xỉu vậy chị?\n\nNhân dịp 20/10, em chúc chị Ngọc ngày càng trẻ trung, xinh đẹp, công việc phơi phới, lương thưởng ngon lành và tiền vô tài khoản ào ào nha. Chúc cho mấy dự định sắp tới trong công việc của chị cái nào cũng thành công rực rỡ. Hôm nay chị nhớ tự thưởng cho mình bữa ăn thiệt ngon hoặc đi chill thư giãn nhé. Cuối tuần nào rảnh rỗi chị em mình gầy kèo gặp nhau một chuyến.\n\nSơn Khánh Duy"
+            },
+            "La Đặng Thảo My": {
+                title: "Chúc Thảo My 20/10 thiệt nhiều niềm vui!",
+                text: "Chào Thảo My,\n\nNgoảnh đi ngoảnh lại mà lâu lắm rồi không gặp lại My. Dạo này đi làm công việc thế nào rồi, có bị tăng ca nhiều hông? Hôm nay tới 20/10 nên Duy nhắn tin hỏi thăm coi dạo này sống sao rồi.\n\nChúc Thảo My ngày 20/10 thiệt là nhiều niềm vui, công việc suôn sẻ, sếp thương đồng nghiệp quý và gặp toàn may mắn. Mong My luôn vững vàng, sự nghiệp thăng tiến và mần ăn trúng lớn nha. Dù bận rộn tới đâu cũng nhớ giữ gìn sức khỏe. Khi nào thong thả nhắn Duy, tụi mình lại đi cà phê như hồi trước.\n\nSơn Khánh Duy"
+            },
+            "Thạch Như Lý": {
+                title: "Happy Women's Day 20/10 Như Lý!",
+                text: "Chào Như Lý,\n\nDạo này việc học trên trường đại học với mấy kế hoạch mới tới đâu rồi Lý? Tuy dạo này ít gặp nhưng Duy vẫn thỉnh thoảng thấy Lý đăng hình đi học, chạy bài tập bận rộn suốt.\n\nNgày 20/10, Duy chúc Như Lý lúc nào cũng năng động, tươi rói, học hành ngon lành và gặt hái được nhiều thành tích tốt trên trường. Chúc cho mấy mục tiêu Lý đang theo đuổi sớm thu về kết quả ngon lành như mong đợi. Hy vọng sớm có dịp tụ tập lại để ngồi trò chuyện nhiều hơn. Tận hưởng một ngày 20/10 thiệt trọn vẹn nha!\n\nSơn Khánh Duy"
+            },
+            "Người Nhận 5": { title: "Chúc mừng 20/10!", text: "Chào bạn,\n\nNhân ngày 20/10, chúc bạn luôn vui vẻ, hạnh phúc và gặp nhiều may mắn trong cuộc sống!\n\nSơn Khánh Duy" },
+            "Người Nhận 6": { title: "Chúc mừng 20/10!", text: "Chào bạn,\n\nChúc bạn có một ngày 20/10 thật tuyệt vời và tràn ngập nụ cười!\n\nSơn Khánh Duy" },
+            "Người Nhận 7": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 8": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 9": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 10": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 11": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 12": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 13": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 14": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 15": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 16": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 17": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 18": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" },
+            "Người Nhận 19": { title: "Chúc mừng 20/10!", text: "Chúc bạn ngày 20/10 thật nhiều niềm vui!\n\nSơn Khánh Duy" }
+        };
+
+        // Đưa danh sách tên vào Menu Dropdown
+        const selectElem = document.getElementById('nameSelect');
+        Object.keys(letterDatabase).forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            selectElem.appendChild(option);
+        });
+
+        let currentSelectedName = "";
+
+        // Hàm tạo mã QR khi chọn tên
+        function generateQR() {
+            const selectedName = selectElem.value;
+            if (!selectedName) {
+                alert("Vui lòng chọn tên của bạn!");
+                return;
+            }
+
+            currentSelectedName = selectedName;
+            const baseUrl = window.location.href.split('?')[0];
+            const targetUrl = `${baseUrl}?name=${encodeURIComponent(selectedName)}`;
+
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = ""; // Xóa mã QR cũ
+
+            new QRCode(qrContainer, {
+                text: targetUrl,
+                width: 160,
+                height: 160
+            });
+
+            document.getElementById('qrTitle').innerText = `Mã QR Lá Thư Dành Cho ${selectedName}`;
+            document.getElementById('qrDisplay').style.display = 'block';
+        }
+
+        // Hàm mở thư trực tiếp
+        function openLetterDirectly() {
+            if (currentSelectedName) {
+                showLetter(currentSelectedName);
+            }
+        }
+
+        // Hàm hiển thị nội dung thư
+        function showLetter(name) {
+            const data = letterDatabase[name];
+            if (data) {
+                document.getElementById('letterHeader').innerText = data.title;
+                document.getElementById('letterText').innerText = data.text;
+
+                document.getElementById('selectionCard').style.display = 'none';
+                document.getElementById('letterCard').style.display = 'block';
+            }
+        }
+
+        // Tự động mở thư nếu được truy cập từ việc quét mã QR
+        const urlParams = new URLSearchParams(window.location.search);
+        const nameParam = urlParams.get('name');
+        if (nameParam && letterDatabase[nameParam]) {
+            showLetter(nameParam);
+        }
+
+        // Hàm quay lại
+        function goBack() {
+            window.location.href = window.location.href.split('?')[0];
+        }
+
+        // Hiệu ứng bong bóng / hoa rơi ngẫu nhiên
+        const icons = ['🌸', '💖', '🌺', '✨', '🌷'];
+        function createFalling() {
+            const el = document.createElement('div');
+            el.classList.add('falling-element');
+            el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.animationDuration = Math.random() * 2 + 3.5 + 's';
+            document.body.appendChild(el);
+
+            setTimeout(() => { el.remove(); }, 4500);
+        }
+        setInterval(createFalling, 350);
+    </script>
+</body>
+</html>
