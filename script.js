@@ -3,7 +3,6 @@ let audioContext = null;
 let isPlayingAudio = false;
 let melodyInterval = null;
 
-/* Định dạng tên to nhẹ nhàng nổi bật */
 function formatName(name) {
     return `<span class="user-highlight-name">${name}</span>`;
 }
@@ -37,25 +36,23 @@ const defaultLetter = {
     p4: "Chúc {name} một ngày 20/10 thật đặc biệt và trọn vẹn nhé! 🎁🌸"
 };
 
-/* Tone màu Champagne, Rose Gold, Berry, Soft Purple - Rất sang & cao cấp */
-const elegantColors = [
-    '#9f1239', '#be123c', '#881337', '#7e22ce', 
-    '#6b21a8', '#0369a1', '#0f766e', '#991b1b'
+/* Các gam màu hài hòa, dễ nhìn */
+const pleasantColors = [
+    '#e11d48', '#be123c', '#9333ea', '#7e22ce', 
+    '#2563eb', '#0284c7', '#0d9488', '#c026d3'
 ];
 
 let nameParticles = [];
 let nameAnimationId = null;
 
-/* MƯA TÊN TINH TẾ: Nhỏ nhắn, lướt nhẹ từ dưới lên */
+/* MƯA TÊN BAY LÊN KIỂU BÌNH THƯỜNG */
 function startFloatingNameEffect(name) {
     const container = document.getElementById('floatingNameContainer');
     if (!container) return;
     
     container.innerHTML = '';
     nameParticles = [];
-    
-    // Mật độ vừa phải, thanh thoát
-    const particleCount = 28; 
+    const particleCount = 25; 
 
     for (let i = 0; i < particleCount; i++) {
         createFloatingNameItem(container, name, true);
@@ -71,14 +68,12 @@ function createFloatingNameItem(container, name, initial = false) {
 
     const posX = Math.random() * 92 + 4;
     const posY = initial ? Math.random() * 110 : 105; 
-    
-    // Tốc độ lướt cực mịn và chậm
     const speed = Math.random() * 0.18 + 0.08; 
     
-    // Kích thước NHỎ XÍU SANG TRỌNG (12px - 18px)
-    const fontSize = Math.floor(Math.random() * 6) + 12; 
-    const color = elegantColors[Math.floor(Math.random() * elegantColors.length)];
-    const opacity = Math.random() * 0.4 + 0.45; // Độ trong suốt dịu nhẹ (0.45 - 0.85)
+    // Kích thước vừa vặn bình thường (14px - 20px)
+    const fontSize = Math.floor(Math.random() * 7) + 14; 
+    const color = pleasantColors[Math.floor(Math.random() * pleasantColors.length)];
+    const opacity = Math.random() * 0.4 + 0.5;
 
     el.style.left = `${posX}%`;
     el.style.top = `${posY}%`;
