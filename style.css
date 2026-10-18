@@ -94,22 +94,37 @@ body {
   box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
 }
 
-/* LÁ THƯ TƯƠNG TÁC */
+/* LÁ THƯ TRẮNG CÓ GẤU BÔNG KÉO RA */
 .letter-container {
   position: fixed;
-  top: 20%;
+  top: 22%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2000;
   perspective: 1000px;
   cursor: pointer;
-  transition: opacity 0.5s ease;
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .letter-container.hidden {
   opacity: 0;
   pointer-events: none;
-  transform: translateX(-50%) translateY(-20px);
+  transform: translateX(-50%) translateY(-50px) scale(0.5);
+}
+
+/* Hiệu ứng chú gấu bông kéo thư */
+.bear-puller {
+  position: absolute;
+  top: -35px;
+  left: -25px;
+  font-size: 35px;
+  z-index: 2001;
+  animation: bearPull 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes bearPull {
+  0% { transform: translateX(0px) rotate(0deg); }
+  100% { transform: translateX(-8px) rotate(-10deg); }
 }
 
 .letter-card {
@@ -118,7 +133,7 @@ body {
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 10px 25px rgba(255, 105, 180, 0.4);
+  box-shadow: 0 10px 30px rgba(255, 105, 180, 0.5);
   border-radius: 15px;
 }
 
@@ -140,39 +155,43 @@ body {
   text-align: center;
 }
 
+/* Mặt trước lá thư màu trắng */
 .letter-front {
-  background: linear-gradient(135deg, #2b1055, #512b58);
-  border: 2px dashed #ffb6c1;
-  color: #ffd1dc;
+  background: #ffffff;
+  border: 2px dashed #ff758c;
+  color: #d63384;
 }
 
 .letter-front h3 {
-  font-size: 20px;
-  margin-bottom: 8px;
+  font-size: 18px;
+  margin-bottom: 6px;
+  font-weight: bold;
 }
 
 .letter-front p {
-  font-size: 13px;
-  color: #e8c5e5;
+  font-size: 12px;
+  color: #666;
 }
 
+/* Mặt sau lá thư hiển thị lời chúc */
 .letter-back {
-  background: #1a1528;
-  color: #fff;
+  background: #ffffff;
+  color: #333;
   transform: rotateY(180deg);
-  border: 2px solid #ffb6c1;
+  border: 2px solid #ff758c;
 }
 
 .letter-back h3 {
-  color: #ffb6c1;
+  color: #d63384;
   font-size: 16px;
   margin-bottom: 8px;
+  font-weight: bold;
 }
 
 .letter-back p {
   font-size: 13px;
   line-height: 1.4;
-  color: #ddd;
+  color: #444;
 }
 
 /* GIAO DIỆN HOA VÀ NỀN TỐI GỐC */
@@ -368,13 +387,8 @@ body {
   border-bottom-left-radius: var(--h);
   background-image: linear-gradient(to top, rgba(58, 90, 64, 0.5), #588157);
 }
-.flower__line__leaf--1 {
-  transform: rotate(70deg) rotateY(30deg);
-}
-.flower__line__leaf--2 {
-  top: 45%;
-  transform: rotate(70deg) rotateY(30deg);
-}
+.flower__line__leaf--1 { transform: rotate(70deg) rotateY(30deg); }
+.flower__line__leaf--2 { top: 45%; transform: rotate(70deg) rotateY(30deg); }
 .flower__line__leaf--3, .flower__line__leaf--4, .flower__line__leaf--6 {
   border-top-right-radius: 0;
   border-bottom-left-radius: 0;
@@ -384,20 +398,10 @@ body {
   top: 12%;
   transform: rotate(-70deg) rotateY(30deg);
 }
-.flower__line__leaf--4 {
-  top: 40%;
-}
-.flower__line__leaf--5 {
-  top: 0;
-  transform-origin: left;
-  transform: rotate(70deg) rotateY(30deg) scale(0.6);
-}
-.flower__line__leaf--6 {
-  top: -2%;
-  left: -450%;
-  transform-origin: right;
-  transform: rotate(-70deg) rotateY(30deg) scale(0.6);
-}
+.flower__line__leaf--4 { top: 40%; }
+.flower__line__leaf--5 { top: 0; transform-origin: left; transform: rotate(70deg) rotateY(30deg) scale(0.6); }
+.flower__line__leaf--6 { top: -2%; left: -450%; transform-origin: right; transform: rotate(-70deg) rotateY(30deg) scale(0.6); }
+
 .flower__light {
   position: absolute;
   bottom: 0vmin;
@@ -408,43 +412,16 @@ body {
   filter: blur(0.2vmin);
   animation: light-ans 4s linear infinite backwards;
 }
-.flower__light:nth-child(odd) {
-  background-color: rgba(255, 192, 203, 0.9);
-}
-.flower__light--1 {
-  left: -2vmin;
-  animation-delay: 1s;
-}
-.flower__light--2 {
-  left: 3vmin;
-  animation-delay: 0.5s;
-}
-.flower__light--3 {
-  left: -6vmin;
-  animation-delay: 0.3s;
-}
-.flower__light--4 {
-  left: 6vmin;
-  animation-delay: 0.9s;
-}
-.flower__light--5 {
-  left: -1vmin;
-  animation-delay: 1.5s;
-}
-.flower__light--6 {
-  left: -4vmin;
-  animation-delay: 3s;
-}
-.flower__light--7 {
-  left: 3vmin;
-  animation-delay: 2s;
-}
-.flower__light--8 {
-  left: -6vmin;
-  animation-delay: 3.5s;
-}
+.flower__light:nth-child(odd) { background-color: rgba(255, 192, 203, 0.9); }
+.flower__light--1 { left: -2vmin; animation-delay: 1s; }
+.flower__light--2 { left: 3vmin; animation-delay: 0.5s; }
+.flower__light--3 { left: -6vmin; animation-delay: 0.3s; }
+.flower__light--4 { left: 6vmin; animation-delay: 0.9s; }
+.flower__light--5 { left: -1vmin; animation-delay: 1.5s; }
+.flower__light--6 { left: -4vmin; animation-delay: 3s; }
+.flower__light--7 { left: 3vmin; animation-delay: 2s; }
+.flower__light--8 { left: -6vmin; animation-delay: 3.5s; }
 
-/* Các thành phần cỏ, thân phụ và animation gốc giữ nguyên */
 .flower__grass {
   --c: #588157;
   --line-w: 1.5vmin;
@@ -458,9 +435,7 @@ body {
   transform-origin: bottom center;
   transform: rotate(-48deg) rotateY(40deg);
 }
-.flower__grass--1 {
-  animation: moving-grass 2s linear infinite;
-}
+.flower__grass--1 { animation: moving-grass 2s linear infinite; }
 .flower__grass--2 {
   left: 2vmin;
   bottom: 10vmin;
@@ -483,16 +458,6 @@ body {
   height: 25vmin;
   background-image: linear-gradient(to top, transparent, var(--c));
 }
-.flower__grass__leaf {
-  --size: 10vmin;
-  position: absolute;
-  width: calc(var(--size) * 2.1);
-  height: var(--size);
-  border-top-left-radius: var(--size);
-  border-top-right-radius: var(--size);
-  background-image: linear-gradient(to top, transparent, transparent 30%, var(--c));
-  z-index: 100;
-}
 .flower__grass__overlay {
   position: absolute;
   top: -10%;
@@ -503,9 +468,7 @@ body {
   filter: blur(1.5vmin);
   z-index: 100;
 }
-.grow-ans {
-  animation: grow-ans 2s var(--d) backwards;
-}
+.grow-ans { animation: grow-ans 2s var(--d) backwards; }
 @keyframes grow-ans {
   0% { transform: scale(0); opacity: 0; }
 }
@@ -533,6 +496,14 @@ body {
 }
 @keyframes blooming-flower {
   0% { transform: scale(0); }
+}
+@keyframes moving-grass {
+  0%, 100% { transform: rotate(-48deg) rotateY(40deg); }
+  50% { transform: rotate(-50deg) rotateY(40deg); }
+}
+@keyframes moving-grass--2 {
+  0%, 100% { transform: scale(0.5) rotate(75deg) rotateX(10deg) rotateY(-200deg); }
+  50% { transform: scale(0.5) rotate(79deg) rotateX(10deg) rotateY(-200deg); }
 }
 .not-loaded * {
   animation-play-state: paused !important;
