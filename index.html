@@ -162,7 +162,7 @@
             line-height: 1.4;
         }
 
-        /* --- MODAL HIỂN THỊ PHONG BÌ GIỐNG MẪU 100% --- */
+        /* --- MODAL HIỂN THỊ PHONG BÌ GIẤU THƯ 100% --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -183,7 +183,6 @@
             to { opacity: 1; }
         }
 
-        /* Khung Phong Bì Cân Đối */
         .envelope-wrapper {
             position: relative;
             width: 420px;
@@ -200,7 +199,7 @@
             }
         }
 
-        /* Gấu bông trang trí trên thiệp */
+        /* Gấu bông trang trí */
         .bear-helper {
             position: absolute;
             top: -65px;
@@ -213,7 +212,7 @@
             user-select: none;
         }
 
-        /* PHONG BÌ HỒNG VẼ TAY (GIỐNG HÌNH CỦA BẠN) */
+        /* PHONG BÌ HỒNG DỄ THƯƠNG (CÓ KHÓA CHE KÍN CẢM THỨ) */
         .envelope {
             width: 100%;
             height: 100%;
@@ -223,10 +222,14 @@
             position: relative;
             box-shadow: 0 15px 35px rgba(0,0,0,0.35);
             cursor: pointer;
-            overflow: visible;
+            overflow: hidden; /* Giấu toàn bộ phần dư thừa của lá thư khi chưa mở */
         }
 
-        /* Trái tim trang trí ở 2 góc phong bì */
+        .envelope-wrapper.open .envelope {
+            overflow: visible; /* Cho phép lá thư chui ra ngoài khi đã mở */
+        }
+
+        /* Trái tim trang trí góc */
         .corner-heart {
             position: absolute;
             font-size: 18px;
@@ -243,19 +246,19 @@
             .corner-heart.right { right: 22px; }
         }
 
-        /* Nắp phong bì tam giác có viền đen cute */
+        /* Nắp phong bì che kín lá thư */
         .envelope-flap {
             position: absolute;
-            top: 0;
+            top: -1px;
             left: -3px;
             width: 0;
             height: 0;
             border-left: 213px solid transparent;
             border-right: 213px solid transparent;
-            border-top: 135px solid #f8b3c1;
+            border-top: 140px solid #f8b3c1;
             transform-origin: top;
             transition: transform 0.6s ease;
-            z-index: 4;
+            z-index: 5;
             filter: drop-shadow(0 2px 0px #332328);
         }
 
@@ -263,14 +266,14 @@
             .envelope-flap {
                 border-left-width: 163px;
                 border-right-width: 163px;
-                border-top-width: 105px;
+                border-top-width: 110px;
             }
         }
 
-        /* Tem Trái tim to màu đỏ hồng ở chính giữa nắp thư */
+        /* Tem Trái tim nắp thư */
         .seal-heart {
             position: absolute;
-            top: -125px;
+            top: -130px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 42px;
@@ -281,12 +284,12 @@
 
         @media (max-width: 480px) {
             .seal-heart {
-                top: -95px;
+                top: -100px;
                 font-size: 32px;
             }
         }
 
-        /* Thân phong bì màu hồng có nếp gấp viền đen */
+        /* Thân phong bì đè trước */
         .envelope-front {
             position: absolute;
             bottom: -3px;
@@ -295,9 +298,9 @@
             height: 0;
             border-left: 213px solid #f9b8c6;
             border-right: 213px solid #f9b8c6;
-            border-bottom: 130px solid #f8a8b8;
+            border-bottom: 135px solid #f8a8b8;
             border-radius: 0 0 18px 18px;
-            z-index: 3;
+            z-index: 4;
             filter: drop-shadow(0 -1px 0px #332328);
         }
 
@@ -305,11 +308,11 @@
             .envelope-front {
                 border-left-width: 163px;
                 border-right-width: 163px;
-                border-bottom-width: 100px;
+                border-bottom-width: 105px;
             }
         }
 
-        /* LÁ THƯ TRẮNG TINH LỚN NHÔ RA */
+        /* LÁ THƯ MÀU TRẮNG TINH GIẤU KÍN TRONG PHONG BÌ */
         .letter-paper {
             position: absolute;
             bottom: 10px;
@@ -329,6 +332,7 @@
             line-height: 1.65;
             color: #2d3436;
             white-space: pre-line;
+            opacity: 0; /* Giấu hoàn toàn chữ khi chưa mở */
         }
 
         /* Gợi ý bấm */
@@ -368,6 +372,7 @@
             transform: translateY(-110px);
             height: 370px;
             z-index: 8;
+            opacity: 1; /* Hiện chữ khi trượt lên */
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
@@ -423,7 +428,7 @@
         <div id="errorMessage" class="error-message"></div>
     </div>
 
-    <!-- MODAL PHONG BÌ HỒNG XINH XẮN GIỐNG MẪU -->
+    <!-- MODAL PHONG BÌ GIẤU THƯ KÍN HOÀN TOÀN -->
     <div class="modal-overlay" id="letterModal">
         <div class="envelope-wrapper" id="envelopeWrapper" onclick="toggleEnvelope()">
             <button class="btn-close-modal" type="button" onclick="closeLetterModal(event)">✕</button>
@@ -431,7 +436,7 @@
             <!-- Gấu bông trang trí -->
             <div class="bear-helper">🧸</div>
 
-            <!-- Phong Bì Hồng Mẫu Dễ Thương -->
+            <!-- Phong Bì Hồng Kín Hoàn Toàn -->
             <div class="envelope">
                 <div class="corner-heart left">💖</div>
                 <div class="corner-heart right">💖</div>
@@ -440,7 +445,7 @@
                     <div class="seal-heart">💖</div>
                 </div>
 
-                <!-- Lá thư trắng tinh -->
+                <!-- Lá thư giấu bên trong -->
                 <div class="letter-paper" id="letterContent"></div>
 
                 <div class="envelope-front"></div>
