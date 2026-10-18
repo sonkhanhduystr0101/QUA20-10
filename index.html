@@ -76,16 +76,10 @@
             padding: 35px 25px;
             max-width: 480px;
             width: 100%;
-            box-shadow: 0 0 30px rgba(255, 118, 117, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 30px rgba(255, 118, 117, 0.5);
             text-align: center;
             position: relative;
             z-index: 10;
-            animation: pulseGlow 3s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 20px rgba(255, 118, 117, 0.4); }
-            100% { box-shadow: 0 0 40px rgba(214, 48, 49, 0.7); }
         }
 
         .cute-decor {
@@ -138,7 +132,6 @@
             border-color: #d63031;
             box-shadow: 0 0 15px rgba(214, 48, 49, 0.4);
             background-color: #ffffff;
-            transform: scale(1.02);
         }
 
         button.btn-submit {
@@ -157,11 +150,6 @@
 
         button.btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(214, 48, 49, 0.6);
-        }
-
-        button.btn-submit:active {
-            transform: scale(0.97);
         }
 
         .error-message {
@@ -175,8 +163,8 @@
 
         #qr-result {
             display: none;
-            margin-top: 25px;
-            padding-top: 20px;
+            margin-top: 20px;
+            padding-top: 15px;
             border-top: 2px dashed #ff7675;
             animation: fadeIn 0.6s ease-in-out;
         }
@@ -189,28 +177,15 @@
         #qrcode {
             display: flex;
             justify-content: center;
-            margin: 18px 0;
+            margin: 15px 0;
             cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        #qrcode:hover {
-            transform: scale(1.05);
         }
 
         #qrcode img {
-            border: 6px solid #fff;
-            border-radius: 18px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
-            max-width: 220px;
-            height: auto;
-        }
-
-        .qr-hint {
-            color: #00b894;
-            font-weight: bold;
-            font-size: 1rem;
-            margin-bottom: 8px;
+            border: 5px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            max-width: 180px;
         }
 
         .btn-scan-sim {
@@ -222,36 +197,159 @@
             font-size: 0.95rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 8px;
             box-shadow: 0 6px 15px rgba(56, 239, 125, 0.4);
-            transition: all 0.3s;
         }
 
-        .btn-scan-sim:hover {
-            transform: translateY(-2px);
-        }
-
-        .preview-text {
+        /* --- 5. HIỆU ỨNG LÁ THƯ BỰ & GẤU BÔNG ĐI XUNG QUANH --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
             display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* Khung chứa Phong bì & Gấu bông xoay quanh */
+        .envelope-wrapper {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            perspective: 1000px;
+        }
+
+        /* Phong Bì */
+        .envelope {
+            width: 100%;
+            height: 100%;
+            background: #ff7675;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .envelope:hover {
+            transform: scale(1.03);
+        }
+
+        /* Nắp phong bì gấp xuống */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 115px solid #d63031;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 4;
+        }
+
+        /* Thân phong bì đè trước */
+        .envelope-front {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid #fab1a0;
+            border-right: 160px solid #fab1a0;
+            border-bottom: 110px solid #ff7675;
+            border-radius: 0 0 15px 15px;
+            z-index: 3;
+        }
+
+        /* Tờ Thư Chui Ra Từ Trong Phong Bì */
+        .letter-paper {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 290px;
+            height: 190px;
             background: #ffffff;
-            border: 2px solid #ffeaa7;
-            padding: 20px;
-            border-radius: 20px;
+            border-radius: 12px;
+            padding: 18px;
+            z-index: 2;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow-y: auto;
             text-align: left;
-            font-size: 0.98rem;
+            font-size: 0.95rem;
             line-height: 1.6;
             color: #2d3436;
             white-space: pre-line;
-            max-height: 260px;
-            overflow-y: auto;
-            margin-top: 20px;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.08);
-            animation: openLetter 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes openLetter {
-            from { opacity: 0; transform: scale(0.8) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        /* Trạng thái Mở Thư */
+        .envelope-wrapper.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .letter-paper {
+            transform: translateY(-160px) scale(1.15);
+            height: 320px;
+            z-index: 5;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Gấu bông đi xung quanh phong bì */
+        .walking-bear {
+            position: absolute;
+            font-size: 38px;
+            pointer-events: none;
+            z-index: 10;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        /* Quỹ đạo gấu bông chạy vòng quanh */
+        .bear-1 { animation: orbit1 8s linear infinite; }
+        .bear-2 { animation: orbit2 8s linear infinite; animation-delay: -2s; }
+        .bear-3 { animation: orbit1 8s linear infinite; animation-delay: -4s; }
+        .bear-4 { animation: orbit2 8s linear infinite; animation-delay: -6s; }
+
+        @keyframes orbit1 {
+            0%   { top: -45px; left: -20px; transform: scaleX(1); }
+            25%  { top: -45px; left: 300px; transform: scaleX(1); }
+            50%  { top: 210px; left: 300px; transform: scaleX(-1); }
+            75%  { top: 210px; left: -20px; transform: scaleX(-1); }
+            100% { top: -45px; left: -20px; transform: scaleX(1); }
+        }
+
+        @keyframes orbit2 {
+            0%   { top: 210px; left: 300px; transform: scaleX(-1); }
+            25%  { top: 210px; left: -20px; transform: scaleX(-1); }
+            50%  { top: -45px; left: -20px; transform: scaleX(1); }
+            75%  { top: -45px; left: 300px; transform: scaleX(1); }
+            100% { top: 210px; left: 300px; transform: scaleX(-1); }
+        }
+
+        .btn-close-modal {
+            position: absolute;
+            top: -50px;
+            right: -10px;
+            background: #ffffff;
+            color: #d63031;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 20;
         }
     </style>
 </head>
@@ -270,16 +368,36 @@
         <div id="errorMessage" class="error-message"></div>
 
         <div id="qr-result">
-            <div class="qr-hint">📲 Quét mã QR này (hoặc bấm vào nút dưới) để mở lá thư nhé!</div>
-            <div id="qrcode" onclick="revealLetter()"></div>
-            
-            <button class="btn-scan-sim" onclick="revealLetter()">📩 Bấm Vào Đây Để Mở Lá Thư</button>
-            
-            <div class="preview-text" id="textPreview"></div>
+            <div style="color:#00b894; font-weight:bold; margin-bottom:8px;">📲 Quét mã QR hoặc nhấn vào nút dưới để nhận lá thư!</div>
+            <div id="qrcode" onclick="openLetterModal()"></div>
+            <button class="btn-scan-sim" onclick="openLetterModal()">📩 Mở Phong Bì Thư Bất Ngờ</button>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH LÁ THƯ BỰ VÀ GẤU BÔNG CHẠY XUNG QUANH -->
+    <div class="modal-overlay" id="letterModal">
+        <div class="envelope-wrapper" id="envelopeWrapper" onclick="toggleEnvelope()">
+            <button class="btn-close-modal" onclick="closeLetterModal(event)">✕</button>
+
+            <!-- 4 Chú Gấu Bông Đi Vòng Quanh -->
+            <div class="walking-bear bear-1">🧸</div>
+            <div class="walking-bear bear-2">🧸</div>
+            <div class="walking-bear bear-3">🧸</div>
+            <div class="walking-bear bear-4">🧸</div>
+
+            <!-- Phong Bì Thư -->
+            <div class="envelope">
+                <div class="envelope-flap"></div>
+                <div class="letter-paper" id="letterContent">
+                    <div style="text-align:center; font-weight:bold; color:#d63031; margin-bottom:10px;">💌 Đang mở lá thư...</div>
+                </div>
+                <div class="envelope-front"></div>
+            </div>
         </div>
     </div>
 
     <script>
+        // Hiệu ứng icon rơi & bong bóng
         const icons = ['🧸', '🌸', '💖', '🌺', '🎀', '✨', '🌷', '💐', '🎁'];
         function createFallingElements() {
             setInterval(() => {
@@ -312,6 +430,7 @@
         createFallingElements();
         createBubbles();
 
+        // Nội dung 4 lá thư
         const messagesData = {
             "mai": `Chào Phạm Thị Ngọc Mai,
 
@@ -341,84 +460,4 @@ Sơn Khánh Duy`,
 
             "ly": `Chào Thạch Như Lý,
 
-Dạo này việc học trên trường đại học với mấy kế hoạch mới tới đâu rồi Lý? Tuy dạo này ít gặp nhưng Duy vẫn thỉnh thoảng thấy Lý đăng hình đi học, chạy bài tập bận rộn suốt.
-
-Ngày 20/10, Duy chúc Như Lý lúc nào cũng năng động, tươi rói, học hành ngon lành và gặt hái được nhiều thành tích tốt trên trường. Chúc cho mấy mục tiêu Lý đang theo đuổi sớm thu về kết quả ngon lành như mong đợi. Hy vọng sớm có dịp tụ tập lại để ngồi trò chuyện nhiều hơn. Tận hưởng một ngày 20/10 thiệt trọn vẹn nha!
-
-Sơn Khánh Duy`
-        };
-
-        function removeVietnameseTones(str) {
-            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-            str = str.replace(/đ/g, "d");
-            return str.toLowerCase().trim();
-        }
-
-        function generateQR() {
-            const inputVal = document.getElementById('userNameInput').value;
-            const cleanInput = removeVietnameseTones(inputVal);
-            const errorDiv = document.getElementById('errorMessage');
-            const resultDiv = document.getElementById('qr-result');
-            const qrContainer = document.getElementById('qrcode');
-            const textPreview = document.getElementById('textPreview');
-
-            errorDiv.style.display = 'none';
-            resultDiv.style.display = 'none';
-            textPreview.style.display = 'none';
-            qrContainer.innerHTML = '';
-
-            if (!cleanInput) {
-                errorDiv.innerText = "⚠️ Ní ơi, nhập tên vào ô trước rồi mới ấn nhận quà được nha!";
-                errorDiv.style.display = 'block';
-                return;
-            }
-
-            let foundKey = null;
-            if (cleanInput.includes("mai")) foundKey = "mai";
-            else if (cleanInput.includes("ngoc")) foundKey = "ngoc";
-            else if (cleanInput.includes("my")) foundKey = "my";
-            else if (cleanInput.includes("ly")) foundKey = "ly";
-
-            if (foundKey) {
-                const messageText = messagesData[foundKey];
-                
-                // Tạo link mã QR qua API siêu ổn định không sợ bị lỗi JS
-                const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(messageText)}&size=220&dark=d63031&margin=1`;
-                
-                qrContainer.innerHTML = `<img src="${qrApiUrl}" alt="Mã QR Lời Chúc 20/10">`;
-                textPreview.innerText = messageText;
-                resultDiv.style.display = 'block';
-            } else {
-                errorDiv.innerText = "⚠️ Tên này hông có trong danh sách nhận quà của Duy rồi! Ní kiểm tra xem gõ đúng tên Mai, Ngọc, My hay Lý chưa nha.";
-                errorDiv.style.display = 'block';
-            }
-        }
-
-        function revealLetter() {
-            const textPreview = document.getElementById('textPreview');
-            textPreview.style.display = 'block';
-            textPreview.scrollIntoView({ behavior: 'smooth' });
-
-            if (typeof confetti !== 'undefined') {
-                confetti({
-                    particleCount: 80,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#ff7675', '#d63031', '#fecfef', '#ffffff']
-                });
-            }
-        }
-
-        document.getElementById('userNameInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                generateQR();
-            }
-        });
-    </script>
-</body>
-</html>
+Dạo này việc
