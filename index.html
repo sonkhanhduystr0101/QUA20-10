@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Món Quà 20/10 Siêu Cute Của Duy tặng nì</title>
-    <!-- Thư viện QRCode và hiệu ứng tung hoa (Canvas Confetti) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Thư viện hiệu ứng pháo hoa -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -15,7 +14,6 @@
             padding: 0;
         }
 
-        /* 1. Nền Gradient Chuyển Động Rực Rỡ */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(-45deg, #ff758c, #ff7eb3, #a1c4fd, #c2e9fb, #fbc2eb);
@@ -36,7 +34,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* 2. Hiệu ứng Icon Bay & Xoay Đa Dạng */
         .falling-element {
             position: fixed;
             font-size: 26px;
@@ -49,20 +46,11 @@
         }
 
         @keyframes floatAndRotate {
-            0% { 
-                transform: translateY(0) translateX(0) rotate(0deg) scale(0.8); 
-                opacity: 1; 
-            }
-            50% { 
-                transform: translateY(-50vh) translateX(30px) rotate(180deg) scale(1.2); 
-            }
-            100% { 
-                transform: translateY(-105vh) translateX(-20px) rotate(360deg) scale(0.8); 
-                opacity: 0; 
-            }
+            0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.8); opacity: 1; }
+            50% { transform: translateY(-50vh) translateX(30px) rotate(180deg) scale(1.2); }
+            100% { transform: translateY(-105vh) translateX(-20px) rotate(360deg) scale(0.8); opacity: 0; }
         }
 
-        /* 3. Hiệu ứng Bong Bóng Nổi mờ ảo */
         .bubble {
             position: fixed;
             bottom: -100px;
@@ -80,7 +68,6 @@
             100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
         }
 
-        /* 4. Khung Card Phát Sáng & Nhịp Đập nhẹ */
         .card-container {
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(15px);
@@ -216,6 +203,7 @@
             border-radius: 18px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.18);
             max-width: 220px;
+            height: auto;
         }
 
         .qr-hint {
@@ -243,7 +231,6 @@
             transform: translateY(-2px);
         }
 
-        /* 5. Nội dung Lá Thư hiển thị khi Quét Mã */
         .preview-text {
             display: none;
             background: #ffffff;
@@ -283,7 +270,7 @@
         <div id="errorMessage" class="error-message"></div>
 
         <div id="qr-result">
-            <div class="qr-hint">📲 Quét mã QR này (hoặc ấn vào) để mở thư nhé!</div>
+            <div class="qr-hint">📲 Quét mã QR này (hoặc bấm vào nút dưới) để mở lá thư nhé!</div>
             <div id="qrcode" onclick="revealLetter()"></div>
             
             <button class="btn-scan-sim" onclick="revealLetter()">📩 Bấm Vào Đây Để Mở Lá Thư</button>
@@ -293,7 +280,6 @@
     </div>
 
     <script>
-        // 1. Tạo hiệu ứng Icon bay lung linh
         const icons = ['🧸', '🌸', '💖', '🌺', '🎀', '✨', '🌷', '💐', '🎁'];
         function createFallingElements() {
             setInterval(() => {
@@ -309,7 +295,6 @@
             }, 300);
         }
 
-        // 2. Tạo hiệu ứng Bong bóng nổi
         function createBubbles() {
             for (let i = 0; i < 12; i++) {
                 const bubble = document.createElement('div');
@@ -327,7 +312,6 @@
         createFallingElements();
         createBubbles();
 
-        // 3. Nội dung lời chúc riêng
         const messagesData = {
             "mai": `Chào Phạm Thị Ngọc Mai,
 
@@ -364,8 +348,6 @@ Ngày 20/10, Duy chúc Như Lý lúc nào cũng năng động, tươi rói, họ
 Sơn Khánh Duy`
         };
 
-        let currentMessage = "";
-
         function removeVietnameseTones(str) {
             str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
             str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -378,66 +360,50 @@ Sơn Khánh Duy`
         }
 
         function generateQR() {
-            try {
-                const inputVal = document.getElementById('userNameInput').value;
-                const cleanInput = removeVietnameseTones(inputVal);
-                const errorDiv = document.getElementById('errorMessage');
-                const resultDiv = document.getElementById('qr-result');
-                const qrContainer = document.getElementById('qrcode');
-                const textPreview = document.getElementById('textPreview');
+            const inputVal = document.getElementById('userNameInput').value;
+            const cleanInput = removeVietnameseTones(inputVal);
+            const errorDiv = document.getElementById('errorMessage');
+            const resultDiv = document.getElementById('qr-result');
+            const qrContainer = document.getElementById('qrcode');
+            const textPreview = document.getElementById('textPreview');
 
-                errorDiv.style.display = 'none';
-                resultDiv.style.display = 'none';
-                textPreview.style.display = 'none';
-                qrContainer.innerHTML = '';
+            errorDiv.style.display = 'none';
+            resultDiv.style.display = 'none';
+            textPreview.style.display = 'none';
+            qrContainer.innerHTML = '';
 
-                if (!cleanInput) {
-                    errorDiv.innerText = "⚠️ Ní ơi, nhập tên vào ô trước rồi mới ấn nhận quà được nha!";
-                    errorDiv.style.display = 'block';
-                    return;
-                }
+            if (!cleanInput) {
+                errorDiv.innerText = "⚠️ Ní ơi, nhập tên vào ô trước rồi mới ấn nhận quà được nha!";
+                errorDiv.style.display = 'block';
+                return;
+            }
 
-                let foundKey = null;
-                if (cleanInput.includes("mai")) foundKey = "mai";
-                else if (cleanInput.includes("ngoc")) foundKey = "ngoc";
-                else if (cleanInput.includes("my")) foundKey = "my";
-                else if (cleanInput.includes("ly")) foundKey = "ly";
+            let foundKey = null;
+            if (cleanInput.includes("mai")) foundKey = "mai";
+            else if (cleanInput.includes("ngoc")) foundKey = "ngoc";
+            else if (cleanInput.includes("my")) foundKey = "my";
+            else if (cleanInput.includes("ly")) foundKey = "ly";
 
-                if (foundKey) {
-                    currentMessage = messagesData[foundKey];
-
-                    if (typeof QRCode !== 'undefined') {
-                        new QRCode(qrContainer, {
-                            text: currentMessage,
-                            width: 200,
-                            height: 200,
-                            colorDark: "#d63031",
-                            colorLight: "#ffffff",
-                            correctLevel: QRCode.CorrectLevel.M
-                        });
-                    } else {
-                        const googleQrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=220x220&chl=${encodeURIComponent(currentMessage)}`;
-                        qrContainer.innerHTML = `<img src="${googleQrUrl}" alt="Mã QR 20/10">`;
-                    }
-
-                    textPreview.innerText = currentMessage;
-                    resultDiv.style.display = 'block';
-                } else {
-                    errorDiv.innerText = "⚠️ Tên này hông có trong danh sách nhận quà của Duy rồi! Ní kiểm tra lại xem gõ đúng tên chưa nha.";
-                    errorDiv.style.display = 'block';
-                }
-            } catch (err) {
-                alert("Có lỗi xảy ra, vui lòng thử lại nhé!");
+            if (foundKey) {
+                const messageText = messagesData[foundKey];
+                
+                // Tạo link mã QR qua API siêu ổn định không sợ bị lỗi JS
+                const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(messageText)}&size=220&dark=d63031&margin=1`;
+                
+                qrContainer.innerHTML = `<img src="${qrApiUrl}" alt="Mã QR Lời Chúc 20/10">`;
+                textPreview.innerText = messageText;
+                resultDiv.style.display = 'block';
+            } else {
+                errorDiv.innerText = "⚠️ Tên này hông có trong danh sách nhận quà của Duy rồi! Ní kiểm tra xem gõ đúng tên Mai, Ngọc, My hay Lý chưa nha.";
+                errorDiv.style.display = 'block';
             }
         }
 
-        // 4. Mở thư kèm hiệu ứng pháo hoa hoa hồng (Confetti)
         function revealLetter() {
             const textPreview = document.getElementById('textPreview');
             textPreview.style.display = 'block';
             textPreview.scrollIntoView({ behavior: 'smooth' });
 
-            // Bắn pháo hoa hoa hồng mừng 20/10
             if (typeof confetti !== 'undefined') {
                 confetti({
                     particleCount: 80,
