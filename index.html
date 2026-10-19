@@ -15,12 +15,15 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS File -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 relative">
 
     <!-- Interactive Particle Simulation Canvas -->
     <canvas id="particleCanvas"></canvas>
+
+    <!-- Container cho Mưa Tên Người Nhận -->
+    <div id="nameRainContainer"></div>
 
     <!-- Audio Control Floating Button -->
     <button id="musicToggleBtn" onclick="toggleAudio()" class="fixed top-5 right-5 z-50 bg-white/80 backdrop-blur-md p-3.5 rounded-full shadow-lg border border-pink-200 text-pink-500 hover:text-pink-600 transition-all hover:scale-110 flex items-center justify-center w-12 h-12">
@@ -82,7 +85,9 @@
             
             <!-- Greeting Header -->
             <div class="mb-8">
-                <h2 id="personalGreeting" class="text-2xl sm:text-3xl font-bold text-pink-600 drop-shadow-sm mb-2"></h2>
+                <h2 id="personalGreeting" class="text-2xl sm:text-3xl font-bold text-pink-600 drop-shadow-sm mb-2">
+                    <!-- Dynamic text will be inserted here -->
+                </h2>
                 <p class="text-pink-400 text-sm sm:text-base animate-pulse">
                     Có một lá thư đặc biệt đang chờ bạn đó ✨
                 </p>
@@ -104,7 +109,7 @@
                         <div class="letter-preview flex flex-col justify-between items-center">
                             <div class="text-pink-400 text-xs font-bold">20/10 Special</div>
                             <div class="text-center">
-                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Bạn</p>
+                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Mai</p>
                                 <p class="text-[10px] text-gray-400 mt-1">Chỉ dành riêng cho bạn 🌸</p>
                             </div>
                             <div class="text-pink-300 text-xs">💖💖💖</div>
@@ -209,8 +214,7 @@
         </div>
 
     </main>
-
     <!-- Custom JavaScript Logic -->
-    <script src="script.js"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
