@@ -4,6 +4,57 @@ let isPlayingAudio = false;
 let melodyInterval = null;
 let nameRainInterval = null;
 
+// Danh sách các bức thư riêng biệt dành cho từng người
+const lettersData = {
+    mai: {
+        keys: ["phạm thị ngọc mai", "pham thi ngoc mai", "ngọc mai", "ngoc mai", "mai"],
+        header: "Gửi Ngọc Mai 💐",
+        preview: "Gửi Ngọc Mai",
+        content: `
+            <p class="font-bold text-pink-600">𝐃𝐞𝐚𝐫 𝐍𝐠ọ𝐜 𝐌𝐚𝐢 🌷,</p>
+            <p>𝐇ô𝐦 𝐧𝐚𝐲 𝐥à 𝐧𝐠à𝐲 𝐠ì 𝐭𝐚𝐚𝐚 , 𝐥à 𝟐𝟎/𝟏𝟎 á𝐚𝐚𝐚𝐚, 𝐪𝐮𝐚 𝐥á 𝐭𝐡ư 𝐧à𝐲 𝐭𝐮𝐢 𝐜𝐡ú𝐜 𝐛à 𝐥ú𝐜 𝐧à𝐨 𝐜ũ𝐧𝐠 𝐩𝐡ả𝐢 𝐯𝐮𝐢 𝐯ẻ 𝐡ạ𝐧𝐡 𝐩𝐡ú𝐜 𝐧ă𝐧𝐠 𝐥ượ𝐧𝐠 𝟏𝟎𝟎% 𝐥𝐮ô𝐧 , 𝐥𝐮ô𝐧 𝐥𝐮ô𝐧 𝐩𝐡ả𝐢 𝐱𝐢𝐧𝐡 đẹ𝐩 𝐭ự 𝐭𝐢𝐧 𝐥à 𝐜𝐡í𝐧𝐡 𝐦ì𝐧𝐡, 𝐤𝐡ô𝐧𝐠 𝐜ó 𝐜𝐡𝐮𝐲ệ𝐧 𝐠ì 𝐜ó 𝐭𝐡ể 𝐥à𝐦 𝐛ả𝐧 𝐭𝐡â𝐧 𝐛𝐮ồ𝐧 𝐡ế𝐭 𝐭𝐫ơ𝐧 ✨.</p>
+            <p>𝐓𝐫ả𝐢 𝐪𝐮𝐚 𝐧𝐡ữ𝐧𝐠 𝐤ỷ 𝐧𝐢ệ𝐦 𝐜ù𝐧𝐠 𝐧𝐡𝐚𝐮 𝐫ồ𝐢 𝐛𝐢ế𝐭 𝐌𝐚𝐢 𝐜ố 𝐠ắ𝐧𝐠 𝐧𝐡𝐢ề𝐮 𝐥ắ𝐦 𝐧ê𝐧 𝐦𝐨𝐧𝐠 𝐛ạ𝐧 𝐭𝐡à𝐧𝐡 𝐜ô𝐧𝐠 𝐱ứ𝐧𝐠 𝐯ớ𝐢 𝐧𝐡ữ𝐧𝐠 𝐠ì 𝐦à 𝐛ả𝐧 𝐭𝐡â𝐧 𝐛ỏ 𝐫𝐚 𝐧𝐡𝐚 🌟.</p>
+            <p>𝐂𝐡ú𝐜 𝐛ạ𝐧 𝐬ẽ 𝐠ặ𝐩 đượ𝐜 𝐭𝐡ê𝐦 𝐧𝐡ữ𝐧𝐠 𝐧𝐠ườ𝐢 𝐦à 𝐛ả𝐧 𝐭𝐡â𝐧 𝐢ê𝐮 𝐭𝐡ươ𝐧𝐠 𝐯à 𝐧𝐠ườ𝐢 𝐢ê𝐮 𝐭𝐡ươ𝐧𝐠 𝐛ả𝐧 𝐭𝐡â𝐧 💞. 𝐂𝐡ú𝐜 𝟐𝟎/𝟏𝟎 𝐃𝐮𝐢 𝐝ẻ 🎉.</p>
+            <p class="font-bold text-pink-500 text-right mt-2">𝐁ạ𝐧 𝐜ủ𝐚 𝐌𝐚𝐢</p>
+        `
+    },
+    ngoc: {
+        keys: ["trịnh thị bảo ngọc", "trinh thi bao ngoc", "bảo ngọc", "bao ngoc", "chị ngọc", "chi ngoc", "ngọc", "ngoc"],
+        header: "Gửi Chị Ngọc 💐",
+        preview: "Gửi Chị Ngọc",
+        content: `
+            <p class="font-bold text-pink-600">𝐆ử𝐢 𝐂𝐡ị 𝐍𝐠ọ𝐜,</p>
+            <p>𝐍𝐡â𝐧 𝐧𝐠à𝐲 𝟐𝟎/𝟏𝟎 𝐧à𝐲 𝐥á 𝐭𝐡ư 𝐠ử𝐢 đế𝐧 𝐜𝐡ị , 𝐥â𝐮 𝐫ồ𝐢 𝐤𝐡ô𝐧𝐠 𝐜ó 𝐠ặ𝐩 𝐧𝐡ớ 𝐪𝐮á 𝐭𝐫ờ𝐢 𝐦à 𝐤𝐡ô𝐧𝐠 𝐛𝐢ế𝐭 𝐜ó 𝐧𝐡ớ 𝐭𝐮𝐢 𝐤𝐡ô𝐧𝐠 ✨. 𝐂𝐡ú𝐜 𝐜𝐡ị 𝐥𝐮ô𝐧 𝐥𝐮ô𝐧 𝐬𝐮ô𝐧 𝐬ẻ 𝐭𝐫𝐨𝐧𝐠 𝐜ô𝐧𝐠 𝐯𝐢ệ𝐜 💼, 𝐧𝐡ữ𝐧𝐠 𝐭𝐡ứ 𝐦𝐚𝐲 𝐦ắ𝐧 𝐥𝐮ô𝐧 đế𝐧 𝐯ớ𝐢 𝐜𝐡ị 𝐯à 𝐡ạ𝐧𝐡 𝐩𝐡ú𝐜 𝐯ớ𝐢 𝐧𝐠ườ𝐢 𝐦ì𝐧𝐡 𝐢ê𝐮 𝐧𝐡𝐞𝐧 ❤️.</p>
+            <p>𝐓𝐫𝐨𝐧𝐠 𝐭ươ𝐧𝐠 𝐥𝐚𝐢 𝐬ẽ đạ𝐭 đượ𝐜 𝐧𝐡𝐢ề𝐮 𝐭𝐡à𝐧𝐡 𝐜ô𝐧𝐠 𝐭𝐨 𝐛ự 🌟, 𝐥ú𝐜 𝐧à𝐨 𝐜ũ𝐧𝐠 𝐯𝐮𝐢 𝐯ẻ 𝐤𝐡ô𝐧𝐠 𝐜ó đượ𝐜 𝐛𝐮ồ𝐧 𝐯à 𝐬ẽ đượ𝐜 𝐦ọ𝐢 𝐧𝐠ườ𝐢 𝐢ê𝐮 𝐭𝐡ươ𝐧𝐠 🤗. 𝐂𝐡ú𝐜 𝐜𝐡ị 𝐧𝐠à𝐲 𝟐𝟎/𝟏𝟎 𝐯𝐮𝐢 𝐯ẻ 💐💐</p>
+            <p class="font-bold text-pink-500 text-right mt-2">𝐓ừ 𝐧𝐠ườ𝐢 𝐞𝐦 𝐊𝐡á𝐧𝐡 𝐃𝐮𝐲 𝐭𝐮𝐲ệ𝐭 𝐯ờ𝐢.</p>
+        `
+    },
+    my: {
+        keys: ["la đặng thảo my", "la dang thao my", "thảo my", "thao my", "my"],
+        header: "Thân gửi Thảo My 💐",
+        preview: "Gửi Thảo My",
+        content: `
+            <p class="font-bold text-pink-600">𝐓𝐡â𝐧 𝐠ử𝐢 𝐓𝐡ả𝐨 𝐌𝐲 🌞,</p>
+            <p>𝐋á 𝐭𝐡ư 𝐧à𝐲 𝐠ử𝐢 𝐭𝐫𝐚𝐨 𝐌𝐲 𝐧𝐡â𝐧 𝐧𝐠à𝐲 𝟐𝟎/𝟏𝟎 𝐧ă𝐦 𝐧𝐚𝐲 á , 𝐭𝐮𝐢 𝐦𝐨𝐧𝐠 𝐥à 𝐌𝐲 𝐬ẽ 𝐩𝐡ả𝐢 𝐦ạ𝐧𝐡 𝐤𝐡ỏ𝐞 𝐡ạ𝐧𝐡 𝐩𝐡ú𝐜 𝐭𝐡𝐢ệ𝐭 𝐥à 𝐧𝐡𝐢ề𝐮, 𝐧𝐠à𝐲 𝐜à𝐧𝐠 𝐱𝐢𝐧𝐡 đẹ𝐩 𝐧𝐡ư 𝐡𝐨𝐚 𝐥𝐮ô𝐧 💐.</p>
+            <p>𝐓𝐮𝐢 ướ𝐜 𝐦ì𝐧𝐡 𝐜ó 𝐭𝐡ể 𝐪𝐮𝐚𝐲 𝐥ạ𝐢 𝐧ă𝐦 𝐜ấ𝐩 𝟑 để 𝐜𝐡ú𝐜 𝐛à 𝐦ỗ𝐢 𝐧ă𝐦 𝐥𝐮ô𝐧 𝐦à 𝐡ỏ𝐧𝐠 đượ𝐜 𝐧𝐡ư𝐧𝐠 𝐦à 𝐦𝐨𝐧𝐠 𝐫ằ𝐧𝐠 𝐭ươ𝐧𝐠 𝐥𝐚𝐢 𝐌𝐲 𝐬ẽ 𝐠ặ𝐩 đượ𝐜 𝐧𝐡𝐢ề𝐮 𝐧𝐡𝐢ề𝐮 𝐡ạ𝐧𝐡 𝐩𝐡ú𝐜 𝐦𝐚𝐲 𝐦ắ𝐧 𝐯à 𝐦ọ𝐢 đ𝐢ề𝐮 𝐭ố𝐭 đẹ𝐩 𝐬ẽ 𝐥𝐮ô𝐧 𝐭ì𝐦 đế𝐧 𝐌𝐲 𝐧𝐡𝐚𝐚 ✨.</p>
+            <p>𝐂𝐡ú𝐜 𝐌𝐲 𝐧𝐠à𝐲 𝟐𝟎/𝟏𝟎 𝐭𝐡ậ𝐭 𝐥à 𝐩𝐞𝐚𝐤 🔥.</p>
+            <p class="font-bold text-pink-500 text-right mt-2">𝐊𝐡á𝐧𝐡 𝐃𝐮𝐲 𝐛ạ𝐧 𝐭𝐡â𝐧 𝐌𝐲.</p>
+        `
+    },
+    ly: {
+        keys: ["thạch như lý", "thach nhu ly", "như lý", "nhu ly", "lý", "ly"],
+        header: "Dear Như Lý 💐",
+        preview: "Gửi Như Lý",
+        content: `
+            <p class="font-bold text-pink-600">𝐃𝐞𝐚𝐫 𝐍𝐡ư 𝐋ý 🍀,</p>
+            <p>𝐇𝐞𝐲 𝐝𝐨𝐨𝐨 𝐡ô𝐦 𝐧𝐚𝐲 𝐥à 𝟐𝟎/𝟏𝟎 á 𝐜𝐡ề𝐧 , 𝐋â𝐮 𝐫ồ𝐢 𝐭ụ𝐢 𝐦ì𝐧𝐡 𝐡𝐨𝐧𝐠 𝐠ặ𝐩 𝐧𝐡𝐚𝐮 á 𝐛à, 𝐦à 𝐧𝐡â𝐧 𝐝ị𝐩 𝐧à𝐲 𝐭𝐮𝐢 𝐠ử𝐢 𝐧𝐡ữ𝐧𝐠 𝐥ờ𝐢 𝐜𝐡ú𝐜 𝐭𝐮𝐲ệ𝐭 𝐥à 𝐯ờ𝐢 đế𝐧 𝐛à. 𝐂𝐡ú𝐜 𝐛à 𝐥𝐮ô𝐧 𝐥𝐮ô𝐧 𝐥𝐮ô𝐧 𝐱𝐢𝐧𝐡 đẹ𝐩 𝐧𝐡ó 💖, 𝐤𝐡ỏ𝐞 𝐤𝐡ắ𝐧 𝐧ữ𝐚 ⚡.</p>
+            <p>𝐓𝐫𝐨𝐧𝐠 𝐭ươ𝐧𝐠 𝐥𝐚𝐢 𝐡𝐚𝐲 𝐡𝐢ệ𝐧 𝐭ạ𝐢 𝐭𝐡ì 𝐡ọ𝐜 𝐭ậ𝐩 𝐥𝐮ô𝐧 𝐬𝐮ô𝐧 𝐬ẻ 𝐠𝐢ỏ𝐢 𝐠𝐢𝐚𝐧𝐠 🎓, 𝐧𝐡ữ𝐧𝐠 𝐭𝐡ứ 𝐭𝐮𝐲ệ𝐭 𝐯ờ𝐢 𝐯à 𝐭𝐡à𝐧𝐡 𝐜ô𝐧𝐠 𝐬ẽ 𝐛𝐚𝐲 𝐯ề 𝐩𝐡í𝐚 𝐛à ✨, 𝐜ò𝐧 𝐧𝐡ữ𝐧𝐠 𝐭𝐡ứ 𝐤𝐡ô𝐧𝐠 𝐨𝐤𝐥𝐚 𝐭𝐡ì 𝐜ú𝐭 𝐜ú𝐭 𝐡ế𝐭 🚀.</p>
+            <p>𝐍ó𝐢 𝐜𝐡𝐮𝐧𝐠 𝐥à 𝐜𝐡ú𝐜 𝐦ộ𝐭 𝐧𝐠à𝐲 𝟐𝟎/𝟏𝟎 𝐯𝐮𝐢 𝐯ẻ 𝐧𝐡𝐚𝐚 🎉.</p>
+            <p class="font-bold text-pink-500 text-right mt-2">𝐊𝐡á𝐧𝐡 𝐃𝐮𝐲 𝐧𝐠ườ𝐢 𝐛ạ𝐧 𝐭𝐮𝐲ệ𝐭 𝐯ờ𝐢.</p>
+        `
+    }
+};
+
 // 1. Particle Simulation Canvas
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
@@ -97,7 +148,6 @@ function getNameRainContainer() {
     return container;
 }
 
-// Thẻ tên chính giữa bay lên nổi bật qua header rồi biến mất
 function createFloatingHeroName() {
     const displayName = currentUserName || "Bạn";
     const container = getNameRainContainer();
@@ -116,7 +166,6 @@ function createFloatingHeroName() {
     }, 4500);
 }
 
-// Các nhãn tên đồng hành bay từ dưới lên trên header xong biến mất
 function createFloatingName(customLeft = null) {
     const displayName = currentUserName || "Bạn";
     const container = getNameRainContainer();
@@ -147,17 +196,14 @@ function createFloatingName(customLeft = null) {
     }, duration * 1000);
 }
 
-// Kích hoạt làn sóng tên bay lên qua header rồi biến mất
 function triggerFloatingNames() {
     stopNameRain();
 
-    // 1. Thẻ tên chính giữa bay lên ngay
     const heroTimeout = setTimeout(() => {
         createFloatingHeroName();
     }, 150);
     nameTimeouts.push(heroTimeout);
 
-    // 2. Làn sóng các thẻ tên vệ tinh bay lên trên header xong biến mất
     const positions = [18, 76, 28, 68, 45, 82, 14];
     positions.forEach((pos, idx) => {
         const t = setTimeout(() => {
@@ -264,19 +310,40 @@ function handleNameSubmit(event) {
     if (!name) return;
 
     currentUserName = name;
+    const lowerName = name.toLowerCase();
+
+    // Kiểm tra tên người nhập thuộc về bức thư nào
+    let matchedLetter = null;
+    for (const key in lettersData) {
+        if (lettersData[key].keys.some(k => lowerName.includes(k))) {
+            matchedLetter = lettersData[key];
+            break;
+        }
+    }
 
     initAudio();
     if (!isPlayingAudio) {
         toggleAudio();
     }
 
+    // Đổi giao diện tùy theo tên
     document.getElementById('personalGreeting').textContent = `${currentUserName} ơi, có một điều đặc biệt dành cho bạn... 💗`;
-    document.getElementById('letterPreviewName').textContent = `Gửi ${currentUserName}`;
     document.getElementById('envelopeSubtext').textContent = `Có một lá thư dành riêng cho ${currentUserName} 💌`;
-    document.getElementById('letterHeader').textContent = `Gửi ${currentUserName} 💐`;
 
-    const nameElements = document.querySelectorAll('.userNameText');
-    nameElements.forEach(el => el.textContent = currentUserName);
+    if (matchedLetter) {
+        document.getElementById('letterPreviewName').textContent = matchedLetter.preview;
+        document.getElementById('letterHeader').textContent = matchedLetter.header;
+        document.getElementById('letterContainer').innerHTML = matchedLetter.content;
+    } else {
+        document.getElementById('letterPreviewName').textContent = `Gửi ${currentUserName}`;
+        document.getElementById('letterHeader').textContent = `Gửi ${currentUserName} 💐`;
+        document.getElementById('letterContainer').innerHTML = `
+            <p>Nhân ngày 20/10, chúc <span class="userNameText text-pink-600 font-bold">${currentUserName}</span> luôn vui vẻ, hạnh phúc và luôn giữ được nụ cười thật xinh. 🌷</p>
+            <p>Mong rằng mỗi ngày của <span class="userNameText text-pink-600 font-bold">${currentUserName}</span> đều có thật nhiều niềm vui, những điều bất ngờ đáng yêu và thật nhiều yêu thương. 💗</p>
+            <p>Chúc <span class="userNameText text-pink-600 font-bold">${currentUserName}</span> luôn tự tin, luôn tỏa sáng theo cách riêng của mình và gặp thật nhiều điều tốt đẹp trong cuộc sống. ✨</p>
+            <p class="font-bold text-pink-500">Chúc <span class="userNameText text-pink-600">${currentUserName}</span> một ngày 20/10 thật đặc biệt nhé! 🎁🌸</p>
+        `;
+    }
 
     const screen1 = document.getElementById('screen1');
     const screen2 = document.getElementById('screen2');
@@ -290,7 +357,6 @@ function handleNameSubmit(event) {
         setTimeout(() => {
             screen2.classList.remove('opacity-0', 'scale-95');
             screen2.classList.add('opacity-100', 'scale-100');
-            // Bay một đợt tên khi vào màn hình phong thư
             triggerFloatingNames();
         }, 50);
     }, 600);
@@ -302,8 +368,6 @@ function openEnvelope() {
     if (wrapper.classList.contains('open')) return;
 
     wrapper.classList.add('open');
-
-    // Kích hoạt hiệu ứng tên người nhận bay từ dưới lên trên header xong biến mất khi mở phong thư
     triggerFloatingNames();
 
     if (typeof confetti === 'function') {
@@ -325,7 +389,6 @@ function openEnvelope() {
         card.classList.remove('scale-90');
         card.classList.add('scale-100');
 
-        // Kích hoạt đợt tên bay lên rực rỡ vượt qua header khi bức thư bung mở
         triggerFloatingNames();
 
         if (typeof confetti === 'function') {
