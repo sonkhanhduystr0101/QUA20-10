@@ -54,7 +54,7 @@
                         id="recipientName" 
                         placeholder="Nhập tên của bạn... (ví dụ: Mai)" 
                         required
-                        maxlength="25"
+                        maxlength="40"
                         autocomplete="off"
                         class="w-full px-6 py-4 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-center text-gray-700 text-lg placeholder-pink-300 shadow-inner bg-white/90 transition-all duration-300"
                     />
@@ -109,7 +109,7 @@
                         <div class="letter-preview flex flex-col justify-between items-center">
                             <div class="text-pink-400 text-xs font-bold">20/10 Special</div>
                             <div class="text-center">
-                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Mai</p>
+                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Bạn</p>
                                 <p class="text-[10px] text-gray-400 mt-1">Chỉ dành riêng cho bạn 🌸</p>
                             </div>
                             <div class="text-pink-300 text-xs">💖💖💖</div>
@@ -173,22 +173,8 @@
                         </div>
 
                         <!-- Letter Body Text -->
-                        <div class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                            <p id="letterPara1">
-                                Nhân ngày 20/10, chúc <span class="userNameText text-pink-600 font-bold">bạn</span> luôn vui vẻ, hạnh phúc và luôn giữ được nụ cười thật xinh. 🌷
-                            </p>
-
-                            <p id="letterPara2">
-                                Mong rằng mỗi ngày của <span class="userNameText text-pink-600 font-bold">bạn</span> đều có thật nhiều niềm vui, những điều bất ngờ đáng yêu và thật nhiều yêu thương. 💗
-                            </p>
-
-                            <p id="letterPara3">
-                                Chúc <span class="userNameText text-pink-600 font-bold">bạn</span> luôn tự tin, luôn tỏa sáng theo cách riêng của mình và gặp thật nhiều điều tốt đẹp trong cuộc sống. ✨
-                            </p>
-
-                            <p id="letterPara4" class="font-bold text-pink-500">
-                                Chúc <span class="userNameText text-pink-600">bạn</span> một ngày 20/10 thật đặc biệt nhé! 🎁🌸
-                            </p>
+                        <div id="letterContainer" class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
+                            <!-- Nội dung thư tùy chỉnh sẽ tự động chèn vào đây -->
                         </div>
 
                         <!-- Letter Footer -->
