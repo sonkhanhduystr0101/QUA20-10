@@ -1,297 +1,348 @@
-let currentUserName = "";
-let audioContext = null;
-let isPlayingAudio = false;
-let melodyInterval = null;
-
-// 1. Particle Simulation Canvas
-const canvas = document.getElementById('particleCanvas');
-const ctx = canvas.getContext('2d');
-
-let particles = [];
-const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷', '💖'];
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+* {
+    font-family: 'Mali', 'Comfortaa', cursive, sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-class Particle {
-    constructor(x, y) {
-        this.x = x || Math.random() * canvas.width;
-        this.y = y || Math.random() * canvas.height;
-        this.size = Math.random() * 18 + 10;
-        this.speedX = Math.random() * 1.5 - 0.75;
-        this.speedY = Math.random() * -1.5 - 0.5;
-        this.icon = particleIcons[Math.floor(Math.random() * particleIcons.length)];
-        this.opacity = Math.random() * 0.7 + 0.3;
-        this.rotation = Math.random() * 360;
-        this.rotationSpeed = (Math.random() - 0.5) * 2;
-    }
-
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.rotation += this.rotationSpeed;
-
-        if (this.y < -30) {
-            this.y = canvas.height + 20;
-            this.x = Math.random() * canvas.width;
-        }
-        if (this.x < -30) this.x = canvas.width + 20;
-        if (this.x > canvas.width + 30) this.x = -20;
-    }
-
-    draw() {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate((this.rotation * Math.PI) / 180);
-        ctx.globalAlpha = this.opacity;
-        ctx.font = `${this.size}px sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(this.icon, 0, 0);
-        ctx.restore();
-    }
+.font-handwriting {
+    font-family: 'Dancing Script', cursive;
 }
 
-function initParticles() {
-    particles = [];
-    const count = Math.min(Math.floor(window.innerWidth / 18), 35);
-    for (let i = 0; i < count; i++) {
-        particles.push(new Particle());
-    }
+/* Animated Pastel Background */
+body {
+    background: linear-gradient(-45deg, #ffd1dc, #f3e5f5, #e1f5fe, #fff0f5);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
-function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
-    requestAnimationFrame(animateParticles);
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-initParticles();
-animateParticles();
+/* Canvas background overlay */
+#particleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
 
-// Tạo thêm hiệu ứng hoa nở theo con trỏ chuột
-window.addEventListener('mousemove', (e) => {
-    if (Math.random() < 0.15) {
-        const p = new Particle(e.clientX, e.clientY);
-        p.size = Math.random() * 14 + 10;
-        p.speedY = Math.random() * -2 - 0.5;
-        particles.push(p);
-        if (particles.length > 50) particles.shift();
-    }
-});
+/* Container cho hiệu ứng mưa tên */
+#nameRainContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
 
-// 2. Web Audio API Nhạc Nền + Âm Thanh Tương Tác
-function initAudio() {
-    if (!audioContext) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioContext = new AudioContext();
+/* Keyframes cho hiệu ứng tên bay từ dưới lên trên header xong biến mất */
+@keyframes floatUpPastHeader {
+    0% {
+        transform: translateY(102vh) translateX(0) scale(0.8) rotate(-4deg);
+        opacity: 0;
     }
-    if (audioContext.state === 'suspended') {
-        audioContext.resume();
+    10% {
+        opacity: 1;
+    }
+    45% {
+        transform: translateY(52vh) translateX(15px) scale(1) rotate(3deg);
+        opacity: 1;
+    }
+    70% {
+        /* Vị trí ngang tầm header */
+        transform: translateY(22vh) translateX(-8px) scale(1.08) rotate(-2deg);
+        opacity: 1;
+    }
+    85% {
+        /* Vượt lên trên header */
+        transform: translateY(8vh) translateX(5px) scale(1.12) rotate(2deg);
+        opacity: 0.7;
+    }
+    100% {
+        /* Lên hẳn trên header xong biến mất */
+        transform: translateY(-4vh) translateX(0) scale(1.18) rotate(0deg);
+        opacity: 0;
     }
 }
 
-function playPopSound() {
-    if (!audioContext) return;
-    try {
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(600, audioContext.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.1);
-        
-        gain.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gain.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
-
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        osc.start();
-        osc.stop(audioContext.currentTime + 0.1);
-    } catch(e){}
-}
-
-function playTone(freq, duration, delay = 0) {
-    setTimeout(() => {
-        if (!isPlayingAudio || !audioContext) return;
-        try {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-
-            gain.gain.setValueAtTime(0, audioContext.currentTime);
-            gain.gain.linearRampToValueAtTime(0.07, audioContext.currentTime + 0.1);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
-
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-
-            osc.start();
-            osc.stop(audioContext.currentTime + duration);
-        } catch(e) {
-            console.error(e);
-        }
-    }, delay * 1000);
-}
-
-const melodyNotes = [
-    261.63, 329.63, 392.00, 523.25,
-    349.23, 440.00, 523.25, 698.46,
-    392.00, 493.88, 587.33, 783.99,
-    329.63, 392.00, 523.25, 659.25
-];
-
-function startMelodyLoop() {
-    if (melodyInterval) clearInterval(melodyInterval);
-    let index = 0;
-    isPlayingAudio = true;
-    
-    melodyInterval = setInterval(() => {
-        if (!isPlayingAudio) return;
-        const note = melodyNotes[index % melodyNotes.length];
-        playTone(note, 2.5, 0);
-        if (index % 2 === 0) {
-            playTone(note * 1.25, 2.0, 0.2);
-        }
-        index++;
-    }, 800);
-}
-
-function toggleAudio() {
-    const musicIcon = document.getElementById('musicIcon');
-    if (isPlayingAudio) {
-        isPlayingAudio = false;
-        if (melodyInterval) clearInterval(melodyInterval);
-        musicIcon.className = 'fas fa-music-slash text-gray-400';
-    } else {
-        initAudio();
-        isPlayingAudio = true;
-        startMelodyLoop();
-        musicIcon.className = 'fas fa-music text-pink-500 animate-spin';
-        setTimeout(() => {
-            musicIcon.className = 'fas fa-music text-pink-500';
-        }, 1000);
+@keyframes floatUpPastHeaderAlt {
+    0% {
+        transform: translateY(102vh) translateX(0) scale(0.8) rotate(4deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    45% {
+        transform: translateY(52vh) translateX(-15px) scale(1) rotate(-3deg);
+        opacity: 1;
+    }
+    70% {
+        /* Vị trí ngang tầm header */
+        transform: translateY(22vh) translateX(8px) scale(1.08) rotate(2deg);
+        opacity: 1;
+    }
+    85% {
+        /* Vượt lên trên header */
+        transform: translateY(8vh) translateX(-5px) scale(1.12) rotate(-2deg);
+        opacity: 0.7;
+    }
+    100% {
+        /* Lên hẳn trên header xong biến mất */
+        transform: translateY(-4vh) translateX(0) scale(1.18) rotate(0deg);
+        opacity: 0;
     }
 }
 
-// 3. Xử Lý Submit Tên người nhận
-function handleNameSubmit(event) {
-    event.preventDefault();
-    const input = document.getElementById('recipientName');
-    const name = input.value.trim();
-
-    if (!name) return;
-
-    currentUserName = name;
-
-    initAudio();
-    playPopSound();
-    if (!isPlayingAudio) {
-        toggleAudio();
+/* Keyframes cho thẻ tên chính giữa bay lên trên header rồi biến mất */
+@keyframes floatUpHero {
+    0% {
+        transform: translate(-50%, 0) translateY(100vh) scale(0.85);
+        opacity: 0;
     }
-
-    document.getElementById('personalGreeting').textContent = `${currentUserName} ơi, có một điều đặc biệt dành cho bạn... 💗`;
-    document.getElementById('letterPreviewName').textContent = `Gửi ${currentUserName}`;
-    document.getElementById('envelopeSubtext').textContent = `Có một lá thư dành riêng cho ${currentUserName} 💌`;
-    document.getElementById('letterHeader').textContent = `Gửi ${currentUserName} 💐`;
-
-    const nameElements = document.querySelectorAll('.userNameText');
-    nameElements.forEach(el => el.textContent = currentUserName);
-
-    const screen1 = document.getElementById('screen1');
-    const screen2 = document.getElementById('screen2');
-
-    screen1.classList.add('opacity-0', 'scale-95');
-    
-    setTimeout(() => {
-        screen1.classList.add('hidden');
-        screen2.classList.remove('hidden');
-        
-        setTimeout(() => {
-            screen2.classList.remove('opacity-0', 'scale-95');
-            screen2.classList.add('opacity-100', 'scale-100');
-        }, 50);
-    }, 600);
+    10% {
+        opacity: 1;
+    }
+    45% {
+        transform: translate(-50%, 0) translateY(50vh) scale(1.1);
+        opacity: 1;
+    }
+    70% {
+        /* Ngang header */
+        transform: translate(-50%, 0) translateY(22vh) scale(1.2);
+        opacity: 1;
+    }
+    85% {
+        /* Bay lên trên header */
+        transform: translate(-50%, 0) translateY(8vh) scale(1.25);
+        opacity: 0.6;
+    }
+    100% {
+        /* Hoàn toàn biến mất */
+        transform: translate(-50%, 0) translateY(-5vh) scale(1.3);
+        opacity: 0;
+    }
 }
 
-// 4. Mở Phong Thư Rực Rỡ với Pháo Hoa
-function openEnvelope() {
-    const wrapper = document.getElementById('envelopeWrapper');
-    if (wrapper.classList.contains('open')) return;
-
-    wrapper.classList.add('open');
-    playPopSound();
-
-    // Bắn pháo hoa đợt 1
-    if (typeof confetti === 'function') {
-        setTimeout(() => {
-            confetti({
-                particleCount: 60,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#ffb6c1', '#ffd1dc', '#fff0f5', '#e1f5fe', '#f3d5ea']
-            });
-        }, 300);
-    }
-
-    // Bắn pháo hoa đợt 2 khi thư bung mở
-    setTimeout(() => {
-        const modal = document.getElementById('letterModal');
-        const card = document.getElementById('letterContentCard');
-
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        card.classList.remove('scale-90');
-        card.classList.add('scale-100');
-
-        if (typeof confetti === 'function') {
-            confetti({
-                particleCount: 100,
-                spread: 120,
-                origin: { y: 0.5 },
-                colors: ['#ff758c', '#ff7eb3', '#fecfef', '#ffffff', '#ffd1dc']
-            });
-        }
-    }, 1100);
+.floating-name-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    user-select: none;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid rgba(244, 114, 182, 0.85);
+    color: #db2777;
+    box-shadow: 0 10px 25px rgba(244, 114, 182, 0.45), 0 0 15px rgba(255, 182, 193, 0.6);
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    animation-fill-mode: forwards;
+    will-change: transform, opacity;
 }
 
-// 5. Reset Form
-function resetForm() {
-    playPopSound();
-    const modal = document.getElementById('letterModal');
-    const card = document.getElementById('letterContentCard');
-    const screen1 = document.getElementById('screen1');
-    const screen2 = document.getElementById('screen2');
-    const wrapper = document.getElementById('envelopeWrapper');
+.floating-name-item.alt-anim {
+    animation-name: floatUpPastHeaderAlt;
+}
 
-    card.classList.remove('scale-100');
-    card.classList.add('scale-90');
-    modal.classList.add('opacity-0', 'pointer-events-none');
+.floating-name-item:not(.alt-anim):not(.hero-item) {
+    animation-name: floatUpPastHeader;
+}
 
-    setTimeout(() => {
-        wrapper.classList.remove('open');
+.floating-name-item.hero-item {
+    left: 50% !important;
+    padding: 12px 28px;
+    font-size: 24px !important;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #fff0f5);
+    border: 2.5px solid #ec4899;
+    color: #db2777;
+    box-shadow: 0 14px 35px rgba(236, 72, 153, 0.45), 0 0 25px rgba(255, 182, 193, 0.8);
+    animation-name: floatUpHero;
+    animation-duration: 4.5s;
+    z-index: 10000;
+}
 
-        screen2.classList.remove('opacity-100', 'scale-100');
-        screen2.classList.add('opacity-0', 'scale-95');
+/* Hiệu ứng nhịp đập ngọt ngào cho tên trong thư */
+.userNameText {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    animation: gentlePulse 2.5s infinite ease-in-out;
+}
 
-        setTimeout(() => {
-            screen2.classList.add('hidden');
-            document.getElementById('recipientName').value = '';
-            currentUserName = "";
-            screen1.classList.remove('hidden');
+@keyframes gentlePulse {
+    0%, 100% { transform: scale(1); text-shadow: 0 0 0 rgba(236, 72, 153, 0); }
+    50% { transform: scale(1.08); text-shadow: 0 0 10px rgba(244, 114, 182, 0.6); }
+}
 
-            setTimeout(() => {
-                screen1.classList.remove('opacity-0', 'scale-95');
-                screen1.classList.add('opacity-100', 'scale-100');
-            }, 50);
-        }, 500);
-    }, 400);
+/* Floating Animation for Envelope */
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(1deg); }
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Glassmorphism Card Style */
+.glass-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3), 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Envelope CSS 3D */
+.envelope-wrapper {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin: 0 auto;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+@media (min-width: 640px) {
+    .envelope-wrapper {
+        width: 360px;
+        height: 240px;
+    }
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #fffaf0;
+    border-radius: 16px;
+    box-shadow: 0 15px 30px rgba(236, 140, 168, 0.3);
+    transition: all 0.5s ease;
+}
+
+/* Envelope Flap */
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0 0, 50% 55%, 100% 0);
+    background: linear-gradient(135deg, #ffdeeb, #f3d5ea);
+    transform-origin: top;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, z-index 0.2s;
+    z-index: 5;
+    border-radius: 16px 16px 0 0;
+}
+
+/* Pocket/Front body of envelope */
+.envelope-pocket {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    background: linear-gradient(to bottom, #ffffff, #fff2f7);
+    z-index: 4;
+    border-radius: 16px;
+    border-bottom: 3px solid #ffb6c1;
+}
+
+/* Letter Inside Envelope */
+.letter-preview {
+    position: absolute;
+    bottom: 12px;
+    left: 5%;
+    width: 90%;
+    height: 85%;
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, opacity 0.5s;
+    z-index: 3;
+    overflow: hidden;
+    border: 2px dashed #ffd1dc;
+}
+
+/* Opened Envelope State */
+.envelope-wrapper.open .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope-wrapper.open .letter-preview {
+    transform: translateY(-120px) scale(1.05);
+    z-index: 6;
+}
+
+/* Cute Wax Seal Stamp */
+.wax-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 117, 140, 0.4), inset 0 2px 4px rgba(255,255,255,0.6);
+    z-index: 6;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.envelope-wrapper.open .wax-seal {
+    opacity: 0;
+    transform: translate(-50%, -20%) scale(0.5);
+}
+
+/* Glowing Button */
+.btn-cute {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(255, 154, 158, 0.4);
+}
+
+.btn-cute:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(255, 154, 158, 0.6);
+}
+
+.btn-cute:active {
+    transform: translateY(1px);
+}
+
+/* Custom Scrollbar for Letter Modal */
+.custom-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+    background: #fff0f5;
+    border-radius: 10px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: #ffb6c1;
+    border-radius: 10px;
 }
